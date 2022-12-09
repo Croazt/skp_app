@@ -8,16 +8,29 @@
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
+        "laravel/jetstream": "^2.12",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "laravel/ui": "^4.1",
+        "livewire/livewire": "^2.5"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.7",
+        "barryvdh/laravel-ide-helper": "^2.12",
+        "ekino/phpstan-banned-code": "^1.0",
         "fakerphp/faker": "^1.9.1",
+        "itsgoingd/clockwork": "^5.1",
+        "kitloong/laravel-migrations-generator": "^6.6",
+        "krlove/eloquent-model-generator": "^2.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.2",
+        "phpmd/phpmd": "^2.13",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpunit/phpunit": "^9.5.10",
+        "sebastian/phpcpd": "^6.0",
         "spatie/laravel-ignition": "^1.0"
     },
     "autoload": {
@@ -45,6 +58,57 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "check": [
+            "composer phpstan-check",
+            "composer phpmd-check",
+            "composer phpcpd-check"
+        ],
+        "phpcpd-check": [
+            "@php -d memory_limit=3G vendor/bin/phpcpd --min-lines=15 --min-tokens=36 app/"
+        ],
+        "phpstan-check": [
+            "@php -d memory_limit=3G vendor/bin/phpstan analyse -c phpstan.neon --no-progress"
+        ],
+        "phpmd-check": [
+            "@php -d memory_limit=3G vendor/bin/phpmd app text codesize,controversial,design,naming,unusedcode,.phpmd.cleancode.xml"
+        ],
+        "cov-text": [
+            "phpdbg -qrr vendor/bin/phpunit --coverage-text"
+        ],
+        "cov-html": [
+            "phpdbg -qrr vendor/bin/phpunit --coverage-html public/coverage"
+        ],
+        "test-prepare": [
+            "php artisan migrate:fresh --drop-views --seed --env=testing"
+        ],
+        "test": [
+            "Composer\\Config::disableProcessTimeout",
+            "php artisan migrate --env=testing",
+            "php artisan test --parallel --recreate-databases --env=testing"
+        ],
+        "test-filter": [
+            "Composer\\Config::disableProcessTimeout",
+            "php artisan test --env=testing --filter"
+        ],
+        "refresh": [
+            "php artisan migrate:fresh --seed"
+        ],
+        "clear": [
+            "php artisan cache:clear",
+            "php artisan config:clear",
+            "php artisan view:clear",
+            "php artisan route:clear",
+            "php artisan clear-compiled",
+            "composer dump-autoload"
+        ],
+        "refresh-db": [
+            "rm -fr storage/app/public/*",
+            "mkdir storage/app/public/_thumbs",
+            "mkdir storage/app/public/uploads",
+            "chmod 0777 storage/app/public/_thumbs storage/app/public/uploads",
+            "@php artisan migrate:refresh --seed",
+            "@php artisan cms:create-admin"
         ]
     },
     "extra": {
