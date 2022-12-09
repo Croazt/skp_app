@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Providers\Traits\SqlMacro;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    use SqlMacro;
     /**
      * Register any application services.
      *
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerLikeMacro();
     }
 
     /**
