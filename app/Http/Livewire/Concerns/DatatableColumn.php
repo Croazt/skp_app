@@ -169,7 +169,7 @@ class DatatableColumn
 
         $width = ($this->width !== '') ? ' style="width: '.$this->width.';"' : '';
 
-        return sprintf('<td class="%s"%s>%s</td>', $class, $width, $content);
+        return sprintf('<td nowrap class="%s"%s>%s</td>', $class, $width, $content);
     }
 
     public function renderHeader(string $sortColumn, string $sortDirection): string
@@ -186,14 +186,14 @@ class DatatableColumn
         }
 
         if ($sortColumn === $this->name) {
-            $styles[] = 'sorted';
+            $styles[] = 'sort_'.$sortDirection;
             $include = $sortDirection =='asc' ? '<i class="fas fa-sort-up"></i>' : '<i class="fas fa-sort-down"></i>';
         }
 
         $class = ' class="'.implode(' ', $styles).'"';
         $width = ($this->width !== '') ? ' style="width: '.$this->width.';"' : '';
         $wireAction = $this->sortable ? sprintf('wire:click.prevent="sortBy(\'%s\')"', $this->name) : '';
-        return sprintf('<th %s%s%s>%s %s</th>', $wireAction, $class, $width, $this->getTitle(), $include);
+        return sprintf('<th nowrap %s%s%s>%s %s</th>', $wireAction, $class, $width, $this->getTitle(), $include);
     }
 
     public function renderVisibilityOption(int $index): string

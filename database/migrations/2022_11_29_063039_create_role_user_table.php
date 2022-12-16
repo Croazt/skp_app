@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('role_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('role_id')->index();
+            $table->string('role_nama',50)->index();
             $table->string('user_nip', 19)->index();
             $table->timestamps();
 
-            $table->foreign('role_id')->references('id')->on('roles')->cascadeOnDelete();
-            $table->foreign('user_nip')->references('nip')->on('users')->cascadeOnDelete();
+            $table->foreign('role_nama')->references('nama')->on('roles')->cascadeOnDelete();
+            $table->foreign('user_nip')->references(['nip'])->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

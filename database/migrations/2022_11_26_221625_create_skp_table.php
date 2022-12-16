@@ -15,10 +15,10 @@ class CreateSkpTable extends Migration
     {
         Schema::create('skp', function (Blueprint $table) {
             $table->integer('id', true)->index('id');
-            $table->string('perencanaan', 0);
-            $table->string('periode_awal', 0);
-            $table->string('periode_akhir', 0);
-            $table->string('penilaian', 0);
+            $table->date('perencanaan');
+            $table->date('periode_awal');
+            $table->date('periode_akhir');
+            $table->date('penilaian');
             $table->string('pengelola_kinerja', 19)->index('pengelola_kinerja');
             $table->string('tim_angka_kredit', 19)->index('tim_angka_kredit');
             $table->string('pejabat_penilai1', 19)->index('pejabat_penilai1');

@@ -14,7 +14,7 @@ class AddForeignKeysToSituasiKerjaTable extends Migration
     public function up()
     {
         Schema::table('situasi_kerja', function (Blueprint $table) {
-            $table->foreign(['aspek_perilaku_id'], 'situasi_kerja_ibfk_1')->references(['id'])->on('aspek_perilaku');
+            $table->foreign(['aspek_perilaku_id'], 'situasi_kerja_ibfk_1')->references(['id'])->on('aspek_perilaku')->cascadeOnDelete();
         });
     }
 

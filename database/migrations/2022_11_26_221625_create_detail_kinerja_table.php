@@ -17,16 +17,15 @@ class CreateDetailKinerjaTable extends Migration
             $table->integer('id', true)->index('id');
             $table->integer('skp_id')->index('skp_id');
             $table->integer('kinerja_id')->index('kinerja_id');
-            $table->string('butir_kegiatan');
-            $table->string('output_kegiatan');
+            $table->text('deskripsi');
+            $table->text('butir_kegiatan');
+            $table->text('output_kegiatan');
             $table->integer('angka_kredit');
-            $table->string('pekerjaan', 10);
-            $table->string('indikator_kualtias')->nullable();
-            $table->string('indikator_kuantitas')->nullable();
-            $table->string('indikator_waktu')->nullable();
-            $table->string('detail_output_kualitas')->nullable();
-            $table->string('detail_output_kuantitas')->nullable();
-            $table->string('detail_output_waktu')->nullable();
+            $table->string('pekerjaan', 50)->nullable();
+            $table->text('indikator_kualitas')->nullable();
+            $table->text('indikator_kuantitas')->nullable();
+            $table->text('indikator_waktu')->nullable();
+            $table->string('tipe_angka_kredit');
 
             $table->timestamps();
             // $table->primary(['id']);

@@ -14,8 +14,8 @@ class AddForeignKeysToPenilaianPerilakuGuruTable extends Migration
     public function up()
     {
         Schema::table('penilaian_perilaku_guru', function (Blueprint $table) {
-            $table->foreign(['skp_id'], 'penilaian_perilaku_guru_ibfk_2')->references(['id'])->on('skp');
-            $table->foreign(['user_nip'], 'penilaian_perilaku_guru_ibfk_1')->references(['nip'])->on('users');
+            $table->foreign(['skp_id'], 'penilaian_perilaku_guru_ibfk_2')->references(['id'])->on('skp')->cascadeOnDelete();
+            $table->foreign(['user_nip'], 'penilaian_perilaku_guru_ibfk_1')->references(['nip'])->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

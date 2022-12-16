@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Pangkat;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -31,8 +32,9 @@ class UserFactory extends Factory
             'nama' => $this->faker->name(),
             'nip' => strval($this->faker->numberBetween(100000000000000000, 9999999999999)),
             'username' => $this->faker->email(),
-            'pangkat_id' => Pangkat::first()->id,
-            'pekerjaan' => 'pekerjaan',
+            'pangkat_id' =>$this->faker->randomElement(Pangkat::all()->pluck('id')->toArray()),
+            'pekerjaan' =>  $this->faker->randomElement(User::PEKERJAAN),
+            'tugas_tambahan' =>  $this->faker->randomElement(User::TUGAS_TAMBAHAN),
             'unit_kerja' => 'unit_kerja',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),

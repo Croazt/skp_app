@@ -18,7 +18,7 @@ class CreatePejabatPenilaiTable extends Migration
             $table->string('nip', 19)->primary();
             $table->integer('pangkat_id')->index('pangkat_id');
             $table->string('pekerjaan', 50);
-            $table->integer('unit_kerja');
+            $table->string('unit_kerja', 50);
             $table->string('atasan', 19)->nullable()->index('atasan');
             
             $table->timestamps();

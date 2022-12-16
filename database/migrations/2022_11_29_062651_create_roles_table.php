@@ -14,9 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('nama',50);
             $table->timestamps();
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->index(array('id'));
+            $table->dropPrimary();
+            $table->primary('nama');
         });
     }
 

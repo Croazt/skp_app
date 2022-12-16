@@ -12,6 +12,7 @@ use Livewire\Component;
 
 class UserShow extends UserForm
 {
+    protected string $operation = "show";
     public function render()
     {
         return view('livewire.user.user-show');

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $output_kegiatan
  * @property integer $angka_kredit
  * @property string $pekerjaan
- * @property string $indikator_kualtias
+ * @property string $indikator_kualitas
  * @property string $indikator_kuantitas
  * @property string $indikator_waktu
  * @property string $detail_output_kualitas
@@ -34,7 +34,7 @@ class DetailKinerja extends Model
     /**
      * @var array
      */
-    protected $fillable = ['skp_id', 'kinerja_id', 'butir_kegiatan', 'output_kegiatan', 'angka_kredit', 'pekerjaan', 'indikator_kualtias', 'indikator_kuantitas', 'indikator_waktu', 'detail_output_kualitas', 'detail_output_kuantitas', 'detail_output_waktu'];
+    protected $fillable = ['deskripsi','skp_id', 'kinerja_id', 'butir_kegiatan', 'output_kegiatan', 'angka_kredit', 'pekerjaan', 'indikator_kualitas', 'indikator_kuantitas', 'indikator_waktu', 'detail_output_kualitas', 'detail_output_kuantitas', 'detail_output_waktu','tipe_angka_kredit'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

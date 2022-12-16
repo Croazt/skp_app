@@ -48,7 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(function () {
-            $roles = Role::all()->pluck('nama','id')->toArray();
+            $roles = Role::all()->pluck('nama','nama')->toArray();
             return view('auth.login', ['roles'=> $roles]);
          });
     }

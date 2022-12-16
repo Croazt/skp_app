@@ -66,7 +66,7 @@ class CreateOperator extends Command
         ]);
 
         if($newOperator instanceof User)
-            $newOperator->roles()->attach(1);
+            $newOperator->roles()->attach("Operator");
 
 
         $this->line('<info>Admin '.$email.' has been created.</info>');

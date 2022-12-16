@@ -28,7 +28,7 @@ abstract class DatatableComponent extends Component
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException|\ErrorException
      */
-    public function boot(): void
+    public function booted(): void
     {
         // $this->confirmAuthorization();
 

@@ -14,10 +14,10 @@ class AddForeignKeysToSkpTable extends Migration
     public function up()
     {
         Schema::table('skp', function (Blueprint $table) {
-            $table->foreign(['pejabat_penilai1'], 'skp_ibfk_2')->references(['nip'])->on('pejabat_penilai');
-            $table->foreign(['pengelola_kinerja'], 'skp_ibfk_4')->references(['nip'])->on('users');
-            $table->foreign(['pejabat_penilai2'], 'skp_ibfk_1')->references(['nip'])->on('pejabat_penilai');
-            $table->foreign(['tim_angka_kredit'], 'skp_ibfk_3')->references(['nip'])->on('users');
+            $table->foreign(['pejabat_penilai1'], 'skp_ibfk_2')->references(['nip'])->on('pejabat_penilai')->cascadeOnUpdate();
+            $table->foreign(['pengelola_kinerja'], 'skp_ibfk_4')->references(['nip'])->on('users')->cascadeOnUpdate();
+            $table->foreign(['pejabat_penilai2'], 'skp_ibfk_1')->references(['nip'])->on('pejabat_penilai')->cascadeOnUpdate();
+            $table->foreign(['tim_angka_kredit'], 'skp_ibfk_3')->references(['nip'])->on('users')->cascadeOnUpdate();
         });
     }
 

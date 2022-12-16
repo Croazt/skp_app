@@ -18,7 +18,7 @@ class CreateRencanaKinerjaGuruTable extends Migration
             $table->integer('skp_id')->index('skp_id');
             $table->integer('detail_kinerja_id')->index('detail_kinerja_id');
             $table->tinyInteger('terkait')->nullable();
-            $table->integer('target_kualtias')->nullable();
+            $table->integer('target_kualitas')->nullable();
             $table->integer('target_kuantitas')->nullable();
             $table->integer('target_waktu')->nullable();
             $table->integer('realisiasi_kualitas')->nullable();

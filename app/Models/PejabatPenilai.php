@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PejabatPenilai extends Model
 {
+    use HasFactory;
     /**
      * The table associated with the model.
      * 
@@ -99,5 +101,11 @@ class PejabatPenilai extends Model
     public function rencanaSkp()
     {
         return $this->hasMany('App\Models\SkpGuru', 'pejabat_rencana', 'nip');
+    }
+    
+    public function getPangkatname(): string
+    {
+        $pangkat = $this->pangkat;
+        return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang . '/' . $pangkat->jabatan;
     }
 }

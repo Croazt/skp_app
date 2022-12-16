@@ -30,7 +30,6 @@ trait ManageColumnVisibility
 
                 continue;
             }
-
             $column->setInvisible((bool) $value);
         }
 

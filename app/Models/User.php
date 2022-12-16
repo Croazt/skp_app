@@ -46,7 +46,26 @@ class User extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['pangkat_id', 'nama', 'pekerjaan', 'nip','unit_kerja', 'tugas_tambahan', 'username', 'password'];
+    protected $fillable = ['pangkat_id', 'nama', 'pekerjaan', 'nip', 'unit_kerja', 'tugas_tambahan', 'username', 'password'];
+
+    const PEKERJAAN = [
+        'Guru Mata Pelajaran',
+        'Guru Bimbingan Konseling',
+        'Guru Kelas',
+        'Guru Kelompok',
+    ];
+
+    const TUGAS_TAMBAHAN = [
+        'Kepala Sekolah',
+        'Kepala UPT Sekolah',
+        'Plt. Kepala Sekolah',
+        'Wakil Kepala Sekolah',
+        'Ketua Prog. Keahlian',
+        'Kepala Perpustakaan',
+        'Kepala Laboratorium',
+        'Kepala Bengkel',
+        'Kepala Unit Produksi',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -155,31 +174,36 @@ class User extends Authenticatable
      * 
      * @return BelongsToMany
      */
-    public function roles() : BelongsToMany
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
-    
+
     public static function search($query)
     {
         return empty($query) ? static::query()
-            : static::where('nama', 'like', '%'.$query.'%')
-                ->orWhere('nip', 'like', '%'.$query.'%')
-                ->orWhere('username', 'like', '%'.$query.'%');
+            : static::where('nama', 'like', '%' . $query . '%')
+            ->orWhere('nip', 'like', '%' . $query . '%')
+            ->orWhere('username', 'like', '%' . $query . '%');
     }
 
-    
-    public function getRoleNames() : Collection
+
+    public function getRoleName(): Collection
     {
         return $this->roles()->pluck('nama');
     }
 
-    public function getPangkat() : string
+    public function getPangkatname(): string
     {
         $pangkat = $this->pangkat;
-        if($pangkat instanceof Pangkat){
-            return $pangkat->pangkat.', '.$pangkat->golongan_ruang.'/'.$pangkat->jabatan;
+        return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang . '/' . $pangkat->jabatan;
+    }
+    public function getPangkat(): array
+    {
+        $pangkat = $this->pangkat;
+        if ($pangkat instanceof Pangkat) {
+            return [$this->pangkat->id => $pangkat->pangkat . ', ' . $pangkat->golongan_ruang . '/' . $pangkat->jabatan];
         }
-        return '';
+        return [];
     }
 }

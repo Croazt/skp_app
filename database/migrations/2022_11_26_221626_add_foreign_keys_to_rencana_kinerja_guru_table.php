@@ -14,9 +14,9 @@ class AddForeignKeysToRencanaKinerjaGuruTable extends Migration
     public function up()
     {
         Schema::table('rencana_kinerja_guru', function (Blueprint $table) {
-            $table->foreign(['user_nip'], 'rencana_kinerja_guru_ibfk_2')->references(['nip'])->on('users');
-            $table->foreign(['detail_kinerja_id'], 'rencana_kinerja_guru_ibfk_1')->references(['id'])->on('detail_kinerja');
-            $table->foreign(['skp_id'], 'rencana_kinerja_guru_ibfk_3')->references(['id'])->on('skp');
+            $table->foreign(['user_nip'], 'rencana_kinerja_guru_ibfk_2')->references(['nip'])->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign(['detail_kinerja_id'], 'rencana_kinerja_guru_ibfk_1')->references(['id'])->on('detail_kinerja')->cascadeOnDelete();
+            $table->foreign(['skp_id'], 'rencana_kinerja_guru_ibfk_3')->references(['id'])->on('skp')->cascadeOnDelete();
         });
     }
 

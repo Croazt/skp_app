@@ -14,8 +14,8 @@ class AddForeignKeysToDetailKinerjaTable extends Migration
     public function up()
     {
         Schema::table('detail_kinerja', function (Blueprint $table) {
-            $table->foreign(['skp_id'], 'detail_kinerja_ibfk_2')->references(['id'])->on('skp');
-            $table->foreign(['kinerja_id'], 'detail_kinerja_ibfk_1')->references(['id'])->on('kinerja');
+            $table->foreign(['skp_id'], 'detail_kinerja_ibfk_2')->references(['id'])->on('skp')->cascadeOnDelete();
+            $table->foreign(['kinerja_id'], 'detail_kinerja_ibfk_1')->references(['id'])->on('kinerja')->cascadeOnDelete();
         });
     }
 

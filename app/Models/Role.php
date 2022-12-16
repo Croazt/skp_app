@@ -11,6 +11,14 @@ class Role extends Model
     use HasFactory;
 
     /**
+     * The primary key for the model.
+     * 
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    protected $primaryKey = 'nama';
+    /**
      * @var array
      */
     protected $fillable = ['nama'];
@@ -20,7 +28,7 @@ class Role extends Model
      * 
      * @return BelongsToMany
      */
-    public function users() : BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)->using(RoleUser::class);
     }

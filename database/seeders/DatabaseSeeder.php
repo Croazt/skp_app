@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             PangkatSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            PejabatPenilaiSeeder::class,
         ]);
     }
 }

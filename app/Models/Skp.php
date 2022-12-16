@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property integer $id
@@ -39,6 +43,43 @@ class Skp extends Model
      */
     protected $fillable = ['pengelola_kinerja', 'tim_angka_kredit', 'pejabat_penilai1', 'pejabat_penilai2', 'perencanaan', 'periode_awal', 'periode_akhir', 'penilaian'];
 
+
+    protected $dates = [
+        'perencanaan',
+        'periode_awal',
+        'periode_akhir',
+        'penilaian',
+    ];
+
+    protected $casts = [
+        'perencanaan' => 'string',
+        'periode_awal' => 'string',
+        'periode_akhir' => 'string',
+        'penilaian' => 'string',
+    ];
+
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('m-d-Y');
+    }
+    
+    public function scopeBaseQuery(Builder $query): Builder
+    {
+        return $query->select([
+            'skp.*',
+            DB::raw('(SELECT nama FROM pejabat_penilai WHERE skp.pejabat_penilai1 = pejabat_penilai.nip) as pejabat_penilai1'),
+            DB::raw('(SELECT nama FROM pejabat_penilai WHERE skp.pejabat_penilai2 = pejabat_penilai.nip) as pejabat_penilai2'),
+            DB::raw('(SELECT nama FROM users WHERE skp.pengelola_kinerja = users.nip) as pengelola_kinerja'),
+            DB::raw('(SELECT nama FROM users WHERE skp.tim_angka_kredit = users.nip) as tim_angka_kredit'),
+        ]);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -106,7 +147,7 @@ class Skp extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function timAngkaKredit()
     {
         return $this->belongsTo('App\Models\User', 'tim_angka_kredit', 'nip');
     }

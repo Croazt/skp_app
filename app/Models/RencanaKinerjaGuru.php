@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $skp_id
  * @property integer $detail_kinerja_id
  * @property boolean $terkait
- * @property integer $target_kualtias
+ * @property integer $target_kualitas
  * @property integer $target_kuantitas
  * @property integer $target_waktu
  * @property integer $realisiasi_kualitas
@@ -34,7 +34,7 @@ class RencanaKinerjaGuru extends Model
     /**
      * @var array
      */
-    protected $fillable = ['terkait', 'target_kualtias', 'target_kuantitas', 'target_waktu', 'realisiasi_kualitas', 'realisasi_kuantitas', 'realisasi_waktu', 'tanggal_verifikasi', 'lingkup', 'dokumen_bukti'];
+    protected $fillable = ['terkait', 'target_kualitas', 'target_kuantitas', 'target_waktu', 'realisiasi_kualitas', 'realisasi_kuantitas', 'realisasi_waktu', 'tanggal_verifikasi', 'lingkup', 'dokumen_bukti'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

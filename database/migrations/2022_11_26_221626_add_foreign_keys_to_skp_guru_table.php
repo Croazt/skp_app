@@ -14,12 +14,12 @@ class AddForeignKeysToSkpGuruTable extends Migration
     public function up()
     {
         Schema::table('skp_guru', function (Blueprint $table) {
-            $table->foreign(['reviu_oleh'], 'skp_guru_ibfk_5')->references(['nip'])->on('users');
-            $table->foreign(['pejabat_nilai'], 'skp_guru_ibfk_2')->references(['nip'])->on('pejabat_penilai');
-            $table->foreign(['skp_id'], 'skp_guru_ibfk_4')->references(['id'])->on('skp');
-            $table->foreign(['verivikasi_oleh'], 'skp_guru_ibfk_6')->references(['nip'])->on('users');
-            $table->foreign(['user_nip'], 'skp_guru_ibfk_1')->references(['nip'])->on('users');
-            $table->foreign(['pejabat_rencana'], 'skp_guru_ibfk_3')->references(['nip'])->on('pejabat_penilai');
+            $table->foreign(['reviu_oleh'], 'skp_guru_ibfk_5')->references(['nip'])->on('users')->cascadeOnUpdate();
+            $table->foreign(['pejabat_nilai'], 'skp_guru_ibfk_2')->references(['nip'])->on('pejabat_penilai')->cascadeOnUpdate();
+            $table->foreign(['skp_id'], 'skp_guru_ibfk_4')->references(['id'])->on('skp')->cascadeOnDelete();
+            $table->foreign(['verivikasi_oleh'], 'skp_guru_ibfk_6')->references(['nip'])->on('users')->cascadeOnUpdate();
+            $table->foreign(['user_nip'], 'skp_guru_ibfk_1')->references(['nip'])->on('users')->cascadeOnUpdate();
+            $table->foreign(['pejabat_rencana'], 'skp_guru_ibfk_3')->references(['nip'])->on('pejabat_penilai')->cascadeOnUpdate();
         });
     }
 

@@ -1,0 +1,32 @@
+.dt-column-visibility-options:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+table.datatable-sortable .sortable {
+    position: relative;
+    padding-right: 24px;
+    cursor: pointer;
+}
+
+table.datatable-sortable .sortable:after {
+    font-family: 'Font Awesome 5 Free';
+    content: ' ';
+    position: absolute;
+    height: 0;
+    width: 0;
+    right: 20px;
+    top: 18px;
+    color: #3699ff;
+}
+
+table.datatable-sortable .sortable:hover {
+    background-color: #fcf7ea;
+}
+
+table.datatable-sortable .sortable.sort_asc,
+table.datatable-sortable .sortable.sort_desc {
+    color: #3699ff;
+}
+
+@import url("../vendor/fontawesome/all.css");

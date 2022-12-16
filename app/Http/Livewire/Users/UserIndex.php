@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class UserIndex extends DatatableComponent
 {
-    
+
     public string $sortColumn = 'nip';
     /**
      * Specify the datatable's columns and their behaviors.
@@ -25,7 +25,7 @@ class UserIndex extends DatatableComponent
             DatatableColumn::make('nama'),
             DatatableColumn::make('username'),
             // DatatableColumn::make('email_verified_at'),
-           ( DatatableColumn::make('password'))->setInvisible(false),
+            DatatableColumn::make('password')->setInvisible(true),
             // DatatableColumn::make('remember_token'),
             DatatableColumn::make('created_at'),
             DatatableColumn::make('updated_at'),
