@@ -3,15 +3,18 @@
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
         </x-slot>
-
+        
         <x-jet-validation-errors class="mb-4" />
-
+        
         @if (session('status'))
-            <div class="tw-mb-4 tw-font-medium tw-text-sm tw-text-green-600">
-                {{ session('status') }}
-            </div>
+        <div class="tw-mb-4 tw-font-medium tw-text-sm tw-text-green-600">
+            {{ session('status') }}
+        </div>
         @endif
 
+        @php
+            cookie()->forget('role')
+        @endphp
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
