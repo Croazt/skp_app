@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property string $nip
@@ -53,7 +55,7 @@ class PejabatPenilai extends Model
     /**
      * @var array
      */
-    protected $fillable = ['pangkat_id', 'atasan', 'nama', 'pekerjaan', 'unit_kerja'];
+    protected $fillable = ['pangkat_id', 'nip', 'atasan', 'nama', 'pekerjaan', 'unit_kerja'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -66,7 +68,7 @@ class PejabatPenilai extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pejabatPenilai()
+    public function atasanPejabat()
     {
         return $this->belongsTo('App\Models\PejabatPenilai', 'atasan', 'nip');
     }
@@ -107,5 +109,14 @@ class PejabatPenilai extends Model
     {
         $pangkat = $this->pangkat;
         return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang . '/' . $pangkat->jabatan;
+    }
+
+    public function scopeBaseQuery(Builder $query): Builder
+    {
+        return $query->select([
+            'pejabat_penilai.*',
+            DB::raw('(SELECT nama FROM pejabat_penilai pp WHERE pejabat_penilai.atasan = pp.nip) as atasan'),
+            DB::raw('(SELECT CONCAT(pangkat, ", ",golongan_ruang,"/",jabatan) FROM pangkat WHERE pejabat_penilai.pangkat_id = pangkat.id) as  pangkat'),
+        ]);
     }
 }
