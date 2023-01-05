@@ -12,9 +12,6 @@
         </div>
         @endif
 
-        @php
-            cookie()->forget('role')
-        @endphp
         <form method="POST" action="{{ route('login') }}">
             @csrf
 

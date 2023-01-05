@@ -45,22 +45,10 @@ class SkpIndex extends DatatableComponent
         return (new Skp())
             ->newQuery()->baseQuery();
     }
-
-    public function deleteDetailKinerja(string $key): void
+    public function updatedDataDokumen_bukti()
     {
-        $row = $this->newQuery()->find($key);
-
-        if ($row instanceof Model) {
-            $row->delete();
-        }
-
-        $this->selectAllRows = false;
-        $this->selectedRows = [];
-
-        $this->refresh();
-
-        session()->flash('alertType', 'success');
-        session()->flash('alertMessage', 'The record ('.$key.') have been deleted.');
+        dd($this->data['dokumen_bukti']);
+        // here you can store immediately on any change of the property
     }
     public function render()
     {

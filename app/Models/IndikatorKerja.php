@@ -24,7 +24,7 @@ class IndikatorKerja extends Model
     /**
      * @var array
      */
-    protected $fillable = ['aspek_perilaku_id', 'situasi'];
+    protected $fillable = ['aspek_perilaku_id', 'indikator', 'level'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

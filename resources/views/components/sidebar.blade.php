@@ -4,7 +4,7 @@
             'href' => 'dashboard',
             'text' => 'Dashboard',
             'is_multi' => false,
-            'role' => ['Guru'],
+            // 'role' => ['Guru'],
         ],
         [
             'href' => [
@@ -18,6 +18,7 @@
             ],
             'text' => 'Pengguna',
             'is_multi' => true,
+            'role' => ['Operator'],
         ],
         [
             'href' => [
@@ -31,6 +32,7 @@
             ],
             'text' => 'Pejabat',
             'is_multi' => true,
+            'role' => ['Operator'],
         ],
         [
             'href' => [
@@ -45,6 +47,19 @@
             'text' => 'SKP',
             'is_multi' => true,
         ],
+        [
+            'href' => [
+                [
+                    'section_text' => 'Penilaian Perilaku',
+                    'section_list' => [
+                        ['href' => 'penilaian-perilaku.index', 'text' => 'Daftar Penilaian Perilaku'],
+                        // ['href' => 'user.show', 'text' => '']
+                    ],
+                ],
+            ],
+            'text' => 'Penilaian Perilaku',
+            'is_multi' => true,
+        ],
     ];
     $navigation_links = array_to_object($links);
 @endphp
@@ -55,7 +70,7 @@
     <aside id="sidebar-wrapper">
         <!-- sidebar brand -->
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">Dashboard</a>
+            <a href="{{ route('dashboard') }}">SKP </a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">

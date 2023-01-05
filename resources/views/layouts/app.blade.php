@@ -29,21 +29,20 @@
 
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
-
-    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css"
-        media="all">
-    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css"
-        media="all">
-    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+    <script src="https://kit.fontawesome.com/1ffc6500c2.js" crossorigin="anonymous"></script>
 
 
     <!-- Styles -->
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @stack('styles')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @include('modals.response-state.style')
 </head>
 
 <body class="font-sans antialiased">
+    @include('modals.response-state.view')
+    @stack('modals')
     <div id="app">
         <div class="main-wrapper">
             <!-- Navbar and sidebar -->
@@ -67,7 +66,6 @@
             </div>
         </div>
     </div>
-    @stack('modals')
     @include('partials.additional_scripts')
 
 
@@ -89,6 +87,7 @@
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     @livewireScripts
     @stack('scripts')
+    @include('modals.response-state.script')
 </body>
 
 </html>

@@ -16,7 +16,7 @@ class CreateAspekPerilakuTable extends Migration
         Schema::create('aspek_perilaku', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nama', 50);
-            $table->string('definisi');
+            $table->text('definisi');
         });
     }
 

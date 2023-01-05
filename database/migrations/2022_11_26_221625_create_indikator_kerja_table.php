@@ -15,7 +15,8 @@ class CreateIndikatorKerjaTable extends Migration
     {
         Schema::create('indikator_kerja', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('situasi');
+            $table->integer('level');
+            $table->string('indikator');
             $table->integer('aspek_perilaku_id')->index('aspek_perilaku_id');
         });
     }

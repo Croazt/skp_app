@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property string $user_nip
@@ -23,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $capaian_pkg
  * @property integer $capaian_pkg_tambahan
  * @property User $user
- * @property PejabatPenilai $pejabatPenilai
+ * @property PejabatPenilai $pejabatRencana
  * @property Skp $skp
  * @property User $user
  * @property User $user
@@ -38,11 +40,32 @@ class SkpGuru extends Model
      */
     protected $table = 'skp_guru';
 
+    const DRAFT = 'draft';
+    const KONFIRMASI = 'konfirmasi';
+    const REVIU = 'reviu';
+    const VERIFIKASI = 'verifikasi';
+    const BUKTI = 'bukti';
+    const DITOLAK = 'ditolak';
+    const DINILAI = 'dinilai';
+    public const STATUS = [
+        self::DRAFT,
+        self::KONFIRMASI,
+        self::REVIU,
+        self::VERIFIKASI,
+        self::BUKTI,
+        self::DITOLAK,
+        self::DINILAI,
+    ];
     /**
      * @var array
      */
-    protected $fillable = ['verivikasi_oleh', 'reviu_oleh', 'pejabat_rencana', 'pejabat_nilai', 'status', 'tanggal_konfirmasi', 'tanggal_verifikasi', 'tanggal_reviu', 'tanggal_realisasi', 'jam_pelajaran', 'target_pkg', 'target_pkg_tambahan', 'capaian_jam_pelajaran', 'capaian_pkg', 'capaian_pkg_tambahan'];
-
+    protected $fillable = ['user_nip','verivikasi_oleh', 'reviu_oleh', 'pejabat_rencana', 'pejabat_nilai', 'status', 'tanggal_konfirmasi', 'tanggal_verifikasi', 'tanggal_reviu', 'tanggal_realisasi', 'jam_pelajaran', 'target_pkg', 'target_pkg_tambahan', 'capaian_jam_pelajaran', 'capaian_pkg', 'capaian_pkg_tambahan'];
+    
+    public function scopeBaseQuery(Builder $query, int $skpId): Builder
+    {
+        return $query->select(['users.nama', 'skp_guru.*', 'users.nip as nip'])->leftJoin('users','users.nip','skp_guru.user_nip')->where('skp_id',$skpId);
+    }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -84,10 +107,18 @@ class SkpGuru extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+ * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function pejabatRencana()
     {
         return $this->belongsTo('App\Models\PejabatPenilai', 'pejabat_rencana', 'nip');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rencanaKinerjaGurus()
+    {
+        return $this->hasMany('App\Models\RencanaKinerjaGuru', 'skp_guru_id','id');
     }
 }

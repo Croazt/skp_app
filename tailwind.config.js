@@ -15,8 +15,11 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            width: {
+                '15' : '3.75rem'
+            }
         },
     },
-    prefix : 'tw-',
+    prefix: 'tw-',
     plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };

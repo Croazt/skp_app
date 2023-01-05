@@ -17,6 +17,7 @@ class AddForeignKeysToRencanaKinerjaGuruTable extends Migration
             $table->foreign(['user_nip'], 'rencana_kinerja_guru_ibfk_2')->references(['nip'])->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign(['detail_kinerja_id'], 'rencana_kinerja_guru_ibfk_1')->references(['id'])->on('detail_kinerja')->cascadeOnDelete();
             $table->foreign(['skp_id'], 'rencana_kinerja_guru_ibfk_3')->references(['id'])->on('skp')->cascadeOnDelete();
+            $table->foreign(['skp_guru_id'], 'rencana_kinerja_guru_ibfk_4')->references(['id'])->on('skp_guru')->cascadeOnDelete();
         });
     }
 
@@ -31,6 +32,7 @@ class AddForeignKeysToRencanaKinerjaGuruTable extends Migration
             $table->dropForeign('rencana_kinerja_guru_ibfk_2');
             $table->dropForeign('rencana_kinerja_guru_ibfk_1');
             $table->dropForeign('rencana_kinerja_guru_ibfk_3');
+            $table->dropForeign('rencana_kinerja_guru_ibfk_4');
         });
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -187,10 +189,20 @@ class User extends Authenticatable
             ->orWhere('username', 'like', '%' . $query . '%');
     }
 
-
     public function getRoleName(): Collection
     {
         return $this->roles()->pluck('nama');
+    }
+
+    public function scopePenilaianPerilakuQuery(Builder $query, int $skpId): Builder
+    {
+        return $query->select([
+            'users.*',
+            DB::raw("IF(penilaian_perilaku.status IS NOT NULL,penilaian_perilaku.status, IF(skp_guru.status IS NOT NULL, 'Belum diisi', 'SKP belum dibuat')) as status"),
+        ])->whereHas('roles', function ($q) {
+            $q->where('nama', Role::GURU);
+        })->leftJoin(DB::raw('(SELECT * FROM penilaian_perilaku_guru where skp_id =' . $skpId . ') as penilaian_perilaku'), 'users.nip', 'penilaian_perilaku.user_nip')
+        ->leftJoin(DB::raw('(SELECT * FROM skp_guru where skp_guru.skp_id =' . $skpId . ') as skp_guru'), 'users.nip', 'skp_guru.user_nip');
     }
 
     public function getPangkatname(): string

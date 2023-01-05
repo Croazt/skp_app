@@ -1,10 +1,6 @@
-<script>
-</script>
-@push('scripts')
     <script src="{{ asset('stisla/js/page/bootstrap-modal.js') }}"></script>
     <script>
         function rowspanSelector() {
-            console.log("PWW")
             const table = document.querySelector('table');
             let headerCell = null;
     
@@ -121,42 +117,4 @@
                     });
                 }
             });
-
-        document.addEventListener('deletedDetailKinerja', function() {
-            rowspanSelector()
-            findBlocks($('table'));
-            $(".table-complex td").hover(function() {
-                $el = $(this);
-                //findBlocks($el.closest('table')); // you can call it here or onload as below
-                if (!$el.hasClass('deskripsi')) {
-                    $.each($el.parent().data('blockrows'), function() {
-
-                        if ($(this).hasClass('deskripsi')) {
-                            $(this).addClass('hover');
-                        }
-                        $(this).find('td').addClass('hover');
-                    });
-                } else {
-                    $.each($el.data('parentblockrows'), function() {
-                        $(this).find('td').addClass('hover');
-                    });
-                }
-            }, function() {
-                $el = $(this);
-                if (!$el.hasClass('deskripsi')) {
-                    $.each($el.parent().data('blockrows'), function() {
-                        if ($(this).hasClass('deskripsi')) {
-                            $(this).removeClass('hover');
-                        }
-                        $(this).find('td').removeClass('hover');
-                    });
-                } else {
-                    $.each($el.data('parentblockrows'), function() {
-                        $(this).find('td').removeClass('hover');
-                    });
-                }
-            });
-
-        });
     </script>
-@endpush

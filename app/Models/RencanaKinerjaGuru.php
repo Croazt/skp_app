@@ -24,6 +24,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RencanaKinerjaGuru extends Model
 {
+    public const SANGAT_BAIK = 16;
+    public const BAIK = 13;
+    public const CUKUP = 8;
+    public const KURANG = 3;
+    public const SANGAT_KURANG = 1;
+
     /**
      * The table associated with the model.
      * 
@@ -34,7 +40,7 @@ class RencanaKinerjaGuru extends Model
     /**
      * @var array
      */
-    protected $fillable = ['terkait', 'target_kualitas', 'target_kuantitas', 'target_waktu', 'realisiasi_kualitas', 'realisasi_kuantitas', 'realisasi_waktu', 'tanggal_verifikasi', 'lingkup', 'dokumen_bukti'];
+    protected $fillable = ['user_nip','detail_kinerja_id','skp_id', 'terkait', 'target_kualitas', 'target_kuantitas', 'target_waktu', 'realisiasi_kualitas', 'realisasi_kuantitas', 'realisasi_waktu', 'tanggal_verifikasi', 'lingkup', 'dokumen_bukti'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

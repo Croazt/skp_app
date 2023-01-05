@@ -1,8 +1,10 @@
     <div class="tw-p-4">
         <div class="tw-flex pb-4 -ml-3">
-            <a href={{ route($this->getBaseRouteName().'create') }} class="-ml- btn btn-primary shadow-none">
-                <span class="fas fa-plus"></span> Buat
-            </a>
+            @can('Operator')
+                <a href={{ route($this->getBaseRouteName() . 'create') }} class="-ml- btn btn-primary shadow-none">
+                    <span class="fas fa-plus"></span> Buat
+                </a>
+            @endcan
             <div>
                 <button class="btn ml-2 btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -32,7 +34,7 @@
             </div>
 
             <div class="col">
-                <input  wire:model.debounce.700ms="search" class="form-control" type="text" placeholder="Search...">
+                <input wire:model.debounce.700ms="search" class="form-control" type="text" placeholder="Search...">
             </div>
         </div>
     </div>

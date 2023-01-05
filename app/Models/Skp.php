@@ -24,8 +24,9 @@ use Illuminate\Support\Facades\DB;
  * @property PenilaianPerilakuGuru[] $penilaianPerilakuGurus
  * @property RencanaKinerjaGuru[] $rencanaKinerjaGurus
  * @property PejabatPenilai $pejabatPenilai
+ * @property PengelolaKinerja $pengelolaKinerja
  * @property User $user
- * @property PejabatPenilai $pejabatPenilai
+ * @property PejabatRencana $pejabatRencana
  * @property User $user
  * @property SkpGuru[] $skpGurus
  */
@@ -80,6 +81,7 @@ class Skp extends Model
             DB::raw('(SELECT nama FROM users WHERE skp.tim_angka_kredit = users.nip) as tim_angka_kredit'),
         ]);
     }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

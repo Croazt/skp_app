@@ -26,7 +26,7 @@ class IndikatorPenilaianPerilaku extends Model
     /**
      * @var array
      */
-    protected $fillable = ['indikator_kerja_id'];
+    protected $fillable = ['indikator_kerja_id','skp_id','situasi_kerja_id','user_nip'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

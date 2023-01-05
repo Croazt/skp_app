@@ -26,7 +26,7 @@ class SaveUserLoginRoleSession
      * @param  Login  $event
      * @return void
      */
-    public function handle(Login $event)
+    public function handle()
     {
         Cookie::queue(cookie()->make('role', request()->role, 576000));
     }

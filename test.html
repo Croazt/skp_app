@@ -1,0 +1,243 @@
+"""
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="p8ZvwgXdd4GjWAMty7jCfkKnSFGHLfiHL89iYCi9">
+
+    <title>Laravel</title>
+
+    <script src="http://skp-app.test/stisla/js/modules/jquery.min.js"></script>
+    <script src="http://skp-app.test/stisla/js/modules/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="http://skp-app.test/vendor/bootstrap/bootstrap.min.css">
+
+    <link rel="preload" as="style" href="http://skp-app.test/build/assets/app.4999e8ce.css" /><link rel="stylesheet" href="http://skp-app.test/build/assets/app.4999e8ce.css" /> ◀
+    <link rel="modulepreload" href="http://skp-app.test/build/assets/app.76ec6e4f.js" /><script type="module" src="http://skp-app.test/build/assets/app.76ec6e4f.js"></script> ◀
+    <link rel="stylesheet" href="http://skp-app.test/css/app.css">
+
+    <style>
+        .table-header {
+            display: block;
+        }
+
+        .table-header .table-content {
+            display: -webkit-box;
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            justify-content: center;
+        }
+
+        .table-header .table-content .table-item {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+        
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            align-items: center;
+            padding: 2px;
+            border: 1px solid black;
+        }
+        .table-header .table-content .table-item div {
+            text-align: center;
+            width: fit-content;
+            margin: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div style="width: 100%">
+    <div style="width: 100%" class="tw-flex tw-justify-between">
+        <div class=" tw-font-bold">
+            <p>SMA NEGERI 1 SIDRAP</p>
+        </div>
+        <div class="">
+            <div class="tw-ml-auto tw-mr-0">
+                <p class="tw-font-bold">
+                    Periode Penilaian:
+                </p>
+                <p>
+                    2022-12-19 s.d. 2023-01-31
+                </p>
+
+            </div>
+        </div>
+    </div>
+    <table class="table-border" style="width: 100%">
+        <thead>
+            <tr>
+                <th style="width: 50%;" colspan="2" class="tw-text-center">
+                    PEGAWAI YANG DINILAI
+                </th>
+                <th style="width: 50%;" colspan="2" class="tw-text-center">
+                    PEJABAT PENILAI KINERJA
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="width: 15%;">
+                    NAMA
+                </td>
+                <td style="width:35%;">
+                    Administrator
+                </td>
+                <td style="width: 15%;">
+                    NAMA
+                </td>
+                <td style="width: 35%;">
+                    Tessie Hamill DDS
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%;">
+                    NIP
+                </td>
+                <td style="width:35%;">
+                    123456789098765432
+                </td>
+                <td style="width: 15%;">
+                    NIP
+                </td>
+                <td style="width: 35%;">
+                    2675188159665773
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%;">
+                    PANGKAT
+                </td>
+                <td style="width:35%;">
+                    Pembina Utama Madya, IV/d/Guru Utama
+                </td>
+                <td style="width: 15%;">
+                    PANGKAT
+                </td>
+                <td style="width: 35%;">
+                    Pembina Tk. 1, IV/b/Guru Madya
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%;">
+                    PEKERJAAN
+                </td>
+                <td style="width:35%;">
+                    pekerjaan
+                </td>
+                <td style="width: 15%;">
+                    PEKERJAAN
+                </td>
+                <td style="width: 35%;">
+                    pekerjaan
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%;">
+                    UNIT KERJA
+                </td>
+                <td style="width:35%;">
+                    unit_kerja
+                </td>
+                <td style="width: 15%;">
+                    UNIT KERJA
+                </td>
+                <td style="width: 35%;">
+                    unit_kerja
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <div class="table-header tw-w-full">
+        <div class="table-content tw-w-full">
+            <div style="width: 3%;" class="table-item">
+                <div>NO</div>
+            </div>
+            <div style="width: 20%;" class="table-item">
+                <div>RENCANA KINERJA ATASAN LANGSUNG/ UNIT KERJA DAN ATAU ORGANISASI
+                YANG DIINTERVENSI</div>
+            </div>
+            <div style="width: 21%;" class="table-item">
+                <div>RENCANA KINERJA</div>
+            </div>
+            <div style="width: 6%;" class="table-item">
+                <div>ASPEK</div>
+            </div>
+            <div style="width: 25%;" class="table-item">
+                <div>INDIKATOR KINERJA INDIVIDU</div>
+            </div>
+            <div style="width: 25%;" class="table-item">
+                <div>TARGET</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var headerCell = null;
+
+            var kinerjaAtasanRow = $(".deskripsi");
+            var tempCell = null;
+            for (var i = 0; i < kinerjaAtasanRow.length; i++) {
+                const firstCell = (kinerjaAtasanRow[i])
+                if (headerCell === null || firstCell.innerText !== headerCell.innerText) {
+                    headerCell = firstCell;
+                } else {
+                    $(headerCell).addClass("table-leading");
+                    $(firstCell).addClass("table-following").empty();
+                    if (i == kinerjaAtasanRow.length - 1) {
+                        $(firstCell).removeClass("table-following");
+                        $(firstCell).addClass("table-ending").empty();
+                    }
+                    tempCell = firstCell;
+                }
+            }
+            headerCell = null;
+
+            var numRow = $(".num-row-utama");
+            tempCell = null;
+            for (var i = 0; i < numRow.length; i++) {
+                const firstCell = (numRow[i])
+                if (headerCell === null || firstCell.innerText !== headerCell.innerText) {
+                    headerCell = firstCell;
+                } else {
+                    $(headerCell).addClass("table-leading");
+                    $(firstCell).addClass("table-following").empty();
+                    if (i == numRow.length - 1) {
+                        $(firstCell).removeClass("table-following");
+                        $(firstCell).addClass("table-ending").empty();
+                    }
+                    tempCell = firstCell;
+                }
+            }
+            headerCell = null;
+
+            numRow = $(".num-row-tambahan");
+            tempCell = null;
+            for (var i = 0; i < numRow.length; i++) {
+                const firstCell = (numRow[i])
+                if (headerCell === null || firstCell.innerText !== headerCell.innerText) {
+                    headerCell = firstCell;
+                } else {
+                    $(headerCell).addClass("table-leading");
+                    $(firstCell).addClass("table-following").empty();
+                    if (i == numRow.length - 1) {
+                        $(firstCell).removeClass("table-following");
+                        $(firstCell).addClass("table-ending").empty();
+                    }
+                    tempCell = firstCell;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
+""" // app/Http/Livewire/SkpGuru/Traits/SkpGuruMap.php:242

@@ -92,7 +92,7 @@
                             Ubah Data
                         </button>
                     @endif
-                    <button wire:click="backToIndex()" type="button" class="btn btn-secondary">Cancel</button>
+                    <button wire:click="backToIndex()" type="button" class="btn btn-secondary">Kembali</button>
                 </div>
             </form>
         </div>

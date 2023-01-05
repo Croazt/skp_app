@@ -25,7 +25,7 @@ class PenilaianPerilakuGuru extends Model
     /**
      * @var array
      */
-    protected $fillable = ['status', 'tanggal_konfirmasi', 'konfirmasi_oleh'];
+    protected $fillable = ['status', 'tanggal_konfirmasi', 'konfirmasi_oleh','user_nip','skp_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -41,5 +41,9 @@ class PenilaianPerilakuGuru extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_nip', 'nip');
+    }
+    public function konfirmasiOleh()
+    {
+        return $this->belongsTo('App\Models\User', 'konfirmasi_oleh', 'nip');
     }
 }

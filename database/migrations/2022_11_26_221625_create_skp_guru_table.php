@@ -15,22 +15,26 @@ class CreateSkpGuruTable extends Migration
     {
         Schema::create('skp_guru', function (Blueprint $table) {
             $table->string('user_nip', 19);
+            $table->integer('id',true);
             $table->integer('skp_id')->index('skp_id');
-            $table->string('status', 20);
-            $table->string('tanggal_konfirmasi', 0);
-            $table->string('tanggal_verifikasi', 0);
-            $table->string('tanggal_reviu', 0)->nullable();
-            $table->string('tanggal_realisasi', 0);
-            $table->integer('jam_pelajaran');
-            $table->integer('target_pkg');
-            $table->integer('target_pkg_tambahan');
-            $table->integer('capaian_jam_pelajaran');
-            $table->integer('capaian_pkg');
-            $table->integer('capaian_pkg_tambahan');
-            $table->string('verivikasi_oleh', 19)->index('verivikasi_oleh');
-            $table->string('reviu_oleh', 19)->index('reviu_oleh');
-            $table->string('pejabat_rencana', 19)->index('pejabat_rencana');
-            $table->string('pejabat_nilai', 19)->index('pejabat_nilai');
+            $table->string('status', 20)->default('draft');
+            $table->date('tanggal_konfirmasi', 0)->nullable();
+            $table->date('tanggal_verifikasi', 0)->nullable();
+            $table->date('tanggal_reviu', 0)->nullable();
+            $table->date('tanggal_realisasi', 0)->nullable();
+            $table->integer('jam_pelajaran')->nullable();
+            $table->integer('target_pkg')->nullable();
+            $table->integer('target_pkg_tambahan')->nullable();
+            $table->integer('capaian_jam_pelajaran')->nullable();
+            $table->integer('capaian_pkg')->nullable();
+            $table->integer('capaian_pkg_tambahan')->nullable();
+            $table->string('verivikasi_oleh', 19)->index('verivikasi_oleh')->nullable();
+            $table->string('reviu_oleh', 19)->index('reviu_oleh')->nullable();
+            $table->string('pejabat_rencana', 19)->index('pejabat_rencana')->nullable();
+            $table->string('pejabat_nilai', 19)->index('pejabat_nilai')->nullable();
+
+            $table->index(array('id'));
+            $table->dropPrimary();
 
             $table->primary(['user_nip', 'skp_id']);
             

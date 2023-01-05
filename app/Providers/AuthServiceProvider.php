@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Gate;
 
@@ -44,6 +45,9 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('Kepala Sekolah', function(){
             return Cookie::get('role') === 'Kepala Sekolah';
+        });
+        Gate::define('tugas_tambahan', function(){
+            return Auth::user()->tugas_tambahan != null;
         });
         //
     }

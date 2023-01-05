@@ -25,6 +25,9 @@ class CreateDetailKinerjaTable extends Migration
             $table->text('indikator_kualitas')->nullable();
             $table->text('indikator_kuantitas')->nullable();
             $table->text('indikator_waktu')->nullable();
+            $table->text('detail_output_kualitas')->nullable();
+            $table->text('detail_output_kuantitas')->nullable();
+            $table->text('detail_output_waktu')->nullable();
             $table->string('tipe_angka_kredit');
 
             $table->timestamps();

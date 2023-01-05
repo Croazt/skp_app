@@ -13,15 +13,15 @@
                 placeholder: "Pilih opsi Anda",
                 tags: '<?php echo $tag; ?>' === 'true',
             });
-            $('.select2').on('change', function(e) {
-                localStorage.setItem($(this).attr('name'), $(this).val());
-                @this.set('data.' + $(this).attr('name'), $(this).val());
-            });
+            // $('.select2').on('change', function(e) {
+            //     localStorage.setItem($(this).attr('name'), $(this).val());
+            //     @this.set('data.' + $(this).attr('name'), $(this).val());
+            // });
         }
         initSelect2();
     </script>
 @endpush
-@pushonce('scripts')
+{{-- @pushonce('scripts')
     <script>
         $(document).ready(function() {
             initSelect2();
@@ -38,4 +38,4 @@
             initSelect2();
         });
     </script>
-@endpushonce
+@endpushonce --}}
