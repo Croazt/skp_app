@@ -163,8 +163,9 @@
                     $('.daterange-single').prop('disabled', true)
                 }
                 $('.daterange-single').daterangepicker({
-                    minDate: moment(date[0]).add(1, 'days'),
-                    maxDAte: moment(date[1]).add(-1, 'days'),
+                    minDate: moment(date[0]).add(30, 'days'),
+                    maxDate: moment(date[0]).add(30, 'days') >= moment(date[1]).add(-30, 'days') ?  moment(date[0]).add(90, 'days') : moment(
+                        date[1]).add(-30, 'days'),
                     singleDatePicker: true,
                     locale: {
                         format: 'YYYY-MM-DD'
@@ -173,7 +174,6 @@
             }
 
             $('.daterange-cus').daterangepicker({
-                minDate: new Date(),
                 locale: {
                     format: 'YYYY-MM-DD'
                 },

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Browsershot\Browsershot;
+use ZipArchive;
 
 trait SkpGuruMap
 {
@@ -22,6 +23,8 @@ trait SkpGuruMap
     public Collection $rencanaKinerjaTambahan;
     public SupportCollection $data;
     public SupportCollection $dokumen;
+
+    use CalculateRealisasi;
 
     public function mount()
     {
@@ -96,6 +99,7 @@ trait SkpGuruMap
             'cascading' => $this->rencanaKinerjaGuru->pluck('cascading', 'id')->toArray(),
             'catatan' => $this->rencanaKinerjaGuru->pluck('catatan', 'id')->toArray(),
             'lingkup' => $this->rencanaKinerjaGuru->pluck('lingkup', 'id')->toArray(),
+            'kategori' => $this->rencanaKinerjaGuru->pluck('kategori', 'id')->toArray(),
             'target_pkg' => $this->skpGuru->target_pkg,
             'target_pkg_tambahan' => $this->skpGuru->target_pkg_tambahan,
             'jam_pelajaran' => $this->skpGuru->jam_pelajaran,
@@ -103,25 +107,25 @@ trait SkpGuruMap
             'capaian_pkg_tambahan' => $this->skpGuru->capaian_pkg_tambahan,
             'capaian_jam_pelajaran' => $this->skpGuru->capaian_jam_pelajaran,
         ]);
-        if ($this->viewType == 'penilaian') {
-            $capaianPkg = $this->skpGuru->capaian_pkg ?? 125;
-            $capaianPkgTambahan = $this->skpGuru->capaian_pkg_tambahan ?? 125;
-            $capaianJamPelajaran = $this->skpGuru->capaian_jam_pelajaran ?? 24;
-            $this->rencanaKinerjaGuru = $this->rencanaKinerjaGuru->each(function ($item) use ($capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan) {
-                $this->calculateRealisasiScore($item, $capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan);
-            });
-            $this->data = $this->data->merge([
-                'capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_kuantitas', 'id')->toArray(),
-                'capaian_iki_kualitas' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_kualitas', 'id')->toArray(),
-                'capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_waktu', 'id')->toArray(),
-                'kategori_capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_waktu', 'id')->toArray(),
-                'kategori_capaian_iki_kualitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_kualitas', 'id')->toArray(),
-                'kategori_capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_waktu', 'id')->toArray(),
-                'kategori_crk' =>  $this->rencanaKinerjaGuru->pluck('kategori_crk', 'id')->toArray(),
-                'nilai_crk' =>  $this->rencanaKinerjaGuru->pluck('nilai_crk', 'id')->toArray(),
-                'nilai_tertimbang' =>  $this->rencanaKinerjaGuru->pluck('nilai_tertimbang', 'id')->toArray(),
-            ]);
-        }
+        // if ($this->viewType == 'penilaian') {
+        $capaianPkg = $this->skpGuru->capaian_pkg ?? 125;
+        $capaianPkgTambahan = $this->skpGuru->capaian_pkg_tambahan ?? 125;
+        $capaianJamPelajaran = $this->skpGuru->capaian_jam_pelajaran ?? 24;
+        $this->rencanaKinerjaGuru = $this->rencanaKinerjaGuru->each(function ($item) use ($capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan) {
+            $this->calculateRealisasiScore($item, $capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan);
+        });
+        $this->data = $this->data->merge([
+            'capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_kuantitas', 'id')->toArray(),
+            'capaian_iki_kualitas' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_kualitas', 'id')->toArray(),
+            'capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_waktu', 'id')->toArray(),
+            'kategori_capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_waktu', 'id')->toArray(),
+            'kategori_capaian_iki_kualitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_kualitas', 'id')->toArray(),
+            'kategori_capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_waktu', 'id')->toArray(),
+            'kategori_crk' =>  $this->rencanaKinerjaGuru->pluck('kategori_crk', 'id')->toArray(),
+            'nilai_crk' =>  $this->rencanaKinerjaGuru->pluck('nilai_crk', 'id')->toArray(),
+            'nilai_tertimbang' =>  $this->rencanaKinerjaGuru->pluck('nilai_tertimbang', 'id')->toArray(),
+        ]);
+        // }
         $this->dokumen = collect([$this->rencanaKinerjaGuru->pluck('', 'id')->toArray()]);
         $this->rencanaKinerjaUtama = $this->rencanaKinerjaGuru->filter(function ($item) {
             return $item->kategori == "utama";
@@ -131,83 +135,6 @@ trait SkpGuruMap
         });
     }
 
-    protected function calculateRealisasiScore(RencanaKinerjaGuru $rencanaKinerjaGuru, $capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan)
-    {
-        if ($rencanaKinerjaGuru->tipe_angka_kredit == 'persen') {
-            $jamAndAk = ($capaianJamPelajaran / 24) * ($rencanaKinerjaGuru->angka_kredit / 100);
-            if ($rencanaKinerjaGuru->pekerjaan == Auth::user()->tugas_tambahan) {
-                $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$capaianPkgTambahan * $jamAndAk;
-            } else {
-                $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$capaianPkg * $jamAndAk;
-            }
-            $rencanaKinerjaGuru->realisasi_angka_kredit = round($rencanaKinerjaGuru->angka_kredit, 2);
-        } elseif ($rencanaKinerjaGuru->tipe_angka_kredit == 'absolut' && $rencanaKinerjaGuru->kategori == 'tambahan') {
-            $rencanaKinerjaGuru->realisasi_angka_kredit = $rencanaKinerjaGuru->angka_kredit * $rencanaKinerjaGuru->realisasi_kuantitas;
-        }
-        $realisasiKualitas = $rencanaKinerjaGuru->realisasi_kualitas;
-        $target1Kualitas = $rencanaKinerjaGuru->target1_kualitas;
-        $target2Kualitas = $rencanaKinerjaGuru->target2_kualitas;
-        $rencanaKinerjaGuru->capaian_iki_kualitas = ($realisasiKualitas > $target2Kualitas) ? (intdiv($realisasiKualitas * 100, $target2Kualitas)) : ($realisasiKualitas >= $target1Kualitas ? 100 : intdiv($realisasiKualitas * 100, $target1Kualitas));
-        $rencanaKinerjaGuru->kategori_capaian_iki_kualitas = $this->setKategoriIki($rencanaKinerjaGuru->capaian_iki_kualitas);
-
-        $realisasiKuantitas = $rencanaKinerjaGuru->realisasi_kuantitas;
-        $target1Kuantitas = $rencanaKinerjaGuru->target1_kuantitas;
-        $target2Kuantitas = $rencanaKinerjaGuru->target2_kuantitas;
-        $rencanaKinerjaGuru->capaian_iki_kuantitas = ($realisasiKuantitas > $target2Kuantitas) ? (intdiv($realisasiKuantitas * 100, $target2Kuantitas)) : ($realisasiKuantitas >= $target1Kuantitas ? 100 : intdiv($realisasiKuantitas * 100, $target1Kuantitas));
-
-
-        $rencanaKinerjaGuru->kategori_capaian_iki_kuantitas = $this->setKategoriIki($rencanaKinerjaGuru->capaian_iki_kuantitas);
-
-        $realisasiWaktu = $rencanaKinerjaGuru->realisasi_waktu;
-        $target1Waktu = $rencanaKinerjaGuru->target1_waktu;
-        $target2Waktu = $rencanaKinerjaGuru->target2_waktu;
-        $rencanaKinerjaGuru->capaian_iki_waktu = ($realisasiWaktu > $target2Waktu) ? (intdiv($realisasiWaktu * 100, $target2Waktu)) : ($realisasiWaktu >= $target1Waktu ? 100 : intdiv($realisasiWaktu * 100, $target1Waktu));
-        $rencanaKinerjaGuru->kategori_capaian_iki_waktu = $this->setKategoriIki($rencanaKinerjaGuru->capaian_iki_waktu);
-
-        $crkValue = $this->getCrkValue($rencanaKinerjaGuru->kategori_capaian_iki_kualitas, $rencanaKinerjaGuru->kategori_capaian_iki_kuantitas, $rencanaKinerjaGuru->kategori_capaian_iki_waktu);
-        $rencanaKinerjaGuru->kategori_crk = $crkValue[0];
-        $rencanaKinerjaGuru->nilai_crk = $crkValue[1];
-        $rencanaKinerjaGuru->nilai_tertimbang = 100;
-    }
-
-    protected function getCrkValue($kategoriKualitas, $kategoriKuantitas, $kategoriWaktu): array
-    {
-        $kategoriIkiTotal = array_count_values([$kategoriKualitas, $kategoriKuantitas, $kategoriWaktu]);
-        $crkPoint = constant(RencanaKinerjaGuru::class . "::" . $kategoriKualitas) + constant(RencanaKinerjaGuru::class . "::" . $kategoriKuantitas) + constant(RencanaKinerjaGuru::class . "::" . $kategoriWaktu);
-        if ($crkPoint >= 45) {
-            return ['SANGAT_BAIK', 120];
-        }
-
-        if (array_key_exists('SANGAT_KURANG', $kategoriIkiTotal) && $kategoriIkiTotal['SANGAT_KURANG'] >= 2) {
-            return ['SANGAT_KURANG', 25];
-        }
-
-        if ((array_key_exists('KURANG', $kategoriIkiTotal) && $kategoriIkiTotal['KURANG'] >= 2) || (array_key_exists('SANGAT_KURANG', $kategoriIkiTotal) && $kategoriIkiTotal['SANGAT_KURANG'] >= 1)) {
-            return ['KURANG', 60];
-        }
-
-        if ((array_key_exists('KURANG', $kategoriIkiTotal) && $kategoriIkiTotal['KURANG'] <= 1) || (array_key_exists('CUKUP', $kategoriIkiTotal) && $kategoriIkiTotal['CUKUP'] >= 2)) {
-            return ['CUKUP', 80];
-        }
-
-        return ['BAIK', 100];
-    }
-    protected function setKategoriIki($value)
-    {
-        if ($value > 100) {
-            return 'SANGAT_BAIK';
-        }
-        if ($value == 100) {
-            return 'BAIK';
-        }
-        if ($value < 100 && $value >= 80) {
-            return 'CUKUP';
-        }
-        if ($value < 80 && $value >= 60) {
-            return 'KURANG';
-        }
-        return 'SANGAT_KURANG';
-    }
 
     public function refresh()
     {
@@ -227,11 +154,12 @@ trait SkpGuruMap
         $rencana->$field = $value;
         $rencana->save();
     }
+
     public function downloadPdf()
     {
         $view = '';
         $fileName = '';
-        $margin =[
+        $margin = [
             'top' => 6,
             'bottom' => 6,
             'right' => 6,
@@ -299,7 +227,7 @@ trait SkpGuruMap
                 'rencanaKinerjaGuru' => $this->rencanaKinerjaGuru,
             ])->render());
             $fileName =  $this->skpGuru->user_nip . '-penilaian.pdf';
-            $margin =[
+            $margin = [
                 'top' => 0,
                 'bottom' => 0,
                 'right' => 6,
@@ -310,7 +238,7 @@ trait SkpGuruMap
         Browsershot::html($view)
             ->setNodeBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/node')
             ->setNpmBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/npm')
-            ->margins($margin['top'],$margin['right'],$margin['bottom'],$margin['left'])->savePdf($saveToFile);
+            ->margins($margin['top'], $margin['right'], $margin['bottom'], $margin['left'])->savePdf($saveToFile);
 
         return response()->streamDownload(function ()  use ($fileName) {
             echo file_get_contents(env('APP_URL') . "/storage/file/" . $this->viewType . '/' . $fileName);

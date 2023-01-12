@@ -23,29 +23,32 @@
             {{ $this->data['detail_output_kuantitas'][$rencanaKinerja->id] }}
         </td>
         <td rowspan="3" class="text-center tw-w-2/12">
-            @if ($this->data['cascading'][$rencanaKinerja->id] === null)
+            @if ($this->data['cascading'][$rencanaKinerja->id] === null && $this->data['kategori'][$rencanaKinerja->id] === 'utama')
                 <p class="tw-leading-5">
                     Kinerja belum direviu
                 </p>
             @else
-                @if ($this->data['cascading'][$rencanaKinerja->id])
-                    <p class="tw-leading-5">
-                        <del>Direct Cascading</del>/
+                @if ($this->data['kategori'][$rencanaKinerja->id] == 'utama')
+
+                    @if ($this->data['cascading'][$rencanaKinerja->id])
+                        <p class="tw-leading-5">
+                            <del>Direct Cascading</del>/
+                        </p>
+                        <p class="tw-leading-5 tw-whitespace-nowrap">
+                            Non Direct Cascading
+                        </p>
+                    @else
+                        <p class="tw-leading-5">
+                            Direct Cascading/
+                        </p>
+                        <p class="tw-leading-5 tw-whitespace-nowrap">
+                            <del>Non Direct Cascading</del>
+                        </p>
+                    @endif
+                    <p class="tw-leading-5  tw-whitespace-nowrap">
+                        (Coret salah satu)
                     </p>
-                    <p class="tw-leading-5 tw-whitespace-nowrap">
-                        Non Direct Cascading
-                    </p>
-                @else
-                <p class="tw-leading-5">
-                    Direct Cascading/
-                </p>
-                <p class="tw-leading-5 tw-whitespace-nowrap">
-                    <del>Non Direct Cascading</del>
-                </p>
                 @endif
-                <p class="tw-leading-5  tw-whitespace-nowrap">
-                    (Coret salah satu)
-                </p>
                 <p class="tw-leading-5">
                     Catatan Perbaikan
                 </p>

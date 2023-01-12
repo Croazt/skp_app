@@ -8,6 +8,7 @@ use App\Http\Livewire\Concerns\DatatableComponent;
 use App\Models\Skp;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cookie;
 use Livewire\Component;
 
 class SkpIndex extends DatatableComponent
@@ -42,14 +43,16 @@ class SkpIndex extends DatatableComponent
 
     protected function newQuery(): Builder
     {
+
+        if (Cookie::get('role') == 'Pengelola Kinerja' || Cookie::get('role') == 'Tim Angka Kredit') {
+            $field = strtolower(str_replace(' ', '_', Cookie::get('role')));
+            return (new Skp())
+                ->newQuery()->baseQuery()->where($field , auth()->user()->nip);
+        }
         return (new Skp())
             ->newQuery()->baseQuery();
     }
-    public function updatedDataDokumen_bukti()
-    {
-        dd($this->data['dokumen_bukti']);
-        // here you can store immediately on any change of the property
-    }
+
     public function render()
     {
         return view('livewire.skp.skp-index');

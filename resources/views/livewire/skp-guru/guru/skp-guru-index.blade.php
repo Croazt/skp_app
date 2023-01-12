@@ -38,35 +38,38 @@
             <p class="badge tw-bg-green-300">Konfirmasi</p>
             <br>
             <br>
-            <p  class="bg-info tw-text-white">Menunggu proses reviu SKP oleh Pengelola Kinerja!</p>
+            <p class="bg-info tw-text-white">Menunggu proses reviu SKP oleh Pengelola Kinerja!</p>
         </div>
     @elseif($this->skpGuru->status === 'reviu')
         <div class="tw-w-full tw-text-center">
             <p class="badge tw-bg-green-500 tw-text-white">Reviu</p>
             <br>
             <br>
-            <p  class="bg-info tw-text-white">Skp telah direviu oleh Pengelola Kinerja, menunggu proses verifikasi SKP oleh Tim Angka Kredit!</p>
+            <p class="bg-info tw-text-white">Skp telah direviu oleh Pengelola Kinerja, menunggu proses verifikasi SKP
+                oleh Tim Angka Kredit!</p>
         </div>
     @elseif($this->skpGuru->status === 'verifikasi')
         <div class="tw-w-full tw-text-center">
             <p class="badge tw-bg-green-600 tw-text-white">Verifikasi</p>
             <br>
             <br>
-            <p  class="bg-warning tw-text-white">SKP Telah diverifikasi, Silahkan upload dan konfirmasi dokumen bukti kinerja anda!</p>
+            <p class="bg-warning tw-text-white">SKP Telah diverifikasi, Silahkan upload dan konfirmasi dokumen bukti
+                kinerja anda!</p>
         </div>
     @elseif($this->skpGuru->status === 'bukti')
         <div class="tw-w-full tw-text-center">
             <p class="badge tw-bg-yellow-200">Menunggu Verifikasi Bukti</p>
             <br>
             <br>
-            <p  class="bg-info tw-text-white">Menunggu proses verifikasi bukti dan realisasi kinerja SKP!</p>
+            <p class="bg-info tw-text-white">Menunggu proses verifikasi bukti dan realisasi kinerja SKP!</p>
         </div>
     @elseif($this->skpGuru->status === 'ditolak')
         <div class="tw-w-full tw-text-center">
             <p class="badge tw-bg-red-500 tw-text-white">Bukti Ditolak</p>
             <br>
             <br>
-            <p  class="bg-warning tw-text-white">Dokumen bukti kinerja anda ditolak, Agar SKP dapat dinilai silahkan unggah ulang dokumen bukti kinerja Anda!</p>
+            <p class="bg-warning tw-text-white">Dokumen bukti kinerja anda ditolak, Agar SKP dapat dinilai silahkan
+                unggah ulang dokumen bukti kinerja Anda!</p>
         </div>
     @elseif($this->skpGuru->status === 'dinilai')
         <div class="tw-w-full tw-text-center">
@@ -80,8 +83,9 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             {{-- {{ $this->tab == "kinerja" ? 'true' : 'false' }} --}}
             <li class="nav-item">
-                <a class="nav-link @if($this->skpGuru->status=='draft') active @endif" id="peta-rencana-tab" data-toggle="tab" href="#peta-rencana" role="tab"
-                    aria-controls="peta-rencana" aria-selected="true">Peta Rencana</a>
+                <a class="nav-link @if ($this->skpGuru->status == 'draft') active @endif" id="peta-rencana-tab"
+                    data-toggle="tab" href="#peta-rencana" role="tab" aria-controls="peta-rencana"
+                    aria-selected="true">Peta Rencana</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="rencana-tab" data-toggle="tab" href="#rencana" role="tab"
@@ -93,8 +97,8 @@
             </li>
             @if (in_array($this->skpGuru->status, ['konfirmasi', 'reviu', 'verifikasi', 'dinilai', 'bukti', 'ditolak']))
                 <li class="nav-item">
-                    <a class="nav-link @if($this->skpGuru->status=='konfirmasi') active @endif" id="reviu-tab" data-toggle="tab" href="#reviu" role="tab"
-                        aria-controls="reviu" aria-selected="false">Reviu</a>
+                    <a class="nav-link @if ($this->skpGuru->status == 'konfirmasi') active @endif" id="reviu-tab" data-toggle="tab"
+                        href="#reviu" role="tab" aria-controls="reviu" aria-selected="false">Reviu</a>
                 </li>
             @else
                 <li class="nav-item" data-toggle="tooltip" data-placement="top" data-title="SKP Belum dikonfirmasi">
@@ -104,8 +108,9 @@
             @endif
             @if (in_array($this->skpGuru->status, ['reviu', 'verifikasi', 'dinilai', 'bukti', 'ditolak']))
                 <li class="nav-item">
-                    <a class="nav-link @if($this->skpGuru->status=='reviu') active @endif" id="verifikasi-tab" data-toggle="tab" href="#verifikasi" role="tab"
-                        aria-controls="verifikasi" aria-selected="false">Verifikasi</a>
+                    <a class="nav-link @if ($this->skpGuru->status == 'reviu') active @endif" id="verifikasi-tab"
+                        data-toggle="tab" href="#verifikasi" role="tab" aria-controls="verifikasi"
+                        aria-selected="false">Verifikasi</a>
                 </li>
             @else
                 <li class="nav-item" data-toggle="tooltip" data-placement="top"
@@ -131,8 +136,9 @@
             @endif
             @if (in_array($this->skpGuru->status, ['verifikasi', 'dinilai', 'bukti', 'ditolak']))
                 <li class="nav-item">
-                    <a class="nav-link @if(in_array($this->skpGuru->status,['verifikasi', 'bukti', 'ditolak'])) active @endif" id="realisasi-tab" data-toggle="tab" href="#realisasi" role="tab"
-                        aria-controls="realisasi" aria-selected="false">Realisasi Rencana</a>
+                    <a class="nav-link @if (in_array($this->skpGuru->status, ['verifikasi', 'bukti', 'ditolak'])) active @endif" id="realisasi-tab"
+                        data-toggle="tab" href="#realisasi" role="tab" aria-controls="realisasi"
+                        aria-selected="false">Realisasi Rencana</a>
                 </li>
             @else
                 <li class="nav-item" data-toggle="tooltip" data-placement="top"
@@ -144,8 +150,9 @@
             @endif
             @if (in_array($this->skpGuru->status, ['dinilai']))
                 <li class="nav-item">
-                    <a class="nav-link  @if(in_array($this->skpGuru->status,['dinilai'])) active @endif" cid="penilaian-tab" data-toggle="tab" href="#penilaian" role="tab"
-                        aria-controls="penilaian" aria-selected="false">Penilaian</a>
+                    <a class="nav-link  @if (in_array($this->skpGuru->status, ['dinilai'])) active @endif" cid="penilaian-tab"
+                        data-toggle="tab" href="#penilaian" role="tab" aria-controls="penilaian"
+                        aria-selected="false">Penilaian</a>
                 </li>
             @else
                 <li class="nav-item" data-toggle="tooltip" data-placement="top"
@@ -155,11 +162,14 @@
                         aria-selected="false">Penilaian</a>
                 </li>
             @endif
+            <li wire:click='downloadAllPdf' class="nav-item tw-cursor-pointer tw-text-center tw-text-white bg-primary">
+                <p class="nav-link  tw-text-white"><span class="fas fa-download"></span>&nbsp;Dokumen SKP</p>
+            </li>
         </ul>
     </div>
     <div class="tab-content tw-w-full tw-shadow-inner" id="myTabContent">
-        <div class="tab-pane fade @if($this->skpGuru->status == 'draft') show active @endif tw-w-full" id="peta-rencana" role="tabpanel"
-            aria-labelledby="peta-rencana-tab">
+        <div class="tab-pane fade @if ($this->skpGuru->status == 'draft') show active @endif tw-w-full" id="peta-rencana"
+            role="tabpanel" aria-labelledby="peta-rencana-tab">
             <livewire:skp-guru.guru.skp-guru-peta :rencanaKinerjaGuru="$this->rencanaKinerjaGuru" :skpGuru="$this->skpGuru" :wire:key="$this->skp->id"
                 viewType='draft'>
         </div>
@@ -174,13 +184,15 @@
                     viewType='keterkaitan'>
             </div>
         </div>
-        <div class="tab-pane fade @if($this->skpGuru->status == 'konfirmasi') show active @endif tw-w-full" id="reviu" role="tabpanel" aria-labelledby="reviu-tab">
+        <div class="tab-pane fade @if ($this->skpGuru->status == 'konfirmasi') show active @endif tw-w-full" id="reviu"
+            role="tabpanel" aria-labelledby="reviu-tab">
             <div class="card tw-px-0">
                 <livewire:skp-guru.guru.skp-guru-peta :rencanaKinerjaGuru="$this->rencanaKinerjaGuru" :skpGuru="$this->skpGuru" :wire:key="$this->skp->id"
                     viewType='reviu'>
             </div>
         </div>
-        <div class="tab-pane fade @if($this->skpGuru->status == 'reviu') show active @endif  tw-w-full" id="verifikasi" role="tabpanel" aria-labelledby="verifikasi-tab">
+        <div class="tab-pane fade @if ($this->skpGuru->status == 'reviu') show active @endif  tw-w-full" id="verifikasi"
+            role="tabpanel" aria-labelledby="verifikasi-tab">
             <div class="card tw-px-0">
                 <livewire:skp-guru.guru.skp-guru-peta :rencanaKinerjaGuru="$this->rencanaKinerjaGuru" :skpGuru="$this->skpGuru" :wire:key="$this->skp->id"
                     viewType='verifikasi'>
@@ -192,194 +204,15 @@
                     viewType='penetapan'>
             </div>
         </div>
-        <div class="tab-pane fade @if(in_array($this->skpGuru->status,['verifikasi', 'bukti', 'ditolak'])) show active @endif tw-w-full" id="realisasi" role="tabpanel" aria-labelledby="realisasi-tab">
+        <div class="tab-pane fade @if (in_array($this->skpGuru->status, ['verifikasi', 'bukti', 'ditolak'])) show active @endif tw-w-full" id="realisasi"
+            role="tabpanel" aria-labelledby="realisasi-tab">
             <livewire:skp-guru.guru.skp-guru-peta :rencanaKinerjaGuru="$this->rencanaKinerjaGuru" :skpGuru="$this->skpGuru" :wire:key="$this->skp->id"
                 viewType='realisasi'>
         </div>
-        <div class="tab-pane fade tw-w-full  @if(in_array($this->skpGuru->status,['dinilai'])) show active @endif" id="penilaian" role="tabpanel" aria-labelledby="penilaian-tab">
+        <div class="tab-pane fade tw-w-full  @if (in_array($this->skpGuru->status, ['dinilai'])) show active @endif" id="penilaian"
+            role="tabpanel" aria-labelledby="penilaian-tab">
             <livewire:skp-guru.guru.skp-guru-peta :rencanaKinerjaGuru="$this->rencanaKinerjaGuru" :skpGuru="$this->skpGuru" :wire:key="$this->skp->id"
                 viewType='penilaian'>
-            <div class="card tw-px-0">
-                {{-- @include('livewire.skp.kinerja.partials.modal') --}}
-                <div class="card-header">
-                    <div class="tw-w-full tw-h-max tw-flex tw-justify-between">
-                        <span class="tw-my-auto tw-text-center tw-text-base tw-font-extrabold">
-                            KINERJA UTAMA
-                        </span>
-                        <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                            data-target="#kinerjaAtasanModal">
-                            <p>
-                                <span class="fas fa-plus"></span> Tambah Rencana Hasil Kinerja
-                            </p>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body px-0">
-                    <div class="table-responsive">
-                        <table class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex"
-                            style="width: 150%">
-                            <thead class="text-center">
-                                <tr>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        RENCANA KINERJA ATASAN LANGSUNG/ UNIT KERJA DAN ATAU ORGANISASI YANG
-                                        DIINTERVENSI
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        RENCANA KINERJA
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        ASPEK
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        INDIKATOR KINERJA INDIVIDU
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        BUTIR KEGIATAN TERKAIT
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        OUTPUT BUTIR KEGIATAN
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2" colspan="2">
-                                        TARGET
-                                    </th>
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2" colspan="2">
-                                        REALISASI
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        CAPAIAN IKI
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        KATEGORI CAPAIAN IKI
-                                    </th>
-                                    <th class="tw-align-middle" colspan="2">
-                                        CAPAIAN RENCANA KINERJA
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        METODE CASCADING
-                                    </th>
-                                    <th class="tw-align-middle" rowspan="2">
-                                        NILAI TERTIMBANG
-                                    </th>
-                                </tr>
-                                <th class="tw-align-middle">
-                                    KATEGORI
-                                </th>
-                                <th class="tw-align-middle">
-                                    NILAI
-                                </th>
-                                </tr>
-                            </thead>
-                            @foreach ($this->rencanaKinerjaGuru as $rencanaKinerja)
-                                <tbody>
-                                    <tr>
-                                        <td rowspan="3" class="deskripsi">
-                                            {{ $rencanaKinerja->kinerja_desc }}
-                                        </td>
-                                        <td rowspan="3">
-                                            {{ $rencanaKinerja->deskripsi }}
-                                        </td>
-                                        <td class="tw-font-extrabold tw-align-middle">
-                                            Kualitas
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->indikator_kualitas }}
-                                        </td>
-                                        <td rowspan="3">
-                                            {{ $rencanaKinerja->butir_kegiatan }}
-                                        </td>
-                                        <td rowspan="3">
-                                            {{ $rencanaKinerja->output_kegiatan }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            uwaw
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->detail_output_kualitas }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            uwaw
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->detail_output_kualitas }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            100%
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            BAIK
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center" rowspan="3">
-                                            BAIK
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center" rowspan="3">
-                                            120
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center" rowspan="3">
-                                            {{ $rencanaKinerja->cascading }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center" rowspan="3">
-                                            120
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tw-font-extrabold tw-align-middle">
-                                            Kuantitas
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->indikator_kuantitas }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            uwaw
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->detail_output_kuantitas }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            uwaw
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->detail_output_kuantitas }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            100%
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            BAIK
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tw-font-extrabold tw-align-middle">
-                                            Waktu
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->indikator_waktu }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            uwaw
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->detail_output_waktu }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            uwaw
-                                        </td>
-                                        <td class="tw-align-middle">
-                                            {{ $rencanaKinerja->detail_output_waktu }}
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            100%
-                                        </td>
-                                        <td class="tw-align-middle tw-text-center">
-                                            BAIK
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            @endforeach
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <script>

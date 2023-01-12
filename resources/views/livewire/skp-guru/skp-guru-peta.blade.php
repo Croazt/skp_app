@@ -27,6 +27,26 @@
     </style>
 @endpush
 <div>
+    <div class="tw-flex tw-justify-evenly tw-px-8 tw-text-center">
+        <div class="tw-w-3/12">
+            <x-jet-label for="target_pkg" value="{{ __('Target PKG') }}" />
+            <x-jet-input type="text" class="form-input tw-text-center" id="target_pkg" wire:model="data.target_pkg"
+                name="data.target_pkg" disabled />
+        </div>
+        <div class="tw-w-3/12">
+            <x-jet-label for="jam_pelajaran" value="{{ __('Target Jam Pelajaran') }}" />
+            <x-jet-input type="text" class="form-input tw-text-center" id="jam_pelajaran"
+                wire:model="data.jam_pelajaran" name="data.jam_pelajaran" />
+        </div>
+        @can('tugas_tambahan')
+            <div class="tw-w-3/12">
+                <x-jet-label for="target_pkg_tambahan" value="{{ __('Target PKG Tugas Tambahan') }}" />
+                <x-jet-input type="text" class="form-input tw-text-center" id="target_pkg_tambahan"
+                    wire:model="data.target_pkg_tambahan" name="data.target_pkg_tambahan" disabled />
+
+            </div>
+        @endcan
+    </div>
     <div id="accordion">
         <div class="card tw-px-0">
             <div class="card-header tw-py-0 collapsible" href="#collapseOne" data-toggle="collapse"
@@ -40,7 +60,7 @@
             </div>
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" wire:ignore.self>
                 <div class="card-body px-0 tw-pt-0">
-                    <div class="table-responsive table-scroll" id='realisasi-table'>
+                    <div class="table-responsive table-scroll" id='peta-table'>
                         <table class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex">
                             <thead class="text-center">
                                 <tr>
@@ -51,16 +71,14 @@
                                     {!! $this->renderHeader('BUTIR KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('OUTPUT KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('TARGET', '', 1, 2) !!}
-                                    {!! $this->renderHeader('BUKTI KINERJA') !!}
-                                    {{-- @if ($this->skpGuru->status == 'verifikasi')
+                                    {!! $this->renderHeader('ANGKA KREDIT') !!}
+                                    @if ($this->skpGuru->status == 'draft')
                                         {!! $this->renderHeader('ACTION') !!}
-                                    @endif --}}
+                                    @endif
                                 </tr>
                             </thead>
-                            @foreach ($rencanaKinerjaUtama as $rencanaKinerja)
-                                @if ($this->data['terkait'][$rencanaKinerja->id])
-                                    @include('livewire.skp-guru.guru.tables.realisasi')
-                                @endif
+                            @foreach ($this->rencanaKinerjaUtama as $rencanaKinerja)
+                                @include('livewire.skp-guru.guru.tables.peta-rencana')
                             @endforeach
                         </table>
                     </div>
@@ -77,7 +95,7 @@
             </div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" wire:ignore.self>
                 <div class="card-body px-0 tw-pt-0">
-                    <div class="table-responsive table-scroll" id='realisasi-table'>
+                    <div class="table-responsive table-scroll" id='peta-table'>
                         <table class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex">
                             <thead class="text-center">
                                 <tr>
@@ -88,13 +106,14 @@
                                     {!! $this->renderHeader('BUTIR KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('OUTPUT KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('TARGET', '', 1, 2) !!}
-                                    {!! $this->renderHeader('BUKTI KINERJA') !!}
+                                    {!! $this->renderHeader('ANGKA KREDIT') !!}
+                                    @if ($this->skpGuru->status == 'draft')
+                                        {!! $this->renderHeader('ACTION') !!}
+                                    @endif
                                 </tr>
                             </thead>
-                            @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
-                                @if ($this->data['terkait'][$rencanaKinerja->id])
-                                    @include('livewire.skp-guru.guru.tables.realisasi')
-                                @endif
+                            @foreach ($this->rencanaKinerjaTambahan as $rencanaKinerja)
+                                @include('livewire.skp-guru.guru.tables.peta-rencana')
                             @endforeach
                         </table>
                     </div>
@@ -102,12 +121,6 @@
             </div>
         </div>
     </div>
-    @if ($this->skpGuru->status == 'verifikasi' || $this->skpGuru->status == 'ditolak')
-        <div class="tw-w-full tw-text-center">
-            <button type='button' class="btn btn-primary tw-text-cent3er" wire:click='sendVerifyDokumenSKP'>Verifikasi
-                Dokumen</button>
-        </div>
-    @endif
     @push('modals')
         @include('modals.tambah-kinerja')
     @endpush

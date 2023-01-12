@@ -1,7 +1,6 @@
 <div>
     <div class="tw-w-full tw-text-center">
-        <button class="btn btn-primary" wire:click="downloadPdf"><span class="fas fa-download"></span>&nbsp;Dokumen
-            Penilaian</button>
+        <button class="btn btn-primary" wire:click="downloadPdf">Download</button>
     </div>
     <div id="accordion">
         <div class="card tw-px-0">
@@ -71,7 +70,6 @@
                         <table class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex">
                             <thead class="text-center">
                                 <tr>
-
                                     {!! $this->renderHeader(
                                         'RENCANA KINERJA ATASAN LANGSUNG/ UNIT KERJA DAN ATAU ORGANISASI YANG DIINTERVENSI',
                                         '',

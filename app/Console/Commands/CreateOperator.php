@@ -13,7 +13,7 @@ class CreateOperator extends Command
      *
      * @var string
      */
-    protected $signature = 'skp:create-operator {nama=Administrator} {nip=123456789098765432}  {username=admin@admin.com} {password=password}';
+    protected $signature = 'skp:create-operator {nama=Administrator} {nip=123456789098765432}  {email=admin@admin.com} {password=password}';
 
     /**
      * The console command description.
@@ -52,12 +52,12 @@ class CreateOperator extends Command
      */
     public function handle()
     {
-        $email = $this->getStringArgument('username', 'admin@admin.com');
+        $email = $this->getStringArgument('email', 'admin@admin.com');
         $nama = $this->getStringArgument('nama', 'admin');
 
         $newOperator = User::create([
             'nama'     => $nama,
-            'username'     => $email,
+            'email'     => $email,
             'nip'     => $this->argument('nip'),
             'pekerjaan'     => 'pekerjaan',
             'pangkat'     => 0,

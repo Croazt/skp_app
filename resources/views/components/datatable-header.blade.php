@@ -2,7 +2,7 @@
         <div class="tw-flex pb-4 -ml-3">
             @can('Operator')
                 <a href={{ route($this->getBaseRouteName() . 'create') }} class="-ml- btn btn-primary shadow-none">
-                    <span class="fas fa-plus"></span> Buat
+                    <span class="fas fa-plus"></span> Tambah
                 </a>
             @endcan
             <div>

@@ -48,7 +48,7 @@ class User extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['pangkat_id', 'nama', 'pekerjaan', 'nip', 'unit_kerja', 'tugas_tambahan', 'username', 'password'];
+    protected $fillable = ['pangkat_id', 'nama', 'pekerjaan', 'nip', 'unit_kerja', 'tugas_tambahan', 'email', 'password'];
 
     const PEKERJAAN = [
         'Guru Mata Pelajaran',
@@ -186,7 +186,7 @@ class User extends Authenticatable
         return empty($query) ? static::query()
             : static::where('nama', 'like', '%' . $query . '%')
             ->orWhere('nip', 'like', '%' . $query . '%')
-            ->orWhere('username', 'like', '%' . $query . '%');
+            ->orWhere('email', 'like', '%' . $query . '%');
     }
 
     public function getRoleName(): Collection

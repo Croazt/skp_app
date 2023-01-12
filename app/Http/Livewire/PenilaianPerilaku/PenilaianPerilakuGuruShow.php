@@ -25,6 +25,7 @@ class PenilaianPerilakuGuruShow extends Component
 {
     public Skp $skp;
     public User $user;
+    public PenilaianPerilakuGuru|null $penilaianPerilakuGuru;
     public EloquentCollection $aspekPerilaku;
 
     public int $level = 4;
@@ -36,6 +37,7 @@ class PenilaianPerilakuGuruShow extends Component
     public function mount(): void
     {
         $this->aspekPerilaku = AspekPerilaku::all();
+        $this->penilaianPerilakuGuru = PenilaianPerilakuGuru::where('skp_id', $this->skp->id)->where('user_nip', $this->user->nip)->first();
     }
 
     public function back()
@@ -45,8 +47,17 @@ class PenilaianPerilakuGuruShow extends Component
         );
     }
 
-    public function cetak()
+    public function downloadPdf(string $type)
     {
+        $file = $this->getTemplate($type);
+        return response()->streamDownload(function ()  use ($file) {
+            echo file_get_contents(env('APP_URL') . $file['path'] . $file['file_name']);
+        }, $file['file_name']);
+    }
+
+    private function getTemplate(string $type): array
+    {
+
         $indikatorPenilaian = IndikatorPenilaianPerilaku::select([
             'aspek_perilaku.nama',
             DB::raw('SUM(indikator_kerja.level) as total'),
@@ -90,7 +101,7 @@ class PenilaianPerilakuGuruShow extends Component
             $item->nilai = 90 + (19 * ($avgPenilaian - ($this->level - 2)));
             $nilaiAkhirPerilaku += $item->nilai;
         }
-        $nilaiAkhirPerilaku = $nilaiAkhirPerilaku/count($indikatorPenilaian);
+        $nilaiAkhirPerilaku = $nilaiAkhirPerilaku / count($indikatorPenilaian);
         $penilaianPerilakuGuru = PenilaianPerilakuGuru::where('skp_id', $this->skp->id)
             ->where('user_nip', $this->user->nip)->first();
         $view = (view('livewire.penilaian-perilaku.pdf.penilaian-perilaku-penilaian', [
@@ -111,6 +122,9 @@ class PenilaianPerilakuGuruShow extends Component
             ->setNpmBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/npm')
             ->margins($margin['top'], $margin['right'], $margin['bottom'], $margin['left'])->savePdf($saveToFile);
 
+        if ($type == 'perilaku') {
+            return ['file_name' => $fileName, 'path' => '/storage/file/penilaian-perilaku/'];
+        }
         $skpGuru = SkpGuru::where('skp_id', $this->skp->id)->where('user_nip', $this->user->nip)->first();
         $rencanaKinerjaGuru = $this->getRencanaKinerjaGuru($skpGuru);
 
@@ -122,17 +136,19 @@ class PenilaianPerilakuGuruShow extends Component
         $totalTertimbangUtama = 0;
         $nilaiTertimbangTambahan = 0;
         foreach ($rencanaKinerjaGuru as $item) {
-            if ($item->kategori == "tambahan") {
-                $nilaiTertimbangTambahan += $item->nilai_tertimbang;
-                continue;
-            };
-            $nilaiTertimbangUtama +=  $item->nilai_tertimbang;
-            $totalTertimbangUtama++;
+            if ($item->terkait) {
+                if ($item->kategori == "tambahan") {
+                    $nilaiTertimbangTambahan += $item->nilai_tertimbang;
+                    continue;
+                };
+                $nilaiTertimbangUtama +=  $item->nilai_tertimbang;
+                $totalTertimbangUtama++;
+            }
         }
         $nilaiAkhirSkp = ($nilaiTertimbangUtama / $totalTertimbangUtama) + ($nilaiTertimbangTambahan > 10 ? 10 : $nilaiTertimbangTambahan);
-        $nilaiAkhirTotal = (($nilaiAkhirPerilaku * 30)/100) + (($nilaiAkhirSkp*70)/100);
+        $nilaiAkhirTotal = (($nilaiAkhirPerilaku * 30) / 100) + (($nilaiAkhirSkp * 70) / 100);
         // dd($nilaiAkhirTotal,$nilaiAkhirPerilaku,$nilaiAkhirSkp);
-        
+
         $view = (view('livewire.penilaian-perilaku.pdf.penilaian-prestasi-kerja', [
             'nilaiAkhirTotal' => $nilaiAkhirTotal,
             'nilaiAkhirPerilaku' => $nilaiAkhirPerilaku,
@@ -140,16 +156,15 @@ class PenilaianPerilakuGuruShow extends Component
             'penilaianPerilakuGuru' => $penilaianPerilakuGuru,
             'skp' => $this->skp,
         ])->render());
-        
+
+        $fileName =  $penilaianPerilakuGuru->user_nip . '-penilaian-prestasi.pdf';
         $saveToFile = storage_path('app/public/file/penilaian-prestasi/' . $fileName);
         Browsershot::html($view)
             ->setNodeBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/node')
             ->setNpmBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/npm')
             ->margins($margin['top'], $margin['right'], $margin['bottom'], $margin['left'])->savePdf($saveToFile);
 
-        return response()->streamDownload(function ()  use ($fileName) {
-            echo file_get_contents(env('APP_URL') . "/storage/file/penilaian-prestasi/" . $fileName);
-        }, $fileName);
+        return ['file_name' => $fileName, 'path' => '/storage/file/penilaian-prestasi/'];
     }
 
     public function getRencanaKinerjaGuru(SkpGuru $skpGuru)

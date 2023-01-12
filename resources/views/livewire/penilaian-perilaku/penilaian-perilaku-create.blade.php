@@ -1,8 +1,10 @@
 <x-slot name="header_content">
     <h1>{{ __('Buat Penilaian') }}</h1>
     <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="{{ route('skp.index') }}">SKP</a></div>
-        <div class="breadcrumb-item"><a href="{{ route('skp.create') }}">Tambah</a></div>
+        <div class="breadcrumb-item active"><a href="{{ route('penilaian-perilaku.index') }}">Penilaian Perilaku</a></div>
+        <div class="breadcrumb-item"><a
+                href="{{ route('penilaian-perilaku.guru.create', ['skp' => $skp->id, 'user' => $user->nip]) }}">{{ auth()->user()->nip }}</a>
+        </div>
     </div>
 </x-slot>
 
@@ -33,7 +35,7 @@
                 aria-labelledby="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab">
                 <div>
                     <livewire:penilaian-perilaku.penilaian-perilaku-create-table :skp="$skp" :user="$user"
-                        :tableType="$item->nama">
+                        :tableType="$item->nama" :wire:key="$item->nama">
                 </div>
                 <div class=" tw-w-full tw-text-center">
                     @if (!$loop->last)

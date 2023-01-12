@@ -130,11 +130,12 @@
                                     {!! $this->renderHeader('OUTPUT KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('TARGET', '', 1, 2) !!}
                                     {!! $this->renderHeader('REALISASI', '', 1, 2) !!}
-                                    {!! $this->renderHeader('LINGKUP') !!}
                                 </tr>
                             </thead>
                             @foreach ($this->rencanaKinerjaUtama as $rencanaKinerja)
-                                @include('livewire.skp-guru.tables.realisasi')
+                                @if ($this->data['terkait'][$rencanaKinerja->id])
+                                    @include('livewire.skp-guru.tables.realisasi')
+                                @endif
                             @endforeach
                         </table>
                     </div>
@@ -168,7 +169,9 @@
                                 </tr>
                             </thead>
                             @foreach ($this->rencanaKinerjaTambahan as $rencanaKinerja)
-                                @include('livewire.skp-guru.tables.realisasi')
+                                @if ($this->data['terkait'][$rencanaKinerja->id])
+                                    @include('livewire.skp-guru.tables.realisasi')
+                                @endif
                             @endforeach
                         </table>
                     </div>
@@ -178,8 +181,8 @@
     </div>
     @if ($this->skpGuru->status == 'bukti')
         <div class="tw-w-full tw-text-center">
-            <button type='button' class="btn btn-primary tw-text-cent3er"
-                wire:click='gradeSKP'>Verifikasi Dokumen</button>
+            <button type='button' class="btn btn-primary tw-text-cent3er" wire:click='gradeSKP'>Verifikasi
+                Dokumen</button>
         </div>
     @endif
     @push('modals')

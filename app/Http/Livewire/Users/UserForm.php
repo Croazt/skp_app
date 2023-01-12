@@ -6,11 +6,13 @@ use App\Http\Livewire\Concerns\DatatableColumn;
 use App\Models\Pangkat;
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class UserForm extends Component
@@ -35,8 +37,9 @@ class UserForm extends Component
         // $this->confirmAuthorization();
 
         $this->data = collect([
+            'id' => $this->user->getAttribute('id'),
             'nama' => $this->user->getAttribute('nama'),
-            'username' => $this->user->getAttribute('username'),
+            'email' => $this->user->getAttribute('email'),
             'nip' => $this->user->getAttribute('nip'),
             'tugas_tambahan' => $this->user->getAttribute('tugas_tambahan'),
             'unit_kerja' => $this->user->getAttribute('unit_kerja'),
@@ -50,9 +53,7 @@ class UserForm extends Component
 
     protected array $rules = [
         'data.nama' => 'required|string|min:3|max:70',
-        'data.username' => 'required|email',
-        'data.nip' => 'required|min:18|max:19',
-        'data.tugas_tambahan' => 'required|string|min:5|max:50',
+        'data.tugas_tambahan' => 'nullable|string|min:5|max:50',
         'data.unit_kerja' => 'required|min:5|max:50',
         'data.pekerjaan' => 'required|string|max:50',
         'data.pangkat_id' => 'required|int|exists:pangkat,id',
@@ -99,16 +100,29 @@ class UserForm extends Component
     public function save(): void
     {
         $this->dispatchBrowserEvent('LiveWireComponentRefreshed');
+        $this->rules['data.email'] = [ 'required', 'email', Rule::unique('users','nip')->ignore($this->data['nip'],'nip')];
+        $this->rules['data.nip'] = [ 'required', 'min:18', 'max:19', Rule::unique('users','nip')->ignore($this->data['nip'],'nip')];
+        if ($this->operation == 'create') {
+            $this->data['password'] = Hash::make(substr(strval($this->data['nip']), 0, 10) . strtok(strval($this->data['nama']), " "));
+        }
         $this->validate();
         $this->user->fill($this->data->except(['roles'])->all());
-        if ($this->operation == 'create') {
-            $this->user->password = Hash::make(substr(strval($this->data['nip']), 0, 10) . strtok(strval($this->data['nama']), " "));
-        }
-        DB::beginTransaction();
-        $this->user->save();
+        try{
 
-        $this->user->roles()->sync($this->data['roles']);
-        DB::commit();
+            DB::beginTransaction();
+            $this->user->save();
+    
+            $this->user->roles()->sync($this->data['roles']);
+            DB::commit();
+        }catch(Exception $err){
+            dd($err);
+            session()->flash('alertType', 'danger');
+            session()->flash('alertMessage', 'Tidak dapat menambahkan pengguna, terdapat kesalahan!');
+    
+            redirect()->to(route('users.index'));
+            DB::rollBack();
+            return;
+        }
         session()->flash('alertType', 'success');
         session()->flash('alertMessage', $this->getSuccessMessage());
 

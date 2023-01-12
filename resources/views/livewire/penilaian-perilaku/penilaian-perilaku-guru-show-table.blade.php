@@ -1,10 +1,3 @@
-<x-slot name="header_content">
-    <h1>{{ __('Buat Penilaian') }}</h1>
-    <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="{{ route('skp.index') }}">SKP</a></div>
-        <div class="breadcrumb-item"><a href="{{ route('skp.create') }}">Tambah</a></div>
-    </div>
-</x-slot>
 
 <div class="tw-bg-white tw-overflow-hidden sm:tw-rounded-lg">
     <style>
@@ -17,8 +10,7 @@
             Definisi
         </div>
         <div class="tw-p-5 tw-mb-5 tw-rounded-b-md tw-bg-slate-400 tw-text-white">
-            Sikap dan perilaku kerja pegawai dalam memberikan pelayanan terbaik kepada yang dilayani antara lain
-            meliputi masyarakat, atasan, rekan kerja, unit kerja terkait, dan/atau instansi lain.
+            {{$aspekPerilaku->definisi}}
         </div>
         <div class="tw-px-5">
             <form class="form" wire:submit.prevent='save'>

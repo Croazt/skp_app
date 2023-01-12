@@ -8,6 +8,7 @@ use App\Models\PenilaianPerilakuGuru;
 use App\Models\Role;
 use App\Models\Skp;
 use App\Models\User;
+use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -24,10 +25,11 @@ class PenilaianPerilakuCreate extends Component
 
     public function mount(): void
     {
-        $this->aspekPerilaku = AspekPerilaku::all();   
+        $this->aspekPerilaku = AspekPerilaku::all();
     }
 
-    public function save(){
+    public function save()
+    {
         PenilaianPerilakuGuru::create([
             'user_nip' => $this->user->nip,
             'skp_id' => $this->skp->id,
@@ -36,12 +38,18 @@ class PenilaianPerilakuCreate extends Component
             'konfirmasi_oleh' => auth()->user()->nip,
         ]);
         $this->emit('savePenilaianKinerja');
-        $this->dispatchBrowserEvent('showResponseModal', ['success' => true, 'message' => 'Penilaian kinerja guru disimpan!']);
-        return redirect(route('penilaian-perilaku.index', ['skp'=>$this->skp->id]));
+        session()->flash('alertType', 'success');
+        session()->flash('alertMessage', 'Penilaian perilaku berhasil dibuat!.');
+        return redirect(route('penilaian-perilaku.show', ['skp' => $this->skp->id]));
     }
 
     public function render()
     {
+        if (Carbon::parse($this->skp->penilaian)->startOfDay() > now() || Carbon::parse($this->skp->periode_akhir)->endOfDay() < now()) {
+            session()->flash('alertType', 'danger');
+            session()->flash('alertMessage', ' Tidak dapat membuat penilaian perilaku, saat ini bukanlah waktu penilaian SKP!.');
+            redirect(route('penilaian-perilaku.show', ['skp' => $this->skp->id]));
+        }
         return view('livewire.penilaian-perilaku.penilaian-perilaku-create');
     }
 }

@@ -52,9 +52,7 @@ class KinerjaController extends Controller
         $search = request()->search;
         $jabatan = array_merge(User::PEKERJAAN, User::TUGAS_TAMBAHAN);;
 
-        if ($search == '') {
-            $jabatan = array_slice($jabatan, 0, 5);
-        } else {
+        if (!$search == '') {
             $jabatan = array_filter($jabatan, function ($item) use ($search) {
                 if (stripos($item, $search) !== false) {
                     return true;
@@ -112,7 +110,7 @@ class KinerjaController extends Controller
 
 
         return response()->json([
-            'message' => 'register success'
+            'message' => 'Tambah kinerja sukses'
         ]);
     }
 

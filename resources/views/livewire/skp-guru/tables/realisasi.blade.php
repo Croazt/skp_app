@@ -57,32 +57,25 @@
                 <input
                     class="form-control tw-p-1 tw-w-15 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
                     wire:model="data.realisasi_kuantitas.{{ $rencanaKinerja->id }}" type="number" min="0"
-                    {{ !($data['dokumen_diterima'][$rencanaKinerja->id]) ? 'disabled' : '' }} max="99"
+                    {{ !$data['dokumen_diterima'][$rencanaKinerja->id] ? 'disabled' : '' }} max="99"
                     wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'realisasi_kuantitas')">
             </div>
         </td>
         <td class="tw-align-middle">
             {{ $this->data['detail_output_kuantitas'][$rencanaKinerja->id] }}
         </td>
-        <td rowspan="3" class="text-center tw-align-middle">
-            <select @if(!$data['dokumen_diterima'][$rencanaKinerja->id]) disabled @endif
-                wire:change="updateLingkup({{ $rencanaKinerja->id }})"wire:model="data.lingkup.{{ $rencanaKinerja->id }}"
-                data-placeholder="Pilih lingkup kinerja" name="lingkup" id="lingkup"
-                class="tw-text-sm tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm">
-                <option value="" @if($data['lingkup'][$rencanaKinerja->id]) disabled @endif>Pilih lingkup kinerja</option>
-                <option value="1">Dalam satu perangkat daerah</option>
-                <option value="2">Antar perangkat daerah dalam satu daerah</option>
-                <option value="3">Antar daerah (Daerah-Daerah/Daerah-Pusat)</option>
-            </select>
-        </td>
-        @if ($this->skpGuru->status == 'verifikasi')
+        @if ($data['kategori'][$rencanaKinerja->id] != 'utama')
             <td rowspan="3" class="text-center tw-align-middle">
-                <div class="tw-align-middle tw-flex tw-flex-col">
-                    <button class="btn btn-xs btn-icon mb-1 btn-danger dt-delete-kinerja-guru"
-                        data-key="{{ $rencanaKinerja->id }}">
-                        <i class="fa fa-trash icon-nm"></i>
-                    </button>
-                </div>
+                <select @if (!$data['dokumen_diterima'][$rencanaKinerja->id]) disabled @endif
+                    wire:change="updateLingkup({{ $rencanaKinerja->id }})"wire:model="data.lingkup.{{ $rencanaKinerja->id }}"
+                    data-placeholder="Pilih lingkup kinerja" name="lingkup" id="lingkup"
+                    class="tw-text-sm tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm">
+                    <option value="" @if ($data['lingkup'][$rencanaKinerja->id]) disabled @endif>Pilih lingkup kinerja
+                    </option>
+                    <option value="1">Dalam satu perangkat daerah</option>
+                    <option value="2">Antar perangkat daerah dalam satu daerah</option>
+                    <option value="3">Antar daerah (Daerah-Daerah/Daerah-Pusat)</option>
+                </select>
             </td>
         @endif
     </tr>
@@ -111,7 +104,7 @@
                     <input
                         class="form-control tw-p-1 tw-w-9 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-l-md tw-shadow-sm"
                         wire:model="data.realisasi_kualitas.{{ $rencanaKinerja->id }}" type="number" min="0"
-                        {{ !($data['dokumen_diterima'][$rencanaKinerja->id]) ? 'disabled' : '' }} max="99"
+                        {{ !$data['dokumen_diterima'][$rencanaKinerja->id] ? 'disabled' : '' }} max="99"
                         wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'realisasi_kualitas')"
                         aria-label="">
                     <div class="input-group-append tw-h-auto tw-rounded-r-md">
@@ -149,7 +142,7 @@
                 <input
                     class="form-control tw-p-1 tw-w-15 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
                     wire:model="data.realisasi_waktu.{{ $rencanaKinerja->id }}" type="number" min="0"
-                    {{ !($data['dokumen_diterima'][$rencanaKinerja->id]) ? 'disabled' : '' }} max="99"
+                    {{ !$data['dokumen_diterima'][$rencanaKinerja->id] ? 'disabled' : '' }} max="99"
                     wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'realisasi_waktu')">
             </div>
         </td>

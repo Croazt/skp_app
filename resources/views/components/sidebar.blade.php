@@ -9,35 +9,8 @@
         [
             'href' => [
                 [
-                    'section_text' => 'Pengguna',
-                    'section_list' => [
-                        ['href' => 'users.index', 'text' => 'Daftar Pengguna'],
-                        // ['href' => 'user.show', 'text' => '']
-                    ],
-                ],
-            ],
-            'text' => 'Pengguna',
-            'is_multi' => true,
-            'role' => ['Operator'],
-        ],
-        [
-            'href' => [
-                [
-                    'section_text' => 'Pejabat Penilai',
-                    'section_list' => [
-                        ['href' => 'pejabat-penilai.index', 'text' => 'Daftar Pejabat Penilai'],
-                        // ['href' => 'user.show', 'text' => '']
-                    ],
-                ],
-            ],
-            'text' => 'Pejabat',
-            'is_multi' => true,
-            'role' => ['Operator'],
-        ],
-        [
-            'href' => [
-                [
                     'section_text' => 'SKP',
+                    'section_icon' => 'fa-book',
                     'section_list' => [
                         ['href' => 'skp.index', 'text' => 'Daftar SKP'],
                         // ['href' => 'user.show', 'text' => '']
@@ -51,6 +24,7 @@
             'href' => [
                 [
                     'section_text' => 'Penilaian Perilaku',
+                    'section_icon' => 'fa-file-lines',
                     'section_list' => [
                         ['href' => 'penilaian-perilaku.index', 'text' => 'Daftar Penilaian Perilaku'],
                         // ['href' => 'user.show', 'text' => '']
@@ -59,6 +33,34 @@
             ],
             'text' => 'Penilaian Perilaku',
             'is_multi' => true,
+        ],
+        [
+            'href' => [
+                [
+                    'section_text' => 'Pengguna',
+                    'section_icon' => 'fa-user',
+                    'section_list' => [
+                        ['href' => 'users.index', 'text' => 'Daftar Pengguna'],
+                    ],
+                ],
+                [
+                    'section_text' => 'Pejabat Penilai',
+                    'section_icon' => 'fa-user-tie',
+                    'section_list' => [
+                        ['href' => 'pejabat-penilai.index', 'text' => 'Daftar Pejabat Penilai'],
+                    ],
+                ],
+                [
+                    'section_text' => 'Unit Kerja',
+                    'section_icon' => 'fa-building',
+                    'section_list' => [
+                        ['href' => 'pejabat-penilai.index', 'text' => 'Unit Kerja'],
+                    ],
+                ],
+            ],
+            'text' => 'Menu',
+            'is_multi' => true,
+            'role' => ['Operator'],
         ],
     ];
     $navigation_links = array_to_object($links);
@@ -70,11 +72,11 @@
     <aside id="sidebar-wrapper">
         <!-- sidebar brand -->
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">SKP </a>
+            <a href="{{ route('dashboard') }}">SMA NEGERI 2 SIDRAP</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">
-                <img class="d-inline-block" width="32px" height="30.61px" src="" alt="">
+                <img src="{{ asset('images/app_logobg.png') }}" alt="" srcset="">
             </a>
         </div>
         @foreach ($navigation_links as $link)
@@ -111,7 +113,7 @@
                                     @canany($section->role)
                                         <li class="dropdown {{ $is_active ? 'active' : '' }}">
                                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                                    class="fas fa-chart-bar"></i> <span>{{ $section->section_text }}</span></a>
+                                                    class="fas {{ $section->section_icon }}"></i> <span>{{ $section->section_text }}</span></a>
                                             <ul class="dropdown-menu">
                                                 @foreach ($section->section_list as $child)
                                                     @if (isset($child->role))
@@ -132,7 +134,7 @@
                                 @else
                                     <li class="dropdown {{ $is_active ? 'active' : '' }}">
                                         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                                class="fas fa-chart-bar"></i> <span>{{ $section->section_text }}</span></a>
+                                                class="fas {{ $section->section_icon }}"></i> <span>{{ $section->section_text }}</span></a>
                                         <ul class="dropdown-menu">
                                             @foreach ($section->section_list as $child)
                                                 @if (isset($child->role))
@@ -186,7 +188,7 @@
                                 @canany($section->role)
                                     <li class="dropdown {{ $is_active ? 'active' : '' }}">
                                         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                                class="fas fa-chart-bar"></i> <span>{{ $section->section_text }}</span></a>
+                                                class="fas {{ $section->section_icon }}"></i> <span>{{ $section->section_text }}</span></a>
                                         <ul class="dropdown-menu">
                                             @foreach ($section->section_list as $child)
                                                 @if (isset($child->role))
@@ -207,7 +209,7 @@
                             @else
                                 <li class="dropdown {{ $is_active ? 'active' : '' }}">
                                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                            class="fas fa-chart-bar"></i> <span>{{ $section->section_text }}</span></a>
+                                            class="fas {{ $section->section_icon }}"></i> <span>{{ $section->section_text }}</span></a>
                                     <ul class="dropdown-menu">
                                         @foreach ($section->section_list as $child)
                                             @if (isset($child->role))

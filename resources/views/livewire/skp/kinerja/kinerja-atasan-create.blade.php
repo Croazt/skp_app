@@ -47,12 +47,12 @@
                         <div class="mb-3 tw-flex">
                             <div class="tw-w-4/12">
                                 <x-jet-label for="angka_kredit" value="{{ __('Tipe Angka Kredit') }}" />
-                                <select
+                                <select disabled
                                     class="tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm form-control select2"
                                     id="tipe_angka_kredit" name="tipe_angka_kredit"
                                     data-minimum-results-for-search="Infinity">
-                                    <option value="absolut">Absolut</option>
                                     <option value="persen">Persentase</option>
+                                    <option value="absolut">Absolut</option>
                                 </select>
                                 <div id="tipe_angka_kredit_error"></div>
                             </div>
@@ -239,6 +239,13 @@
                 }
 
             });
+            $('#kategori').on('change', function(){
+                if($(this).val() == 'tambahan'){
+                    $('#tipe_angka_kredit').val('absolut').trigger('change')
+                    return
+                }
+                $('#tipe_angka_kredit').val('persen').trigger('change')
+            })
             //SET JABATAN DISABLED
             if (!$('#is_default').is(':checked')) {
                 $('#jabatan').prop('disabled', true)

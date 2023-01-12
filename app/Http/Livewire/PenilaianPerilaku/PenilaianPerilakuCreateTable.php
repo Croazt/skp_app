@@ -54,6 +54,7 @@ class PenilaianPerilakuCreateTable extends Component
     }
 
     public function save(){
+        $this->dispatchBrowserEvent('showResponseModal', ['success' => false, 'message' => 'Tidak dapat membuat penilaian perilaku, saat ini bukannlah waktu penilaian SKP!']);
         foreach($this->data['indikator_penilaian_perilaku'] as $item){
             if(!$item){
                 RencanaKinerjaGuru::where('user_nip',$this->user->nip)->where('skp_id',$this->skp->id)->delete();
@@ -70,7 +71,6 @@ class PenilaianPerilakuCreateTable extends Component
                 'skp_id' => $this->skp->id,
             ]);
         }
-        $this->dispatchBrowserEvent('showResponseModal', ['success' => true, 'message' => 'Penilaian kinerja guru disimpan!']);
     }
 
     public function render()

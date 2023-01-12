@@ -69,8 +69,8 @@ class SkpForm extends Component
     protected array $rules = [
         'data.periode_awal' => 'required|date|before:data.periode_akhir',
         'data.periode_akhir' => 'required|date|after:data.periode_awal',
-        'data.perencanaan' => 'required|date|after:data.periode_awal|before:data.penilaian',
-        'data.penilaian' => 'required|date|before:data.periode_akhir|after:data.perencanaan',
+        'data.perencanaan' => 'required|date|after:data.30_hari_periode_awal|before:data.penilaian',
+        'data.penilaian' => 'required|date|before:data.30_hari_periode_akhir|after:data.perencanaan',
         'data.pengelola_kinerja' => 'required|exists:users,nip',
         'data.tim_angka_kredit' => 'required|exists:users,nip',
         'data.pejabat_penilai1' => 'required|exists:pejabat_penilai,nip',
@@ -129,6 +129,10 @@ class SkpForm extends Component
     {
         $this->dispatchBrowserEvent('LiveWireComponentRefreshed');
 
+        $this->data = $this->data->merge([
+            '30_hari_periode_awal' => Carbon::parse($this->data['periode_awal'])->addDay(30),
+            '30_hari_periode_akhir' => Carbon::parse($this->data['periode_akhir'])->subDay(30),
+        ]);
         $this->validate();
         DB::beginTransaction();
         $this->skp->fill($this->data->except(['periode'])->all());
@@ -139,6 +143,7 @@ class SkpForm extends Component
 
         redirect()->to(route('skp.index'));
     }
+    
     public function hydrate()
     {
         $this->emit('select2');

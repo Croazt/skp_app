@@ -17,7 +17,7 @@
                         <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
                     @enderror
                 </div>
-                @error('data.username')
+                @error('data.email')
                     <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
                 @enderror
                 <div class="mb-3">

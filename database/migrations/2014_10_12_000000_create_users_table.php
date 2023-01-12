@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('pekerjaan', 50);
             $table->string('unit_kerja', 50);
             $table->string('tugas_tambahan',50)->nullable();
-            $table->string('username')->unique('username');
+            $table->string('email')->unique('email');
             $table->integer('pangkat_id')->default(0)->index('pangkat_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

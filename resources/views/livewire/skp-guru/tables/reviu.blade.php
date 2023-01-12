@@ -24,16 +24,18 @@
         </td>
         <td rowspan="3" class="text-center tw-w-2/12">
             <div class="tw-w-max tw-mx-auto tw-text-left tw-h-full">
-                <p class="tw-font-semibold">Pilih Metode Cascading:</p> 
-                <div class="tw-mb-1 tw-pr-1">
-                    <div><input type="radio" wire:model="data.cascading.{{ $rencanaKinerja->id }}"
-                            wire:change="updateCascading({{ $rencanaKinerja->id }})" value="1"
-                            id="cascading" />Direct Cascading</div>
-                    <div><input type="radio" wire:model="data.cascading.{{ $rencanaKinerja->id }}"
-                            wire:change="updateCascading({{ $rencanaKinerja->id }})" value="0"
-                            id="cascading" />Non Direct Cascading</div>
-                </div>
-                <p class="tw-font-semibold">Catatan:</p> 
+                @if ($data['kategori'][$rencanaKinerja->id] == 'utama')
+                    <p class="tw-font-semibold">Pilih Metode Cascading:</p>
+                    <div class="tw-mb-1 tw-pr-1">
+                        <div><input type="radio" wire:model="data.cascading.{{ $rencanaKinerja->id }}"
+                                wire:change="updateCascading({{ $rencanaKinerja->id }})" value="1"
+                                id="cascading" />Direct Cascading</div>
+                        <div><input type="radio" wire:model="data.cascading.{{ $rencanaKinerja->id }}"
+                                wire:change="updateCascading({{ $rencanaKinerja->id }})" value="0"
+                                id="cascading" />Non Direct Cascading</div>
+                    </div>
+                @endif
+                <p class="tw-font-semibold">Catatan:</p>
                 <div class="tw-text-left tw-h-full">
                     <textarea placeholder="Masukkan catatan untuk kinerja" wire:change="updateCatatan({{ $rencanaKinerja->id }})"
                         class="tw-h-full tw-text-sm focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"

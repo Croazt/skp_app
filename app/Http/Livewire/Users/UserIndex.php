@@ -23,7 +23,7 @@ class UserIndex extends DatatableComponent
         return $this->applyColumnVisibility([
             DatatableColumn::make('nip'),
             DatatableColumn::make('nama'),
-            DatatableColumn::make('username'),
+            DatatableColumn::make('email'),
             // DatatableColumn::make('email_verified_at'),
             DatatableColumn::make('password')->setInvisible(true),
             // DatatableColumn::make('remember_token'),
@@ -52,7 +52,7 @@ class UserIndex extends DatatableComponent
     {
         return [
             'nama',
-            'username',
+            'email',
             'nip',
         ];
     }

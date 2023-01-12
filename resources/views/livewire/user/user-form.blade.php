@@ -17,14 +17,14 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <x-jet-label for="username" value="{{ __('Username') }}" />
-                    <x-jet-input id="username" type="email"
-                        class="{{ 'form-control ' . ($errors->first('data.username') != null ? 'is-invalid' : '') }}"
-                        wire:model="data.username" name="data.username" :value="old('username')" placeholder="Masukkan username"/>
+                    <x-jet-label for="email" value="{{ __('Email') }}" />
+                    <x-jet-input id="email" type="email"
+                        class="{{ 'form-control ' . ($errors->first('data.email') != null ? 'is-invalid' : '') }}"
+                        wire:model="data.email" name="data.email" :value="old('email')" placeholder="Masukkan email"/>
+                        @error('data.email')
+                            <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
+                        @enderror
                 </div>
-                @error('data.username')
-                    <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
-                @enderror
                 <div class="mb-3">
                     <x-jet-label for="nip" value="{{ __('NIP') }}" />
                     <x-jet-input id="nip" type="text"

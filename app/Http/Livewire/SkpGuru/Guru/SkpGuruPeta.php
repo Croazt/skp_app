@@ -55,7 +55,7 @@ class SkpGuruPeta extends Component
     {
         $rencanaKinerjaGuru = $this->skpGuru->rencanaKinerjaGurus;
         $targetFilled = $rencanaKinerjaGuru->reject(function ($item, $key) {
-            return $item->dokumen_bukti && $item->dokumen_diterima !== 0;
+            return ($item->dokumen_bukti && $item->dokumen_diterima !== 0) || !$item->terkait;
         })->isEmpty();
         if (!$targetFilled) {
             if($this->skpGuru->status =='ditolak'){
