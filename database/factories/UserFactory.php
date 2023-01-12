@@ -31,7 +31,7 @@ class UserFactory extends Factory
         return [
             'nama' => $this->faker->name(),
             'nip' => strval($this->faker->numberBetween(100000000000000000, 9999999999999)),
-            'username' => $this->faker->email(),
+            'email' => $this->faker->email(),
             'pangkat_id' =>$this->faker->randomElement(Pangkat::all()->pluck('id')->toArray()),
             'pekerjaan' =>  $this->faker->randomElement(User::PEKERJAAN),
             'tugas_tambahan' =>  $this->faker->randomElement(User::TUGAS_TAMBAHAN),
