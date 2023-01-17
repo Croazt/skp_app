@@ -30,7 +30,7 @@
                     class="form-control tw-p-1 tw-w-15 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
                     wire:model="data.target2_kuantitas.{{ $rencanaKinerja->id }}" type="number" min="0"
                     {{ !($this->skpGuru->status == 'draft') ? 'disabled' : '' }} max="99"
-                    wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'target1_kuantitas')">
+                    wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'target2_kuantitas')">
             </div>
         </td>
         <td class="tw-align-middle">
@@ -76,7 +76,7 @@
                         class="form-control tw-p-1 tw-w-9 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-l-md tw-shadow-sm"
                         wire:model="data.target2_kualitas.{{ $rencanaKinerja->id }}" type="number" min="0"
                         {{ !($this->skpGuru->status == 'draft') ? 'disabled' : '' }} max="99"
-                        wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'target1_kualitas')">
+                        wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'target2_kualitas')">
                     <div class="input-group-append tw-h-auto tw-rounded-r-md">
                         <span class="input-group-text tw-p-1 tw-w-6 tw-h-8 {{ !($this->skpGuru->status == 'draft') ? 'tw-bg-[#e9ecef]' : '' }}">%</span>
                     </div>
@@ -100,7 +100,7 @@
                     class="form-control tw-p-1 tw-w-15 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
                     wire:model="data.target1_waktu.{{ $rencanaKinerja->id }}" type="number" min="0"
                     {{ !($this->skpGuru->status == 'draft') ? 'disabled' : '' }} max="99"
-                    wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'target2_waktu')">
+                    wire:change="updateTargetCapaian({{ $rencanaKinerja->id }},$event.target.value,'target1_waktu')">
                 <div class="tw-mx-2 tw-self-center tw-font-extrabold">-</div>
                 <input
                     class="form-control tw-p-1 tw-w-15 tw-h-8 tw-text-center focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"

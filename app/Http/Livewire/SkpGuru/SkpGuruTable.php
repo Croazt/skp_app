@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -205,14 +206,14 @@ class SkpGuruTable extends Component
         }
 
         if ($this->viewType == 'reviu') {
-            if (Config::get('role') != Role::PENGELOLA_KINERJA) {
+            if (Cookie::get('role') != Role::PENGELOLA_KINERJA) {
                 return view('livewire.skp-guru.guru.skp-guru-reviu');
             }
             return view('livewire.skp-guru.skp-guru-reviu');
         }
 
         if ($this->viewType == 'verifikasi') {
-            if (Config::get('role') != Role::TIM_ANGKA_KREDIT) {
+            if (Cookie::get('role') != Role::TIM_ANGKA_KREDIT) {
                 return view('livewire.skp-guru.guru.skp-guru-verifikasi');
             }
             return view('livewire.skp-guru.skp-guru-verifikasi');

@@ -151,8 +151,10 @@ trait SkpGuruMap
     public function updateTargetCapaian(int $rencanaId, int $value, string $field)
     {
         $rencana = RencanaKinerjaGuru::find($rencanaId);
-        $rencana->$field = $value;
-        $rencana->save();
+        if($rencanaId instanceof RencanaKinerjaGuru){
+            $rencana->$field = $value;
+            $rencana->save();
+        }
     }
 
     public function downloadPdf()

@@ -32,10 +32,10 @@ class UserFactory extends Factory
             'nama' => $this->faker->name(),
             'nip' => strval($this->faker->numberBetween(100000000000000000, 9999999999999)),
             'email' => $this->faker->email(),
-            'pangkat_id' =>$this->faker->randomElement(Pangkat::all()->pluck('id')->toArray()),
+            'pangkat_id' => Pangkat::inRandomOrder()->first(),
             'pekerjaan' =>  $this->faker->randomElement(User::PEKERJAAN),
             'tugas_tambahan' =>  $this->faker->randomElement(User::TUGAS_TAMBAHAN),
-            'unit_kerja' => 'unit_kerja',
+            'unit_kerja' => 'SMA NEGERI 2 Sidrap',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];

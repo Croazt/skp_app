@@ -56,6 +56,7 @@
                             @foreach ($this->rencanaKinerjaUtama as $rencanaKinerja)
                                 @if ($this->skpGuru->status == 'konfirmasi')
                                     @include('livewire.skp-guru.tables.reviu')
+                                    {{ 'wew' }}
                                 @else
                                     @include('livewire.skp-guru.guru.tables.reviu')
                                 @endif
