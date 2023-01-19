@@ -14,11 +14,6 @@ class Role extends Model
     const TIM_ANGKA_KREDIT = 'Tim Angka Kredit';
     const PENGELOLA_KINERJA = 'Pengelola Kinerja';
     const KEPALA_SEKOLAH = 'Kepala Sekolah';
-
-    const GURU_PERTAMA = 'Guru Pertama';
-    const GURU_MUDA = 'Guru Muda';
-    const GURU_MADYA = 'Guru Madya';
-    const GURU_UTAMA = 'Guru Utama';
     /**
      * The primary key for the model.
      * 

@@ -99,7 +99,7 @@ class KinerjaAtasanCreate extends Component
         $this->validate();
         $checkKinerja = $this->skp->kinerjas()->where([
             'kategori' => $this->data['kategori'],
-            'id' => $this->data['deskripsi'],
+            'deskripsi' => $this->data['deskripsi'],
         ])->first();
         if(!$checkKinerja instanceof Kinerja){
             $checkKinerja = $this->skp->kinerjas()->create([

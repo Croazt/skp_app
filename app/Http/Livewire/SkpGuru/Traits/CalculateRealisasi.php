@@ -8,44 +8,49 @@ use Illuminate\Support\Facades\Auth;
 
 trait CalculateRealisasi
 {
-   
-    protected function calculateRealisasiScore(RencanaKinerjaGuru $rencanaKinerjaGuru, $capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan)
+
+    protected function calculateRealisasiScore()
     {
-        if ($rencanaKinerjaGuru->tipe_angka_kredit == 'persen') {
-            $jamAndAk = ($capaianJamPelajaran / 24) * ($rencanaKinerjaGuru->angka_kredit / 100);
-            if ($rencanaKinerjaGuru->pekerjaan == Auth::user()->tugas_tambahan) {
-                $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$capaianPkgTambahan * $jamAndAk;
-            } else {
-                $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$capaianPkg * $jamAndAk;
+        $capaianPkg = $this->skpGuru->capaian_pkg ?? 125;
+        $capaianPkgTambahan = $this->skpGuru->capaian_pkg_tambahan ?? 125;
+        $capaianJamPelajaran = $this->skpGuru->capaian_jam_pelajaran ?? 24;
+        $this->rencanaKinerjaGuru = $this->rencanaKinerjaGuru->each(function ($item) use ($capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan) {
+            if ($item->tipe_angka_kredit == 'persen') {
+                $jamAndAk = ($capaianJamPelajaran / 24) * ($item->angka_kredit / 100);
+                if ($item->pekerjaan == Auth::user()->tugas_tambahan) {
+                    $item->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$capaianPkgTambahan * $jamAndAk;
+                } else {
+                    $item->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$capaianPkg * $jamAndAk;
+                }
+                $item->realisasi_angka_kredit = round($item->angka_kredit, 2);
+            } elseif ($item->tipe_angka_kredit == 'absolut' && $item->kategori == 'tambahan') {
+                $item->realisasi_angka_kredit = $item->angka_kredit * $item->realisasi_kuantitas;
             }
-            $rencanaKinerjaGuru->realisasi_angka_kredit = round($rencanaKinerjaGuru->angka_kredit, 2);
-        } elseif ($rencanaKinerjaGuru->tipe_angka_kredit == 'absolut' && $rencanaKinerjaGuru->kategori == 'tambahan') {
-            $rencanaKinerjaGuru->realisasi_angka_kredit = $rencanaKinerjaGuru->angka_kredit * $rencanaKinerjaGuru->realisasi_kuantitas;
-        }
-        $realisasiKualitas = $rencanaKinerjaGuru->realisasi_kualitas;
-        $target1Kualitas = $rencanaKinerjaGuru->target1_kualitas;
-        $target2Kualitas = $rencanaKinerjaGuru->target2_kualitas;
-        $rencanaKinerjaGuru->capaian_iki_kualitas = ($realisasiKualitas > $target2Kualitas) ? (intdiv($realisasiKualitas * 100, $target2Kualitas)) : ($realisasiKualitas >= $target1Kualitas ? 100 : intdiv($realisasiKualitas * 100, $target1Kualitas));
-        $rencanaKinerjaGuru->kategori_capaian_iki_kualitas = $this->setKategoriIki($rencanaKinerjaGuru->capaian_iki_kualitas);
+            $realisasiKualitas = $item->realisasi_kualitas;
+            $target1Kualitas = $item->target1_kualitas;
+            $target2Kualitas = $item->target2_kualitas;
+            $item->capaian_iki_kualitas = ($realisasiKualitas > $target2Kualitas) ? (intdiv($realisasiKualitas * 100, $target2Kualitas)) : ($realisasiKualitas >= $target1Kualitas ? 100 : intdiv($realisasiKualitas * 100, $target1Kualitas));
+            $item->kategori_capaian_iki_kualitas = $this->setKategoriIki($item->capaian_iki_kualitas);
 
-        $realisasiKuantitas = $rencanaKinerjaGuru->realisasi_kuantitas;
-        $target1Kuantitas = $rencanaKinerjaGuru->target1_kuantitas;
-        $target2Kuantitas = $rencanaKinerjaGuru->target2_kuantitas;
-        $rencanaKinerjaGuru->capaian_iki_kuantitas = ($realisasiKuantitas > $target2Kuantitas) ? (intdiv($realisasiKuantitas * 100, $target2Kuantitas)) : ($realisasiKuantitas >= $target1Kuantitas ? 100 : intdiv($realisasiKuantitas * 100, $target1Kuantitas));
+            $realisasiKuantitas = $item->realisasi_kuantitas;
+            $target1Kuantitas = $item->target1_kuantitas;
+            $target2Kuantitas = $item->target2_kuantitas;
+            $item->capaian_iki_kuantitas = ($realisasiKuantitas > $target2Kuantitas) ? (intdiv($realisasiKuantitas * 100, $target2Kuantitas)) : ($realisasiKuantitas >= $target1Kuantitas ? 100 : intdiv($realisasiKuantitas * 100, $target1Kuantitas));
 
 
-        $rencanaKinerjaGuru->kategori_capaian_iki_kuantitas = $this->setKategoriIki($rencanaKinerjaGuru->capaian_iki_kuantitas);
+            $item->kategori_capaian_iki_kuantitas = $this->setKategoriIki($item->capaian_iki_kuantitas);
 
-        $realisasiWaktu = $rencanaKinerjaGuru->realisasi_waktu;
-        $target1Waktu = $rencanaKinerjaGuru->target1_waktu;
-        $target2Waktu = $rencanaKinerjaGuru->target2_waktu;
-        $rencanaKinerjaGuru->capaian_iki_waktu = ($realisasiWaktu > $target2Waktu) ? (intdiv($realisasiWaktu * 100, $target2Waktu)) : ($realisasiWaktu >= $target1Waktu ? 100 : intdiv($realisasiWaktu * 100, $target1Waktu));
-        $rencanaKinerjaGuru->kategori_capaian_iki_waktu = $this->setKategoriIki($rencanaKinerjaGuru->capaian_iki_waktu);
+            $realisasiWaktu = $item->realisasi_waktu;
+            $target1Waktu = $item->target1_waktu;
+            $target2Waktu = $item->target2_waktu;
+            $item->capaian_iki_waktu = ($realisasiWaktu > $target2Waktu) ? (intdiv($realisasiWaktu * 100, $target2Waktu)) : ($realisasiWaktu >= $target1Waktu ? 100 : intdiv($realisasiWaktu * 100, $target1Waktu));
+            $item->kategori_capaian_iki_waktu = $this->setKategoriIki($item->capaian_iki_waktu);
 
-        $crkValue = $this->getCrkValue($rencanaKinerjaGuru->kategori_capaian_iki_kualitas, $rencanaKinerjaGuru->kategori_capaian_iki_kuantitas, $rencanaKinerjaGuru->kategori_capaian_iki_waktu);
-        $rencanaKinerjaGuru->kategori_crk = $crkValue[0];
-        $rencanaKinerjaGuru->nilai_crk = $crkValue[1];
-        $rencanaKinerjaGuru->nilai_tertimbang = 100;
+            $crkValue = $this->getCrkValue($item->kategori_capaian_iki_kualitas, $item->kategori_capaian_iki_kuantitas, $item->kategori_capaian_iki_waktu);
+            $item->kategori_crk = $crkValue[0];
+            $item->nilai_crk = $crkValue[1];
+            $item->nilai_tertimbang = 100;
+        });
     }
 
     protected function getCrkValue($kategoriKualitas, $kategoriKuantitas, $kategoriWaktu): array

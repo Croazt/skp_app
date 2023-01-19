@@ -17,8 +17,8 @@ class CreatePenilaianPerilakuGuruTable extends Migration
             $table->string('user_nip', 19);
             $table->integer('skp_id')->index('skp_id');
             $table->string('status', 20);
-            $table->string('tanggal_konfirmasi', 0);
-            $table->integer('konfirmasi_oleh');
+            $table->date('tanggal_konfirmasi');
+            $table->string('konfirmasi_oleh', 20);
 
             $table->primary(['user_nip', 'skp_id']);
             $table->timestamps();

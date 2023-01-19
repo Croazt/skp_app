@@ -4,28 +4,27 @@
             Definisi
         </div>
         <div class="tw-p-5 tw-mb-5 tw-rounded-b-md tw-bg-slate-400 tw-text-white">
-            {{ $data[$item->nama]['definisi'] }}
+            {{ $aspekPerilaku->definisi }}
         </div>
         <div class="tw-px-5">
             <form class="form" wire:submit.prevent='save'>
-                @foreach ($data[$item->nama]['situasiKerja'] as $situasi)
+                @foreach ($situasiKerja as $item)
                     <div class="mb-3 tw-w-full">
                         <div class="tw-flex tw-w-full tw-justify-between">
-                            <x-jet-label for="nama" value="{{ $situasi['situasi'] }}" />
+                            <x-jet-label for="nama" value="{{ $item->situasi }}" />
                             <div>Level :
-                                {{ $data[$item->nama]['indikatorKerja'][ $data[$item->nama]['indikator_penilaian_perilaku'][$situasi['id']]]['level'] ?? '' }}
+                                {{ $indikatorKerja->where('id', $data['indikator_penilaian_perilaku'][$item->id])->first()->level ?? '' }}
                             </div>
                         </div>
                         <select
                             class="tw-text-sm tw-w-full tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
-                            wire:model="data.{{ $item->nama }}.indikator_penilaian_perilaku.{{ $situasi['id'] }}">
+                            wire:model="data.indikator_penilaian_perilaku.{{ $item->id }}">
                             <option value=""></option>
-                            @foreach ($data[$item->nama]['indikatorKerja'] as $indikator)
-                                <option value="{{ $indikator['id']  }}">{{ $indikator['indikator'] }}</option>
-
+                            @foreach ($indikatorKerja as $item)
+                                <option value="{{ $item->id }}">{{ $item->indikator }}</option>
                             @endforeach
                         </select>
-                        @error("data.indikator_penilaian_perilaku.".$situasi['id'])
+                        @error('data.indikator_penilaian_perilaku.{{ $item->id }}')
                             <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
                         @enderror
                     </div>
@@ -33,10 +32,10 @@
             </form>
             @php
                 $total = 0;
-                foreach ($data[$item->nama]['indikator_penilaian_perilaku'] as $key => $indikator) {
-                    $total += $data[$item->nama]['indikatorKerja'][$indikator]['level'] ?? 0;
+                foreach ($data['indikator_penilaian_perilaku'] as $key => $item) {
+                    $total += $indikatorKerja->where('id', $item)->first()?->level ?? 0;
                 }
-                $average = $total / count($data[$item->nama]['indikator_penilaian_perilaku']);
+                $average = $total / count($data['indikator_penilaian_perilaku']);
             @endphp
             <div>
                 TOTAL : {{ $total }}

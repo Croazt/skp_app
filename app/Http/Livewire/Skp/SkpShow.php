@@ -20,7 +20,6 @@ class SkpShow extends SkpForm
 
     public function showMySkp()
     {
-
         return redirect()->to(
             route('guru.skp-guru.index', ['skp' => $this->skp])
         );
@@ -48,7 +47,6 @@ class SkpShow extends SkpForm
 
     public function createDefaultRencana(SkpGuru $skpGuru, string $pekerjaan): void
     {
-
         $detailKinerjas = $this->skp->detailKinerjas()->where([
             'pekerjaan'  => $pekerjaan,
         ])->get();
@@ -81,6 +79,7 @@ class SkpShow extends SkpForm
         }
         return true;
     }
+
     public function render()
     {
         return view('livewire.skp.skp-show');

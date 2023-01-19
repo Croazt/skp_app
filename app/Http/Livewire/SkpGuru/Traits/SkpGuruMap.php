@@ -28,10 +28,6 @@ trait SkpGuruMap
 
     public function mount()
     {
-        $targetPkg = $this->skpGuru->target_pkg ?? 125;
-        $targetPkgTambahan = $this->skpGuru->target_pkg_tambahan ?? 125;
-        $targetJamPelajaran = $this->skpGuru->jam_pelajaran ?? 24;
-
         $this->rencanaKinerjaGuru = $this->skpGuru->rencanaKinerjaGurus()
             ->select([
                 'rencana_kinerja_guru.*',
@@ -57,19 +53,9 @@ trait SkpGuruMap
             ->leftJoin('kinerja', 'detail_kinerja.kinerja_id', '=', 'kinerja.id')
             ->orderBy('kinerja.deskripsi', 'asc')
             ->get();
-
-        $this->rencanaKinerjaGuru = $this->rencanaKinerjaGuru->each(function ($item) use ($targetJamPelajaran, $targetPkg, $targetPkgTambahan) {
-            if ($item->tipe_angka_kredit == 'persen') {
-                $jamAndAk = ($targetJamPelajaran / 24) * ($item->angka_kredit / 100);
-                if ($item->pekerjaan == Auth::user()->tugas_tambahan) {
-                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$targetPkgTambahan * $jamAndAk;
-                } else {
-                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$targetPkg * $jamAndAk;
-                }
-                $item->angka_kredit = round($item->angka_kredit, 2);
-            }
-        });
-
+                
+        $this->calculateAngkaKredit();
+        $this->calculateRealisasiScore();
 
         $this->data = collect([
             'kinerja_desc' => $this->rencanaKinerjaGuru->pluck('kinerja_desc', 'id')->toArray(),
@@ -106,15 +92,6 @@ trait SkpGuruMap
             'capaian_pkg' => $this->skpGuru->capaian_pkg,
             'capaian_pkg_tambahan' => $this->skpGuru->capaian_pkg_tambahan,
             'capaian_jam_pelajaran' => $this->skpGuru->capaian_jam_pelajaran,
-        ]);
-        // if ($this->viewType == 'penilaian') {
-        $capaianPkg = $this->skpGuru->capaian_pkg ?? 125;
-        $capaianPkgTambahan = $this->skpGuru->capaian_pkg_tambahan ?? 125;
-        $capaianJamPelajaran = $this->skpGuru->capaian_jam_pelajaran ?? 24;
-        $this->rencanaKinerjaGuru = $this->rencanaKinerjaGuru->each(function ($item) use ($capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan) {
-            $this->calculateRealisasiScore($item, $capaianJamPelajaran, $capaianPkg, $capaianPkgTambahan);
-        });
-        $this->data = $this->data->merge([
             'capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_kuantitas', 'id')->toArray(),
             'capaian_iki_kualitas' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_kualitas', 'id')->toArray(),
             'capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_waktu', 'id')->toArray(),
@@ -125,13 +102,31 @@ trait SkpGuruMap
             'nilai_crk' =>  $this->rencanaKinerjaGuru->pluck('nilai_crk', 'id')->toArray(),
             'nilai_tertimbang' =>  $this->rencanaKinerjaGuru->pluck('nilai_tertimbang', 'id')->toArray(),
         ]);
-        // }
+
         $this->dokumen = collect([$this->rencanaKinerjaGuru->pluck('', 'id')->toArray()]);
         $this->rencanaKinerjaUtama = $this->rencanaKinerjaGuru->filter(function ($item) {
             return $item->kategori == "utama";
         });
         $this->rencanaKinerjaTambahan = $this->rencanaKinerjaGuru->filter(function ($item) {
             return $item->kategori == "tambahan";
+        });
+    }
+
+    public function calculateAngkaKredit()
+    {
+        $targetPkg = $this->skpGuru->target_pkg ?? 125;
+        $targetPkgTambahan = $this->skpGuru->target_pkg_tambahan ?? 125;
+        $targetJamPelajaran = $this->skpGuru->jam_pelajaran ?? 24;
+        $this->rencanaKinerjaGuru = $this->rencanaKinerjaGuru->each(function ($item) use ($targetJamPelajaran, $targetPkg, $targetPkgTambahan) {
+            if ($item->tipe_angka_kredit == 'persen') {
+                $jamAndAk = ($targetJamPelajaran / 24) * ($item->angka_kredit / 100);
+                if ($item->pekerjaan && $item->pekerjaan == Auth::user()->tugas_tambahan) {
+                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$targetPkgTambahan * $jamAndAk;
+                } else {
+                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$targetPkg * $jamAndAk;
+                }
+                $item->angka_kredit = round($item->angka_kredit, 2);
+            }
         });
     }
 
@@ -151,7 +146,7 @@ trait SkpGuruMap
     public function updateTargetCapaian(int $rencanaId, int $value, string $field)
     {
         $rencana = RencanaKinerjaGuru::find($rencanaId);
-        if($rencanaId instanceof RencanaKinerjaGuru){
+        if ($rencana instanceof RencanaKinerjaGuru) {
             $rencana->$field = $value;
             $rencana->save();
         }

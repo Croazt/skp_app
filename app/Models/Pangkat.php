@@ -14,6 +14,12 @@ use Illuminate\Database\Eloquent\Model;
 class Pangkat extends Model
 {
     
+
+    const GURU_PERTAMA = 'Guru Pertama';
+    const GURU_MUDA = 'Guru Muda';
+    const GURU_MADYA = 'Guru Madya';
+    const GURU_UTAMA = 'Guru Utama';
+    
     public $timestamps=false;
     /**
      * The table associated with the model.

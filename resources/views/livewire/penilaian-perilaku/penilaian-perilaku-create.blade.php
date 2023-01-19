@@ -16,10 +16,10 @@
         }
     </style>
     <div class="tw-w-full tw-flex tw-justify-center tw-py-2">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs" id="myTab" role="tablist"  wire:ignore.self>
             @foreach ($aspekPerilaku as $item)
-                <li class="nav-item">
-                    <a class="nav-link @if ($loop->first) active @endif"
+                <li class="nav-item"  wire:ignore.self>
+                    <a wire:ignore.self class="nav-link @if ($loop->first) active @endif"
                         id="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab" data-toggle="tab"
                         href="#{{ strtolower(explode(' ', $item->nama)[0]) }}" role="tab">
                         {{ $item->nama }}
@@ -28,14 +28,15 @@
             @endforeach
         </ul>
     </div>
-    <div class="tab-content tw-w-full" id="myTabContent">
+    <div class="tab-content tw-w-full" id="myTabContent" wire:ignore.self>
         @foreach ($aspekPerilaku as $key => $item)
             <div class="tab-pane fade @if ($loop->first) show active @endif tw-w-full"
                 id="{{ strtolower(explode(' ', $item->nama)[0]) }}" role="tabpanel"
-                aria-labelledby="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab">
-                <div>
-                    <livewire:penilaian-perilaku.penilaian-perilaku-create-table :skp="$skp" :user="$user"
-                        :tableType="$item->nama" :wire:key="$item->nama">
+                aria-labelledby="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab"  wire:ignore.self>
+                <div  wire:ignore.self>
+                    @include('livewire.penilaian-perilaku.penilaian-perilaku-create-table')
+                    {{-- <livewire:penilaian-perilaku.penilaian-perilaku-create-table :skp="$skp" :user="$user"
+                        :tableType="$item->nama" :wire:key="$item->nama"> --}}
                 </div>
                 <div class=" tw-w-full tw-text-center">
                     @if (!$loop->last)

@@ -79,6 +79,24 @@ class CreateSkpTest extends TestCase
             ->set('data.pengelola_kinerja', $this->pengelolaKinerja->nip)
             ->set('data.pejabat_penilai1',  $this->pejabatPenilai->nip)
             ->set('data.pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->call('save')
+            ->assertHasErrors();
+
+        $this->assertFalse(Skp::wherePeriodeAwal('2022-01-01')
+            ->wherePeriodeAkhir('2022-12-31')
+            ->where('periode_akhir', '2022-12-31')
+            ->where('perencanaan', '2022-02-01')
+            ->where('penilaian', '2022-11-30')
+            ->where('tim_angka_kredit', $this->timAngkaKredit->nip)
+            ->where('pengelola_kinerja', $this->pengelolaKinerja->nip)
+            ->where('pejabat_penilai1',  $this->pejabatPenilai->nip)
+            ->where('pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->exists());
+    }
+    
+    public function test_create_skp_field_null()
+    {
+        Livewire::test(SkpCreate::class)
             ->call('save');
 
         $this->assertFalse(Skp::wherePeriodeAwal('2022-01-01')

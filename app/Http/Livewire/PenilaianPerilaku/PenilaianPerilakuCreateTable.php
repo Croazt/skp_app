@@ -8,7 +8,7 @@ use App\Http\Livewire\Concerns\DatatableComponent;
 use App\Models\AspekPerilaku;
 use App\Models\IndikatorPenilaianPerilaku;
 use App\Models\RencanaKinerjaGuru;
-use App\Models\Role;
+use App\Models\Pangkat;
 use App\Models\SituasiKerja;
 use App\Models\Skp;
 use App\Models\User;
@@ -39,11 +39,11 @@ class PenilaianPerilakuCreateTable extends Component
         $this->aspekPerilaku = AspekPerilaku::where('nama', $this->tableType)->first();
         $this->situasiKerja = SituasiKerja::where('aspek_perilaku_id', $this->aspekPerilaku->id)->leftJoin(DB::raw("(SELECT situasi_kerja_id, indikator_kerja_id FROM indikator_penilaian_perilaku WHERE user_nip = {$this->user->nip}) indikator_penilaian_perilaku"), 'indikator_penilaian_perilaku.situasi_kerja_id', 'situasi_kerja.id')->get();
 
-        if ($this->user->pangkat->jabatan == Role::GURU_MUDA)
+        if ($this->user->pangkat->jabatan == Pangkat::GURU_MUDA)
             $this->level = [2, 3, 4, 5];
-        if ($this->user->pangkat->jabatan == Role::GURU_MADYA)
+        if ($this->user->pangkat->jabatan == Pangkat::GURU_MADYA)
             $this->level = [3, 4, 5, 6];
-        if ($this->user->pangkat->jabatan == Role::GURU_UTAMA)
+        if ($this->user->pangkat->jabatan == Pangkat::GURU_UTAMA)
             $this->level = [4, 5, 6, 7];
         $this->indikatorKerja = $this->aspekPerilaku->indikatorKerjas()->whereIn('level', $this->level)->where('aspek_perilaku_id', $this->aspekPerilaku->id)->get();
         $this->data = collect([
@@ -54,7 +54,6 @@ class PenilaianPerilakuCreateTable extends Component
     }
 
     public function save(){
-        $this->dispatchBrowserEvent('showResponseModal', ['success' => false, 'message' => 'Tidak dapat membuat penilaian perilaku, saat ini bukannlah waktu penilaian SKP!']);
         foreach($this->data['indikator_penilaian_perilaku'] as $item){
             if(!$item){
                 RencanaKinerjaGuru::where('user_nip',$this->user->nip)->where('skp_id',$this->skp->id)->delete();

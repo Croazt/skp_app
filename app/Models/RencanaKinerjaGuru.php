@@ -40,7 +40,7 @@ class RencanaKinerjaGuru extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_nip','detail_kinerja_id','skp_id', 'terkait', 'target_kualitas', 'target_kuantitas', 'target_waktu', 'realisiasi_kualitas', 'realisasi_kuantitas', 'realisasi_waktu', 'tanggal_verifikasi', 'lingkup', 'dokumen_bukti'];
+    protected $fillable = ['user_nip','detail_kinerja_id','skp_id', 'terkait', 'target1_kualitas', 'target1_kuantitas', 'target1_waktu',  'target2_kualitas', 'target2_kuantitas', 'target2_waktu',  'realisiasi_kualitas', 'realisasi_kuantitas', 'realisasi_waktu', 'tanggal_verifikasi', 'lingkup', 'dokumen_bukti','skp_guru_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
