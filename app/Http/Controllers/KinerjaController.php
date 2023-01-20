@@ -106,6 +106,9 @@ class KinerjaController extends Controller
             'indikator_kualitas' => $request->iki_kualitas,
             'indikator_kuantitas' => $request->iki_kuantitas,
             'indikator_waktu' => $request->iki_waktu,
+            'detail_output_kualitas' => $request->target_output_kualitas,
+            'detail_output_kuantitas' => $request->target_output_kuantitas,
+            'detail_output_waktu' => $request->target_output_waktu,
         ]);
 
 
