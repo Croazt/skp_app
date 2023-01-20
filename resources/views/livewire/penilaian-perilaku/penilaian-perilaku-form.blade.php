@@ -64,34 +64,18 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <x-jet-label for="pejabat_penilai1" value="{{ __('Pejabat Penilai 1') }}" />
+                    <x-jet-label for="pejabat_penilai" value="{{ __('Pejabat Penilai') }}" />
                     <select
-                        class="form-control select2 {{ $errors->first('data.pejabat_penilai1') != null ? 'is-invalid' : '' }}"
+                        class="form-control select2 {{ $errors->first('data.pejabat_penilai') != null ? 'is-invalid' : '' }}"
                         data-minimum-results-for-search="{{ count($this->penilai) > 5 ? '' : 'Infinity' }}"
-                        name="pejabat_penilai1" id="pejabat_penilai1" data-placeholder="Pilih pejabat penilai"
-                        wire:model='data.pejabat_penilai1'>
+                        name="pejabat_penilai" id="pejabat_penilai" data-placeholder="Pilih pejabat penilai"
+                        wire:model='data.pejabat_penilai'>
                         <option></option>
                         @foreach ($this->penilai as $key => $item)
                             <option value="{{ $key }}">{{ $item }}</option>
                         @endforeach
                     </select>
-                    @error('data.pejabat_penilai1')
-                        <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <x-jet-label for="pejabat_penilai2" value="{{ __('Pejabat Penilai 2') }}" />
-                    <select
-                        class="form-control select2 {{ $errors->first('data.pejabat_penilai2') != null ? 'is-invalid' : '' }}"
-                        data-minimum-results-for-search="{{ count($this->penilai) > 5 ? '' : 'Infinity' }}"
-                        name="pejabat_penilai2" id="pejabat_penilai2" data-placeholder="Pilih pejabat penilai"
-                        wire:model='data.pejabat_penilai2'>
-                        <option></option>
-                        @foreach ($this->penilai as $key => $item)
-                            <option value="{{ $key }}">{{ $item }}</option>
-                        @endforeach
-                    </select>
-                    @error('data.pejabat_penilai2')
+                    @error('data.pejabat_penilai')
                         <div class="invalid-feedback  d-block" role="alert">{{ $message }}</div>
                     @enderror
                 </div>

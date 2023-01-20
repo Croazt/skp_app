@@ -51,8 +51,7 @@ class PenilaianPerilakuIndex extends DatatableComponent
     {
         return [
             'pengelolaKinerja.nama',
-            'pejabatPenilaiUtama.nama',
-            'pejabatPenilaiDua.nama',
+            'pejabatPenilai.nama',
             'timAngkaKredit.nama'
         ];
     }

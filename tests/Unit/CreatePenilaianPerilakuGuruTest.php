@@ -47,8 +47,7 @@ class CreatePenilaianPerilakuGuruTest extends TestCase
             'penilaian' => '2022-11-30',
             'tim_angka_kredit' => $this->timAngkaKredit->nip,
             'pengelola_kinerja' => $this->pengelolaKinerja->nip,
-            'pejabat_penilai1' => $this->pejabatPenilai->nip,
-            'pejabat_penilai2' => $this->pejabatPenilai->nip,
+            'pejabat_penilai' => $this->pejabatPenilai->nip,
         ]);
         $this->user = User::factory()->create([
             'pangkat_id' => Pangkat::where('golongan_ruang', 'III/a')->first()->id,

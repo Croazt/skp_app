@@ -30,8 +30,7 @@ class SkpIndex extends DatatableComponent
             // DatatableColumn::make('remember_token'),
             DatatableColumn::make('penilaian'),
             DatatableColumn::make('pengelola_kinerja'),
-            DatatableColumn::make('pejabat_penilai1'),
-            DatatableColumn::make('pejabat_penilai2'),
+            DatatableColumn::make('pejabat_penilai'),
             DatatableColumn::make('tim_angka_kredit'),
         ]);
     }
@@ -62,8 +61,7 @@ class SkpIndex extends DatatableComponent
     {
         return [
             'pengelolaKinerja.nama',
-            'pejabatPenilaiUtama.nama',
-            'pejabatPenilaiDua.nama',
+            'pejabatPenilai.nama',
             'timAngkaKredit.nama'
         ];
     }

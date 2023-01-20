@@ -137,8 +137,7 @@ class KinerjaAtasanCreate extends Component
     {
         return [
             'pengelolaKinerja.nama',
-            'pejabatPenilaiUtama.nama',
-            'pejabatPenilaiDua.nama',
+            'pejabatPenilai.nama',
             'timAngkaKredit.nama'
         ];
     }

@@ -52,8 +52,7 @@ class CreateSkpTest extends TestCase
             ->set('data.penilaian', '2022-11-30')
             ->set('data.tim_angka_kredit', $this->timAngkaKredit->nip)
             ->set('data.pengelola_kinerja', $this->pengelolaKinerja->nip)
-            ->set('data.pejabat_penilai1',  $this->pejabatPenilai->nip)
-            ->set('data.pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->set('data.pejabat_penilai',  $this->pejabatPenilai->nip)
             ->call('save')
             ->assertRedirect(route('skp.index'));
 
@@ -64,8 +63,7 @@ class CreateSkpTest extends TestCase
             ->where('penilaian', '2022-11-30')
             ->where('tim_angka_kredit', $this->timAngkaKredit->nip)
             ->where('pengelola_kinerja', $this->pengelolaKinerja->nip)
-            ->where('pejabat_penilai1',  $this->pejabatPenilai->nip)
-            ->where('pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->where('pejabat_penilai',  $this->pejabatPenilai->nip)
             ->exists());
     }
     public function test_create_skp_periode_fail()
@@ -77,8 +75,7 @@ class CreateSkpTest extends TestCase
             ->set('data.penilaian', '2022-11-30')
             ->set('data.tim_angka_kredit', $this->timAngkaKredit->nip)
             ->set('data.pengelola_kinerja', $this->pengelolaKinerja->nip)
-            ->set('data.pejabat_penilai1',  $this->pejabatPenilai->nip)
-            ->set('data.pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->set('data.pejabat_penilai',  $this->pejabatPenilai->nip)
             ->call('save')
             ->assertHasErrors();
 
@@ -89,8 +86,7 @@ class CreateSkpTest extends TestCase
             ->where('penilaian', '2022-11-30')
             ->where('tim_angka_kredit', $this->timAngkaKredit->nip)
             ->where('pengelola_kinerja', $this->pengelolaKinerja->nip)
-            ->where('pejabat_penilai1',  $this->pejabatPenilai->nip)
-            ->where('pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->where('pejabat_penilai',  $this->pejabatPenilai->nip)
             ->exists());
     }
     
@@ -106,8 +102,7 @@ class CreateSkpTest extends TestCase
             ->where('penilaian', '2022-11-30')
             ->where('tim_angka_kredit', $this->timAngkaKredit->nip)
             ->where('pengelola_kinerja', $this->pengelolaKinerja->nip)
-            ->where('pejabat_penilai1',  $this->pejabatPenilai->nip)
-            ->where('pejabat_penilai2', $this->pejabatPenilai->nip)
+            ->where('pejabat_penilai',  $this->pejabatPenilai->nip)
             ->exists());
     }
 }

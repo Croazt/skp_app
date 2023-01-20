@@ -35,11 +35,11 @@
                     Pegawai Penilai Kinerja
                 </div>
                 <div class="card-body tw-w-full  tw-p-2">
-                    <x-responsive-data title="Nama" value="{{ $this->skp->pejabatPenilaiUtama->nama }}" />
-                    <x-responsive-data title="NIP" value="{{ $this->skp->pejabatPenilaiUtama->nip }}" />
-                    <x-responsive-data title="Pangkat" value="{{ $this->skp->pejabatPenilaiUtama->getPangkatName() }}" />
-                    <x-responsive-data title="Jabatan" value="{{ $this->skp->pejabatPenilaiUtama->pekerjaan }}" />
-                    <x-responsive-data title="Unit Kerja" value="{{ $this->skp->pejabatPenilaiUtama->unit_kerja }}" />
+                    <x-responsive-data title="Nama" value="{{ $this->skp->pejabatPenilai->nama }}" />
+                    <x-responsive-data title="NIP" value="{{ $this->skp->pejabatPenilai->nip }}" />
+                    <x-responsive-data title="Pangkat" value="{{ $this->skp->pejabatPenilai->getPangkatName() }}" />
+                    <x-responsive-data title="Jabatan" value="{{ $this->skp->pejabatPenilai->pekerjaan }}" />
+                    <x-responsive-data title="Unit Kerja" value="{{ $this->skp->pejabatPenilai->unit_kerja }}" />
                 </div>
             </div>
         </div>

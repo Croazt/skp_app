@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\DB;
  * @property integer $id
  * @property string $pengelola_kinerja
  * @property string $tim_angka_kredit
- * @property string $pejabat_penilai1
- * @property string $pejabat_penilai2
+ * @property string $pejabat_penilai
  * @property string $perencanaan
  * @property string $periode_awal
  * @property string $periode_akhir
@@ -42,7 +41,7 @@ class Skp extends Model
     /**
      * @var array
      */
-    protected $fillable = ['pengelola_kinerja', 'tim_angka_kredit', 'pejabat_penilai1', 'pejabat_penilai2', 'perencanaan', 'periode_awal', 'periode_akhir', 'penilaian'];
+    protected $fillable = ['pengelola_kinerja', 'tim_angka_kredit', 'pejabat_penilai', 'perencanaan', 'periode_awal', 'periode_akhir', 'penilaian'];
 
 
     protected $dates = [
@@ -75,8 +74,7 @@ class Skp extends Model
     {
         return $query->select([
             'skp.*',
-            DB::raw('(SELECT nama FROM pejabat_penilai WHERE skp.pejabat_penilai1 = pejabat_penilai.nip) as pejabat_penilai1'),
-            DB::raw('(SELECT nama FROM pejabat_penilai WHERE skp.pejabat_penilai2 = pejabat_penilai.nip) as pejabat_penilai2'),
+            DB::raw('(SELECT nama FROM pejabat_penilai WHERE skp.pejabat_penilai = pejabat_penilai.nip) as pejabat_penilai'),
             DB::raw('(SELECT nama FROM users WHERE skp.pengelola_kinerja = users.nip) as pengelola_kinerja'),
             DB::raw('(SELECT nama FROM users WHERE skp.tim_angka_kredit = users.nip) as tim_angka_kredit'),
         ]);
@@ -125,9 +123,9 @@ class Skp extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pejabatPenilaiUtama()
+    public function pejabatPenilai()
     {
-        return $this->belongsTo('App\Models\PejabatPenilai', 'pejabat_penilai1', 'nip');
+        return $this->belongsTo('App\Models\PejabatPenilai', 'pejabat_penilai', 'nip');
     }
 
     /**
@@ -138,13 +136,6 @@ class Skp extends Model
         return $this->belongsTo('App\Models\User', 'pengelola_kinerja', 'nip');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function pejabatPenilaiDua()
-    {
-        return $this->belongsTo('App\Models\PejabatPenilai', 'pejabat_penilai2', 'nip');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

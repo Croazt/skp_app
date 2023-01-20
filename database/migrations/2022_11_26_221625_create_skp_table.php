@@ -21,8 +21,7 @@ class CreateSkpTable extends Migration
             $table->date('penilaian');
             $table->string('pengelola_kinerja', 19)->index('pengelola_kinerja');
             $table->string('tim_angka_kredit', 19)->index('tim_angka_kredit');
-            $table->string('pejabat_penilai1', 19)->index('pejabat_penilai1');
-            $table->string('pejabat_penilai2', 19)->index('pejabat_penilai2');
+            $table->string('pejabat_penilai', 19)->index('pejabat_penilai');
 
             // $table->primary(['id']);
             $table->timestamps();

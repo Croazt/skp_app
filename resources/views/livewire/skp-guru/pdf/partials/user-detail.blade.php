@@ -38,7 +38,7 @@
                     NAMA
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilaiUtama->nama }}
+                    {{ $skp->pejabatPenilai->nama }}
                 </td>
             </tr>
             <tr>
@@ -52,7 +52,7 @@
                     NIP
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilaiUtama->nip }}
+                    {{ $skp->pejabatPenilai->nip }}
                 </td>
             </tr>
             <tr>
@@ -66,7 +66,7 @@
                     PANGKAT
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilaiUtama->getPangkatName() }}
+                    {{ $skp->pejabatPenilai->getPangkatName() }}
                 </td>
             </tr>
             <tr>
@@ -80,7 +80,7 @@
                     PEKERJAAN
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilaiUtama->pekerjaan }}
+                    {{ $skp->pejabatPenilai->pekerjaan }}
                 </td>
             </tr>
             <tr>
@@ -94,7 +94,7 @@
                     UNIT KERJA
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilaiUtama->unit_kerja }}
+                    {{ $skp->pejabatPenilai->unit_kerja }}
                 </td>
             </tr>
         </tbody>

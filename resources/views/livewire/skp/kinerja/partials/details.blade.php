@@ -21,7 +21,7 @@
     </div>
     <div class="w-full flex flex-wrap mb-0">
         <div class="w-5/12 text-base font-bold">
-            Pejabat Penilai 1
+            Pejabat Penilai
         </div>
         <span class="font-bold">:</span>
         <div class="ml-2 w-6/12 card shadow-none border border-black  mb-3">
@@ -32,7 +32,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiUtama->nama }}
+                        {{ $this->skp->pejabatPenilai->nama }}
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -41,7 +41,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiUtama->nip }}
+                        {{ $this->skp->pejabatPenilai->nip }}
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -50,7 +50,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiUtama->getPangkatName() }}
+                        {{ $this->skp->pejabatPenilai->getPangkatName() }}
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -59,7 +59,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiUtama->pekerjaan }}
+                        {{ $this->skp->pejabatPenilai->pekerjaan }}
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -68,62 +68,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiUtama->unit_kerja }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="w-full flex flex-wrap">
-        <div class="w-5/12 text-base font-bold">
-            Pejabat Penilai 2
-        </div>
-        <span class="font-bold">:</span>
-        <div class="ml-2 w-6/12 card shadow-none border border-black  mb-3">
-            <div class="card-body">
-                <div class="flex w-full">
-                    <div class="w-5/12 text-base font-bold">
-                        Nama
-                    </div>
-                    <span class="font-bold">:</span>
-                    <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiDua->nama }}
-                    </div>
-                </div>
-                <div class="flex w-full">
-                    <div class="w-5/12 text-base font-bold">
-                        NIP
-                    </div>
-                    <span class="font-bold">:</span>
-                    <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiDua->nip }}
-                    </div>
-                </div>
-                <div class="flex w-full">
-                    <div class="w-5/12 text-base font-bold">
-                        Pangkat
-                    </div>
-                    <span class="font-bold">:</span>
-                    <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiDua->getPangkatName() }}
-                    </div>
-                </div>
-                <div class="flex w-full">
-                    <div class="w-5/12 text-base font-bold">
-                        Jabatan
-                    </div>
-                    <span class="font-bold">:</span>
-                    <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiDua->pekerjaan }}
-                    </div>
-                </div>
-                <div class="flex w-full">
-                    <div class="w-5/12 text-base font-bold">
-                        Unit Kerja
-                    </div>
-                    <span class="font-bold">:</span>
-                    <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilaiDua->unit_kerja }}
+                        {{ $this->skp->pejabatPenilai->unit_kerja }}
                     </div>
                 </div>
             </div>

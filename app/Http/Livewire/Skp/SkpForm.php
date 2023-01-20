@@ -51,8 +51,7 @@ class SkpForm extends Component
             'penilaian' =>  $this->skp->getAttribute('penilaian'),
             'pengelola_kinerja' => $this->skp->getAttribute('pengelola_kinerja'),
             'tim_angka_kredit' => $this->skp->getAttribute('tim_angka_kredit'),
-            'pejabat_penilai1' => $this->skp->getAttribute('pejabat_penilai1'),
-            'pejabat_penilai2' => $this->skp->getAttribute('pejabat_penilai2'),
+            'pejabat_penilai' => $this->skp->getAttribute('pejabat_penilai'),
         ]);
 
         $this->timKredit = User::whereHas('roles', function ($query) {
@@ -73,8 +72,7 @@ class SkpForm extends Component
         'data.penilaian' => 'required|date|before:data.30_hari_periode_akhir|after:data.perencanaan',
         'data.pengelola_kinerja' => 'required|exists:users,nip',
         'data.tim_angka_kredit' => 'required|exists:users,nip',
-        'data.pejabat_penilai1' => 'required|exists:pejabat_penilai,nip',
-        'data.pejabat_penilai2' => 'required|exists:pejabat_penilai,nip',
+        'data.pejabat_penilai' => 'required|exists:pejabat_penilai,nip',
     ];
 
     /**

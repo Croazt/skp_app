@@ -76,17 +76,9 @@ class PejabatPenilai extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function utamaSkp()
+    public function skp()
     {
-        return $this->hasMany('App\Models\Skp', 'pejabat_penilai1', 'nip');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function duaSkp()
-    {
-        return $this->hasMany('App\Models\Skp', 'pejabat_penilai2', 'nip');
+        return $this->hasMany('App\Models\Skp', 'pejabat_penilai', 'nip');
     }
 
     /**
