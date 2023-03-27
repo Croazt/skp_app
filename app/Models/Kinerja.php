@@ -19,8 +19,10 @@ class Kinerja extends Model
      * 
      * @var string
      */
-    protected $table = 'kinerja';
-
+    protected $table = 'kinerja';    
+    public function getRouteKeyName() {
+        return 'id';
+    }
     /**
      * @var array
      */

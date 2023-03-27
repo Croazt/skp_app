@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -44,19 +45,19 @@ class Skp extends Model
     protected $fillable = ['pengelola_kinerja', 'tim_angka_kredit', 'pejabat_penilai', 'perencanaan', 'periode_awal', 'periode_akhir', 'penilaian'];
 
 
-    protected $dates = [
-        'perencanaan',
-        'periode_awal',
-        'periode_akhir',
-        'penilaian',
-    ];
+    // protected $dates = [
+    //     'perencanaan',
+    //     'periode_awal',
+    //     'periode_akhir',
+    //     'penilaian',
+    // ];
 
-    protected $casts = [
-        'perencanaan' => 'string',
-        'periode_awal' => 'string',
-        'periode_akhir' => 'string',
-        'penilaian' => 'string',
-    ];
+    // protected $casts = [
+    //     'perencanaan' => 'date:d-m-Y',
+    //     'periode_awal' => 'date:d-m-Y',
+    //     'periode_akhir' => 'date:d-m-Y',
+    //     'penilaian' => 'date:d-m-Y',
+    // ];
 
 
     /**
@@ -67,13 +68,43 @@ class Skp extends Model
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('m-d-Y');
+        return $date->format('d-m-y');
+    }
+    protected function periodeAwal(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => Carbon::create($value)->translatedFormat("d-m-Y"),
+            set: fn ($value, $attributes) => Carbon::parse($value)->format('Y-m-d'),
+        );
+    }
+    protected function periodeAkhir(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => Carbon::create($value)->translatedFormat("d-m-Y"),
+            set: fn ($value, $attributes) => Carbon::parse($value)->format('Y-m-d'),
+        );
+    }
+    protected function perencanaan(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => Carbon::create($value)->translatedFormat("d-m-Y"),
+            set: fn ($value, $attributes) => Carbon::parse($value)->format('Y-m-d'),
+        );
+    }
+    
+    protected function penilaian(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => Carbon::create($value)->translatedFormat("d-m-Y"),
+            set: fn ($value, $attributes) => Carbon::parse($value)->format('Y-m-d'),
+        );
     }
     
     public function scopeBaseQuery(Builder $query): Builder
     {
         return $query->select([
             'skp.*',
+            DB::RAW("CONCAT(DATE_FORMAT(skp.periode_awal, '%d-%m-%Y'),' s.d ',DATE_FORMAT(skp.periode_akhir, '%d-%m-%Y')) as rentang"),
             DB::raw('(SELECT nama FROM pejabat_penilai WHERE skp.pejabat_penilai = pejabat_penilai.nip) as pejabat_penilai'),
             DB::raw('(SELECT nama FROM users WHERE skp.pengelola_kinerja = users.nip) as pengelola_kinerja'),
             DB::raw('(SELECT nama FROM users WHERE skp.tim_angka_kredit = users.nip) as tim_angka_kredit'),

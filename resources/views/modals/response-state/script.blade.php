@@ -1,6 +1,5 @@
 <script>
     window.addEventListener('showResponseModal', event => {
-        console.log('wew')
         $('#response-title').children().remove();
         $('#response-message').children().remove();
         $('#response-modal').modal('show');

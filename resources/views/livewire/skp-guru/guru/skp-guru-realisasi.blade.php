@@ -27,6 +27,7 @@
     </style>
 @endpush
 <div>
+    @include('livewire.skp-guru.partials.user-detail-peta')
     <div id="accordion">
         <div class="card tw-px-0">
             <div class="card-header tw-py-0 collapsible" href="#collapseOne" data-toggle="collapse"
@@ -53,7 +54,7 @@
                                     {!! $this->renderHeader('TARGET', '', 1, 2) !!}
                                     {!! $this->renderHeader('BUKTI KINERJA') !!}
                                     {{-- @if ($this->skpGuru->status == 'verifikasi')
-                                        {!! $this->renderHeader('ACTION') !!}
+                                        {!! $this->renderHeader('AKSI') !!}
                                     @endif --}}
                                 </tr>
                             </thead>

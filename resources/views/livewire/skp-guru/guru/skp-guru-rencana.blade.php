@@ -1,6 +1,8 @@
 <div>
+    @include('livewire.skp-guru.partials.user-detail-peta')
     <div class="tw-w-full tw-text-center">
-        <button class="btn btn-primary" wire:click="downloadPdf"><span class="fas fa-download"></span>&nbsp; Dokumen Rencana</button>
+        <button class="btn btn-primary" wire:click="downloadPdf"><span class="fas fa-download"></span>&nbsp; Dokumen
+            Rencana</button>
     </div>
     <div id="accordion">
         <div class="card tw-px-0">
@@ -16,18 +18,24 @@
                 </div>
             </div>
             <div id="collapseOneRencana" class="collapse show" aria-labelledby="headingOne" wire:ignore.self>
-                <div class="card-body px-0 tw-pt-0">
-                    <div class="table-responsive table-scroll" id='rencana-table'>
-                        <table class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex">
-                            <thead class="text-center">
+                <div class="card-body px-0 tw-pt-0 tw-w-full">
+                    <div class="table-responsive table-scroll tw-w-full" id='rencana-table'>
+                        <table
+                            class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex tw-w-full">
+                            <thead class="text-center  tw-w-full">
                                 <tr>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">RENCANA KINERJA ATASAN
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width:25% ">
+                                        RENCANA KINERJA ATASAN
                                         LANGSUNG/ UNIT KERJA DAN ATAU ORGANISASI YANG DIINTERVENSI</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">RENCANA KINERJA</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">ASPEK</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">INDIKATOR KINERJA
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width:25% ">
+                                        RENCANA KINERJA</th>
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width: 6%">ASPEK
+                                    </th>
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width: 19%">
+                                        INDIKATOR KINERJA
                                         INDIVIDU</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="2">TARGET</th>
+                                    <th class=" tw-align-middle" rowspan="1" colspan="2" style="width: 25%">TARGET
+                                    </th>
                                 </tr>
                             </thead>
                             @foreach ($rencanaKinerjaUtama as $rencanaKinerja)
@@ -48,18 +56,24 @@
                 </div>
             </div>
             <div id="collapseTwoRencana" class="collapse show" aria-labelledby="headingTwo" wire:ignore.self>
-                <div class="card-body px-0 tw-pt-0">
-                    <div class="table-responsive table-scroll" id='rencana-table'>
-                        <table class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex">
-                            <thead class="text-center">
+                <div class="card-body px-0 tw-pt-0 tw-w-full">
+                    <div class="table-responsive table-scroll tw-w-full" id='rencana-table'>
+                        <table
+                            class="table table-bordered datatable-sortable table-sm tw-text-sm table-complex tw-w-full">
+                            <thead class="text-center  tw-w-full">
                                 <tr>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">RENCANA KINERJA ATASAN
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width:25% ">
+                                        RENCANA KINERJA ATASAN
                                         LANGSUNG/ UNIT KERJA DAN ATAU ORGANISASI YANG DIINTERVENSI</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">RENCANA KINERJA</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">ASPEK</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="1">INDIKATOR KINERJA
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width:25% ">
+                                        RENCANA KINERJA</th>
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width: 6%">ASPEK
+                                    </th>
+                                    <th class=" tw-align-middle" rowspan="1" colspan="1" style="width: 19%">
+                                        INDIKATOR KINERJA
                                         INDIVIDU</th>
-                                    <th class=" tw-align-middle" rowspan="1" colspan="2">TARGET</th>
+                                    <th class=" tw-align-middle" rowspan="1" colspan="2" style="width: 25%">TARGET
+                                    </th>
                                 </tr>
                             </thead>
                             @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)

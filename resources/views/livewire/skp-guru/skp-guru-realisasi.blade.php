@@ -27,22 +27,23 @@
     </style>
 @endpush
 <div>
-    @if ($this->skpGuru->status == 'draft')
-        <div class="tw-w-full tw-text-center tw-py-5">
+    @include('livewire.skp-guru.partials.user-detail-peta')
+    @if ($this->skpGuru->status == 'bukti')
+        {{-- <div class="tw-w-full tw-text-center tw-py-5">
             <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
                 data-target="#tambahRencanaKinerjaModal">
                 <p>
                     <span class="fas fa-plus"></span> Rencana Kinerja
                 </p>
             </button>`
-        </div>
+        </div> --}}
         <div class="tw-flex tw-justify-evenly tw-px-8 tw-text-center">
             <div class="tw-w-3/12">
-                <x-jet-label for="target_pkg" value="{{ __('Target PKG') }}" />
-                <select id="target_pkg"
+                <x-jet-label for="capaian_pkg" value="{{ __('Capaian PKG') }}" />
+                <select id="capaian_pkg"
                     class="tw-mx-auto tw-w-1/2 form-control tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
-                    wire:change="updateTargetPkg($event.target.value,'target_pkg')" wire:model="data.target_pkg"
-                    name="data.target_pkg" :value="old('target_pkg')" placeholder="Masukkan Target PKG Tugas Tambahan">
+                    wire:change="updateTargetPkg($event.target.value,'capaian_pkg')" wire:model="data.capaian_pkg"
+                    name="data.capaian_pkg" :value="old('capaian_pkg')" placeholder="Masukkan Capaian PKG Tugas Tambahan">
                     <option value="125">125%</option>
                     <option value="100">100%</option>
                     <option value="75">75%</option>
@@ -52,12 +53,12 @@
 
             </div>
             <div class="tw-w-3/12">
-                <x-jet-label for="jam_pelajaran" value="{{ __('Target Jam Pelajaran') }}" />
-                <select id="jam_pelajaran"
+                <x-jet-label for="capaian_jam_pelajaran" value="{{ __('Capaian Jam Pelajaran') }}" />
+                <select id="capaian_jam_pelajaran"
                     class="tw-mx-auto tw-w-1/2 form-control tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
-                    wire:change="updateTargetPkg($event.target.value,'jam_pelajaran')" wire:model="data.jam_pelajaran"
-                    name="data.jam_pelajaran" :value="old('jam_pelajaran')"
-                    placeholder="Masukkan Target PKG Tugas Tambahan">
+                    wire:change="updateTargetPkg($event.target.value,'capaian_jam_pelajaran')" wire:model="data.capaian_jam_pelajaran"
+                    name="data.capaian_jam_pelajaran" :value="old('capaian_jam_pelajaran')"
+                    placeholder="Masukkan Capaian PKG Tugas Tambahan">
                     <option value="24">24-40</option>
                     @for ($i = 23; $i >= 6; $i--)
                         <option value="{{ $i }}">{{ $i }}</option>
@@ -66,12 +67,12 @@
             </div>
             @can('tugas_tambahan')
                 <div class="tw-w-3/12">
-                    <x-jet-label for="target_pkg_tambahan" value="{{ __('Target PKG Tugas Tambahan') }}" />
-                    <select id="target_pkg_tambahan"
+                    <x-jet-label for="capaian_pkg_tambahan" value="{{ __('Capaian PKG Tugas Tambahan') }}" />
+                    <select id="capaian_pkg_tambahan"
                         class="tw-mx-auto tw-w-1/2 form-control tw-border-gray-300 focus:tw-border-indigo-300 focus:tw-ring focus:tw-ring-indigo-200 focus:tw-ring-opacity-50 tw-rounded-md tw-shadow-sm"
-                        wire:change="updateTargetPkg($event.target.value,'target_pkg_tambahan')"
-                        wire:model="data.target_pkg_tambahan" name="data.target_pkg_tambahan"
-                        :value="old('target_pkg_tambahan')" placeholder="Masukkan Target PKG Tugas Tambahan">
+                        wire:change="updateTargetPkg($event.target.value,'capaian_pkg_tambahan')"
+                        wire:model="data.capaian_pkg_tambahan" name="data.capaian_pkg_tambahan"
+                        :value="old('capaian_pkg_tambahan')" placeholder="Masukkan Target PKG Tugas Tambahan">
                         <option value="125">125%</option>
                         <option value="100">100%</option>
                         <option value="75">75%</option>
@@ -85,20 +86,20 @@
     @else
         <div class="tw-flex tw-justify-evenly tw-px-8 tw-text-center">
             <div class="tw-w-3/12">
-                <x-jet-label for="target_pkg" value="{{ __('Target PKG') }}" />
-                <x-jet-input type="text" class="form-input tw-text-center" id="target_pkg"
-                    wire:model="data.target_pkg" name="data.target_pkg" disabled />
+                <x-jet-label for="capaian_pkg" value="{{ __('Capaaian PKG') }}" />
+                <x-jet-input type="text" class="form-input tw-text-center" id="capaian_pkg"
+                    wire:model="data.capaian_pkg" name="data.capaian_pkg" disabled />
             </div>
             <div class="tw-w-3/12">
-                <x-jet-label for="jam_pelajaran" value="{{ __('Target Jam Pelajaran') }}" />
-                <x-jet-input type="text" class="form-input tw-text-center" id="jam_pelajaran"
-                    wire:model="data.jam_pelajaran" name="data.jam_pelajaran" />
+                <x-jet-label for="capaian_jam_pelajaran" value="{{ __('Target Jam Pelajaran') }}" />
+                <x-jet-input type="text" class="form-input tw-text-center" id="capaian_jam_pelajaran"
+                    wire:model="data.capaian_jam_pelajaran" name="data.capaian_jam_pelajaran" disabled/>
             </div>
             @can('tugas_tambahan')
                 <div class="tw-w-3/12">
-                    <x-jet-label for="target_pkg_tambahan" value="{{ __('Target PKG Tugas Tambahan') }}" />
-                    <x-jet-input type="text" class="form-input tw-text-center" id="target_pkg_tambahan"
-                        wire:model="data.target_pkg_tambahan" name="data.target_pkg_tambahan" disabled />
+                    <x-jet-label for="capaian_pkg_tambahan" value="{{ __('Target PKG Tugas Tambahan') }}" />
+                    <x-jet-input type="text" class="form-input tw-text-center" id="capaian_pkg_tambahan"
+                        wire:model="data.capaian_pkg_tambahan" name="data.capaian_pkg_tambahan" disabled />
 
                 </div>
             @endcan

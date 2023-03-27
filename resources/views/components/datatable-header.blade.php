@@ -18,9 +18,6 @@
                     </div>
                 </div>
             </div>
-            <a href="#" class="ml-2 btn btn-success shadow-none">
-                <span class="fas fa-filter"></span>
-            </a>
         </div>
 
         <div class="row mb-4">

@@ -21,7 +21,7 @@
     </div>
     <div class="w-full flex flex-wrap mb-0">
         <div class="w-5/12 text-base font-bold">
-            Pejabat Penilai
+            Pejabat Penilais
         </div>
         <span class="font-bold">:</span>
         <div class="ml-2 w-6/12 card shadow-none border border-black  mb-3">
@@ -50,7 +50,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pejabatPenilai->getPangkatName() }}
+                        {{ $this->skp->pejabatPenilai->getPangkatJabatanName() }}
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -105,7 +105,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->pengelolaKinerja->getPangkatName() }}
+                        {{ $this->skp->pengelolaKinerja->getPangkatJabatanName() }}
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -160,7 +160,7 @@
                     </div>
                     <span class="font-bold">:</span>
                     <div class="ml-1 w-6/12 font-medium text-base">
-                        {{ $this->skp->timAngkaKredit->getPangkatName() }}
+                        {{ $this->skp->timAngkaKredit->getPangkatJabatanName() }}
                     </div>
                 </div>
                 <div class="flex w-full">

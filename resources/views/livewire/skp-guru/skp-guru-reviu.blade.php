@@ -27,6 +27,7 @@
     </style>
 @endpush
 <div>
+    @include('livewire.skp-guru.partials.user-detail-peta')
     <div id="accordion">
         <div class="card tw-px-0">
             <div class="card-header tw-py-0 collapsible" href="#collapseOneReviu" data-toggle="collapse"
@@ -56,7 +57,6 @@
                             @foreach ($this->rencanaKinerjaUtama as $rencanaKinerja)
                                 @if ($this->skpGuru->status == 'konfirmasi')
                                     @include('livewire.skp-guru.tables.reviu')
-                                    {{ 'wew' }}
                                 @else
                                     @include('livewire.skp-guru.guru.tables.reviu')
                                 @endif

@@ -16,7 +16,7 @@ use Livewire\WithFileUploads;
 
 class SkpGuruPeta extends Component
 {
-    
+
     use SkpGuruMap;
     use WithFileUploads;
     protected $listeners = ['refresh' => 'refresh', 'kinerjaGuruAdded' => 'refresh'];
@@ -39,14 +39,16 @@ class SkpGuruPeta extends Component
     {
         $rencanaKinerjaGuru = $this->skpGuru->rencanaKinerjaGurus;
         $targetFilled = $rencanaKinerjaGuru->reject(function ($item, $key) {
-            return !$item->target1_kualitas || !$item->target2_kualitas ||  !$item->target1_kuantitas || !$item->target2_kuantitas ||  !$item->target1_waktu || !$item->target2_waktu;
+            return $item->target1_kualitas && $item->target2_kualitas && $item->target1_kuantitas && $item->target2_kuantitas && $item->target1_waktu && $item->target2_waktu;
         })->isEmpty();
-        if ($targetFilled) {
+        if (!$targetFilled) {
             $this->dispatchBrowserEvent('showResponseModal', ['success' => false, 'message' => 'Tidak dapat melakukan konfirmasi SKP, harap isi mengisi target terlebih dahulu!']);
             return;
         }
         $this->skpGuru->status = SkpGuru::KONFIRMASI;
         $this->skpGuru->tanggal_konfirmasi = now();
+        $this->skpGuru->pangkat_rencana = $this->skpGuru->user->pangkat_id;
+        $this->skpGuru->pejabat_rencana = $this->skpGuru->skp->pejabat_penilai;
         $this->skpGuru->save();
         return redirect(request()->header('Referer'));
     }
@@ -58,7 +60,7 @@ class SkpGuruPeta extends Component
             return ($item->dokumen_bukti && $item->dokumen_diterima !== 0) || !$item->terkait;
         })->isEmpty();
         if (!$targetFilled) {
-            if($this->skpGuru->status =='ditolak'){
+            if ($this->skpGuru->status == 'ditolak') {
                 $this->dispatchBrowserEvent('showResponseModal', ['success' => false, 'message' => 'Tidak dapat meminta verifikasi, harap memperbaiki dokumen bukti kinerja terlebih dahulu!']);
                 return;
             }
@@ -119,13 +121,13 @@ class SkpGuruPeta extends Component
             return view('livewire.skp-guru.guru.skp-guru-verifikasi');
         }
 
+        if ($this->viewType == 'penetapan') {
+            return view('livewire.skp-guru.guru.skp-guru-penetapan');
+        }
         if ($this->viewType == 'realisasi') {
             return view('livewire.skp-guru.guru.skp-guru-realisasi');
         }
 
-        if ($this->viewType == 'penetapan') {
-            return view('livewire.skp-guru.guru.skp-guru-penetapan');
-        }
         if ($this->viewType == 'penilaian') {
             return view('livewire.skp-guru.guru.skp-guru-penilaian');
         }

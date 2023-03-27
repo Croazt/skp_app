@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Carbon;
+
 if (!function_exists('array_to_object')) {
 
     /**
@@ -21,7 +23,7 @@ if (!function_exists('empty_fallback')) {
      *
      * @return string
      */
-    function empty_fallback ($data)
+    function empty_fallback($data)
     {
         return ($data) ? $data : "-";
     }
@@ -29,14 +31,22 @@ if (!function_exists('empty_fallback')) {
 
 if (!function_exists('create_button')) {
 
-    function create_button ($action, $model)
+    function create_button($action, $model)
     {
         $action = str_replace($model, "", $action);
 
         return [
             'submit_text' => ($action == "update") ? "Update" : "Submit",
             'submit_response' => ($action == "update") ? "Updated." : "Submited.",
-            'submit_response_notyf' => ($action == "update") ? "Data ".$model." updated successfully" : "Data ".$model." added successfully"
+            'submit_response_notyf' => ($action == "update") ? "Data " . $model . " updated successfully" : "Data " . $model . " added successfully"
         ];
+    }
+}
+
+if (!function_exists('format_periode')) {
+
+    function format_periode($startDate, $endDate)
+    {
+        return Carbon::parse($startDate)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('j F') . ' s/d ' . Carbon::parse($endDate)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('j F Y');
     }
 }

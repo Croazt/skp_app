@@ -60,13 +60,13 @@
                     PANGKAT
                 </td>
                 <td style="width:35%;">
-                    {{ $penilaianPerilakuGuru->user->getPangkatName() }}
+                    {{ $penilaianPerilakuGuru->user->getPangkatJabatanName() }}
                 </td>
                 <td style="width: 15%;">
                     PANGKAT
                 </td>
                 <td style="width: 35%;">
-                    {{ $penilaianPerilakuGuru->konfirmasiOleh->getPangkatName() }}
+                    {{ $penilaianPerilakuGuru->konfirmasiOleh->getPangkatJabatanName() }}
                 </td>
             </tr>
             <tr>

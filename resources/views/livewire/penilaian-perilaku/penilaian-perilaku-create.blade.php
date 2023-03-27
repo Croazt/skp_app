@@ -5,6 +5,9 @@
         <div class="breadcrumb-item"><a
                 href="{{ route('penilaian-perilaku.guru.create', ['skp' => $skp->id, 'user' => $user->nip]) }}">{{ auth()->user()->nip }}</a>
         </div>
+        <div class="breadcrumb-item"><a
+                href="{{ route('penilaian-perilaku.guru.create', ['skp' => $skp->id, 'user' => $user->nip]) }}">Buat</a>
+        </div>
     </div>
 </x-slot>
 
@@ -15,10 +18,18 @@
             font-weight: 900;
         }
     </style>
+    <div class="tw-px-6 tw-pt-8 tw-pb-4 tw-text-center">
+        <h1 class="h5 tw-font-black">
+            PENILAIAN PERILAKU GURU - {{ format_periode($this->skp->periode_awal, $this->skp->periode_akhir) }}
+        </h1>
+        <div class="tw-w-fit tw-mx-auto">
+            <h1  class="h5 tw-font-light">{{ $data['nama'] }}</h1>
+        </div>
+    </div>
     <div class="tw-w-full tw-flex tw-justify-center tw-py-2">
-        <ul class="nav nav-tabs" id="myTab" role="tablist"  wire:ignore.self>
+        <ul class="nav nav-tabs" id="myTab" role="tablist" wire:ignore.self>
             @foreach ($aspekPerilaku as $item)
-                <li class="nav-item"  wire:ignore.self>
+                <li class="nav-item" wire:ignore.self>
                     <a wire:ignore.self class="nav-link @if ($loop->first) active @endif"
                         id="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab" data-toggle="tab"
                         href="#{{ strtolower(explode(' ', $item->nama)[0]) }}" role="tab">
@@ -32,11 +43,10 @@
         @foreach ($aspekPerilaku as $key => $item)
             <div class="tab-pane fade @if ($loop->first) show active @endif tw-w-full"
                 id="{{ strtolower(explode(' ', $item->nama)[0]) }}" role="tabpanel"
-                aria-labelledby="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab"  wire:ignore.self>
-                <div  wire:ignore.self>
+                aria-labelledby="{{ strtolower(explode(' ', $item->nama)[0]) }}-tab" wire:ignore.self>
+                <div wire:ignore.self>
                     @include('livewire.penilaian-perilaku.penilaian-perilaku-create-table')
-                    {{-- <livewire:penilaian-perilaku.penilaian-perilaku-create-table :skp="$skp" :user="$user"
-                        :tableType="$item->nama" :wire:key="$item->nama"> --}}
+
                 </div>
                 <div class=" tw-w-full tw-text-center">
                     @if (!$loop->last)

@@ -58,6 +58,7 @@ class PenilaianPerilakuGuruIndex extends DatatableComponent
         return [
             'nama',
             'email',
+            'status'
         ];
     }
 }

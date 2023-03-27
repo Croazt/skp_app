@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Skp;
+use App\Observers\SkpObserver;
 use App\Providers\Traits\SqlMacro;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -36,5 +38,7 @@ class AppServiceProvider extends ServiceProvider
             return '<?php $__env->stopPush(); endif; ?>';
         });
         //
+        
+        Skp::observe(SkpObserver::class);
     }
 }

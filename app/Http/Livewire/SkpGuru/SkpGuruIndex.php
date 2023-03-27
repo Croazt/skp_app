@@ -40,7 +40,14 @@ class SkpGuruIndex extends DatatableComponent
     {
         if (Cookie::get('role') == 'Pengelola Kinerja') {
             return (new SkpGuru())
-                ->newQuery()->baseQuery($this->skp->id)->where('status', 'konfirmasi');
+                ->newQuery()->baseQuery($this->skp->id)->where(function ($q) {
+                    $q->where('status', SkpGuru::KONFIRMASI)
+                        ->orWhere('status', SkpGuru::VERIFIKASI)
+                        ->orWhere('status', SkpGuru::REVIU)
+                        ->orWhere('status', SkpGuru::BUKTI)
+                        ->orWhere('status', SkpGuru::DITOLAK)
+                        ->orWhere('status', SkpGuru::DINILAI);
+                });
         }
         return (new SkpGuru())
             ->newQuery()->baseQuery($this->skp->id);

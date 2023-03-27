@@ -50,23 +50,38 @@ class User extends Authenticatable
      */
     protected $fillable = ['pangkat_id', 'nama', 'pekerjaan', 'nip', 'unit_kerja', 'tugas_tambahan', 'email', 'password'];
 
+    const GURU_MAPEL = 'Guru Mata Pelajaran';
+    const GURU_BK = 'Guru Bimbingan Konseling';
+    const GURU_KELAS = 'Guru Kelas';
+    const GURU_KELOMPOK = 'Guru Kelompok';
+
+    // const KEPSEK = 'Kepala Sekolah';
+    // const KEPALA_UPT = 'Kepala UPT Sekolah';
+    // const PLT_KEPSEK = 'Plt. Kepala Sekolah';
+    const WAKASEK = 'Wakil Kepala Sekolah';
+    const KAPROG_KEAHLIAN = 'Ketua Prog. Keahlian';
+    const KAPERPUS = 'Kepala Perpustakaan';
+    const KALAB = 'Kepala Laboratorium';
+    const KABENG = 'Kepala Bengkel';
+    const KAU = 'Kepala Unit Produksi';
+
     const PEKERJAAN = [
-        'Guru Mata Pelajaran',
-        'Guru Bimbingan Konseling',
-        'Guru Kelas',
-        'Guru Kelompok',
+        self::GURU_MAPEL,
+        self::GURU_BK,
+        self::GURU_KELAS,
+        self::GURU_KELOMPOK,
     ];
 
     const TUGAS_TAMBAHAN = [
-        'Kepala Sekolah',
-        'Kepala UPT Sekolah',
-        'Plt. Kepala Sekolah',
-        'Wakil Kepala Sekolah',
-        'Ketua Prog. Keahlian',
-        'Kepala Perpustakaan',
-        'Kepala Laboratorium',
-        'Kepala Bengkel',
-        'Kepala Unit Produksi',
+        // self::KEPSEK,
+        // self::KEPALA_UPT,
+        // self::PLT_KEPSEK,
+        self::WAKASEK,
+        self::KAPROG_KEAHLIAN,
+        self::KAPERPUS,
+        self::KALAB,
+        self::KABENG,
+        self::KAU,
     ];
 
     /**
@@ -152,7 +167,7 @@ class User extends Authenticatable
      */
     public function verifikasiSkp()
     {
-        return $this->hasMany('App\Models\SkpGuru', 'verivikasi_oleh', 'nip');
+        return $this->hasMany('App\Models\SkpGuru', 'verifikasi_oleh', 'nip');
     }
 
     /**
@@ -196,19 +211,29 @@ class User extends Authenticatable
 
     public function scopePenilaianPerilakuQuery(Builder $query, int $skpId): Builder
     {
+        $penilaianPerilaku = DB::table((User::whereHas('roles', function ($q) {
+            $q->where('nama', Role::GURU);
+        })), 'users')->select([
+            'users.nip',
+            DB::raw("IF(penilaian_perilaku.status IS NOT NULL,penilaian_perilaku.status, IF(skp_guru.status IS NOT NULL, 'Penilaian perilaku belum diisi', 'SKP belum direncanakan')) as status")
+        ])->leftJoin(DB::raw('(SELECT * FROM skp_guru where skp_guru.skp_id =' . $skpId . ') as skp_guru'), 'users.nip', 'skp_guru.user_nip')
+        ->leftJoin(DB::raw('(SELECT * FROM penilaian_perilaku_guru where skp_id =' . $skpId . ') as penilaian_perilaku'), 'penilaian_perilaku.user_nip', 'skp_guru.user_nip');
+        
         return $query->select([
             'users.*',
-            DB::raw("IF(penilaian_perilaku.status IS NOT NULL,penilaian_perilaku.status, IF(skp_guru.status IS NOT NULL, 'Belum diisi', 'SKP belum dibuat')) as status"),
-        ])->whereHas('roles', function ($q) {
-            $q->where('nama', Role::GURU);
-        })->leftJoin(DB::raw('(SELECT * FROM penilaian_perilaku_guru where skp_id =' . $skpId . ') as penilaian_perilaku'), 'users.nip', 'penilaian_perilaku.user_nip')
-        ->leftJoin(DB::raw('(SELECT * FROM skp_guru where skp_guru.skp_id =' . $skpId . ') as skp_guru'), 'users.nip', 'skp_guru.user_nip');
+            'penilaian_perilaku.status',
+        ])->joinSub($penilaianPerilaku, 'penilaian_perilaku', 'penilaian_perilaku.nip', 'users.nip');
     }
 
-    public function getPangkatname(): string
+    public function getPangkatJabatanName(): string
     {
         $pangkat = $this->pangkat;
         return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang . '/' . $pangkat->jabatan;
+    }
+    public function getPangkatName(): string
+    {
+        $pangkat = $this->pangkat;
+        return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang;
     }
     public function getPangkat(): array
     {

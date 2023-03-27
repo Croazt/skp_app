@@ -5,6 +5,7 @@ namespace App\Http\Livewire\PenilaianPerilaku;
 use App\Http\Livewire\Concerns\DatatableComponent;
 use App\Models\AspekPerilaku;
 use App\Models\IndikatorPenilaianPerilaku;
+use App\Models\Pangkat;
 use App\Models\PangkatPkgAk;
 use App\Models\PenilaianPerilakuGuru;
 use App\Models\RencanaKinerjaGuru;
@@ -68,11 +69,11 @@ class PenilaianPerilakuGuruShow extends Component
             ->where('user_nip', $this->user->nip)
             ->groupBy('aspek_perilaku.id')->get();
 
-        if ($this->user->pangkat->jabatan == Role::GURU_MUDA)
+        if ($this->user->pangkat->jabatan == Pangkat::GURU_MUDA)
             $this->level = 5;
-        if ($this->user->pangkat->jabatan == Role::GURU_MADYA)
+        if ($this->user->pangkat->jabatan == Pangkat::GURU_MADYA)
             $this->level = 6;
-        if ($this->user->pangkat->jabatan == Role::GURU_UTAMA)
+        if ($this->user->pangkat->jabatan == Pangkat::GURU_UTAMA)
             $this->level = 7;
 
         $nilaiAkhirPerilaku = 0;
@@ -127,7 +128,6 @@ class PenilaianPerilakuGuruShow extends Component
         }
         $skpGuru = SkpGuru::where('skp_id', $this->skp->id)->where('user_nip', $this->user->nip)->first();
         $rencanaKinerjaGuru = $this->getRencanaKinerjaGuru($skpGuru);
-
         $rencanaKinerjaUtama = $rencanaKinerjaGuru->filter(function ($item) {
             return $item->kategori == "utama";
         });
@@ -147,7 +147,6 @@ class PenilaianPerilakuGuruShow extends Component
         }
         $nilaiAkhirSkp = ($nilaiTertimbangUtama / $totalTertimbangUtama) + ($nilaiTertimbangTambahan > 10 ? 10 : $nilaiTertimbangTambahan);
         $nilaiAkhirTotal = (($nilaiAkhirPerilaku * 30) / 100) + (($nilaiAkhirSkp * 70) / 100);
-        // dd($nilaiAkhirTotal,$nilaiAkhirPerilaku,$nilaiAkhirSkp);
 
         $view = (view('livewire.penilaian-perilaku.pdf.penilaian-prestasi-kerja', [
             'nilaiAkhirTotal' => $nilaiAkhirTotal,
@@ -164,7 +163,26 @@ class PenilaianPerilakuGuruShow extends Component
             ->setNpmBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/npm')
             ->margins($margin['top'], $margin['right'], $margin['bottom'], $margin['left'])->savePdf($saveToFile);
 
-        return ['file_name' => $fileName, 'path' => '/storage/file/penilaian-prestasi/'];
+        if ($type == 'prestasi') {
+            return ['file_name' => $fileName, 'path' => '/storage/file/penilaian-prestasi/'];
+        }
+        $view = (view('livewire.penilaian-perilaku.pdf.dokumen-penilaian-kerja', [
+            'nilaiAkhirTotal' => $nilaiAkhirTotal,
+            'nilaiAkhirPerilaku' => $nilaiAkhirPerilaku,
+            'nilaiAkhirSkp' => $nilaiAkhirSkp,
+            'penilaianPerilakuGuru' => $penilaianPerilakuGuru,
+            'rencanaKinerjaGuru' => $rencanaKinerjaGuru,
+            'skp' => $this->skp,
+            'skpGuru' => $skpGuru,
+        ])->render());
+
+        $fileName =  $penilaianPerilakuGuru->user_nip . '-dokumen-penilaian-kinerja.pdf';
+        $saveToFile = storage_path('app/public/file/dokumen-penilaian-kinerja/' . $fileName);
+        Browsershot::html($view)
+            ->setNodeBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/node')
+            ->setNpmBinary('/home/fachry/.nvm/versions/node/v18.12.1/bin/npm')
+            ->margins($margin['top'], $margin['right'], $margin['bottom'], $margin['left'])->savePdf($saveToFile);
+        return ['file_name' => $fileName, 'path' => '/storage/file/dokumen-penilaian-kinerja/'];
     }
 
     public function getRencanaKinerjaGuru(SkpGuru $skpGuru)
@@ -211,7 +229,7 @@ class PenilaianPerilakuGuruShow extends Component
         if ($rencanaKinerjaGuru->tipe_angka_kredit == 'persen') {
             $jamAndAk = ($capaianJamPelajaran / 24) * ($rencanaKinerjaGuru->angka_kredit / 100);
             if ($rencanaKinerjaGuru->pekerjaan == auth()->user()->tugas_tambahan) {
-                $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', auth()->user()->pangkat_id)->first()->$capaianPkgTambahan * $jamAndAk;
+                $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', auth()->user()->pangkat_id)->first()->$capaianPkgTambahan * $jamAndAk ;
             } else {
                 $rencanaKinerjaGuru->realisasi_angka_kredit = PangkatPkgAk::where('pangkat_id', auth()->user()->pangkat_id)->first()->$capaianPkg * $jamAndAk;
             }
@@ -242,7 +260,7 @@ class PenilaianPerilakuGuruShow extends Component
         $crkValue = $this->getCrkValue($rencanaKinerjaGuru->kategori_capaian_iki_kualitas, $rencanaKinerjaGuru->kategori_capaian_iki_kuantitas, $rencanaKinerjaGuru->kategori_capaian_iki_waktu);
         $rencanaKinerjaGuru->kategori_crk = $crkValue[0];
         $rencanaKinerjaGuru->nilai_crk = $crkValue[1];
-        $rencanaKinerjaGuru->nilai_tertimbang = 100;
+        $rencanaKinerjaGuru->nilai_tertimbang = $rencanaKinerjaGuru->cascading === 0 ? intdiv(($crkValue[1] * 80), 100) : $crkValue[1];
     }
 
     protected function getCrkValue($kategoriKualitas, $kategoriKuantitas, $kategoriWaktu): array

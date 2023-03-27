@@ -23,12 +23,13 @@ class SkpIndex extends DatatableComponent
     {
         return $this->applyColumnVisibility([
             DatatableColumn::make('id'),
-            DatatableColumn::make('periode_awal'),
-            DatatableColumn::make('periode_akhir'),
-            DatatableColumn::make('perencanaan'),
+            DatatableColumn::make('rentang'),
+            DatatableColumn::make('periode_awal')->setInvisible(true),
+            DatatableColumn::make('periode_akhir')->setInvisible(true),
+            DatatableColumn::make('perencanaan')->setTitle('Akhir Perencanaan'),
             // DatatableColumn::make('email_verified_at'),
             // DatatableColumn::make('remember_token'),
-            DatatableColumn::make('penilaian'),
+            DatatableColumn::make('penilaian')->setTitle('Mulai Penilaian'),
             DatatableColumn::make('pengelola_kinerja'),
             DatatableColumn::make('pejabat_penilai'),
             DatatableColumn::make('tim_angka_kredit'),
@@ -46,7 +47,7 @@ class SkpIndex extends DatatableComponent
         if (Cookie::get('role') == 'Pengelola Kinerja' || Cookie::get('role') == 'Tim Angka Kredit') {
             $field = strtolower(str_replace(' ', '_', Cookie::get('role')));
             return (new Skp())
-                ->newQuery()->baseQuery()->where($field , auth()->user()->nip);
+                ->newQuery()->baseQuery()->where($field, auth()->user()->nip);
         }
         return (new Skp())
             ->newQuery()->baseQuery();

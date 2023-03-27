@@ -49,29 +49,36 @@ Route::middleware([
     })->name('dashboard');
 
     //users
-    Route::get('/users', UserIndex::class)->name('users.index');
-    Route::get('/users/create', UserCreate::class)->name('users.create');
-    Route::get('/users/{user}', UserShow::class)->name('users.show');
-    Route::get('/users/{user}/edit', UserEdit::class)->name('users.edit');
+    Route::middleware(['can:Operator'])->group(function () {
+        Route::get('/users', UserIndex::class)->name('users.index');
+        Route::get('/users/create', UserCreate::class)->name('users.create');
+        Route::get('/users/{user}', UserShow::class)->name('users.show');
+        Route::get('/users/{user}/edit', UserEdit::class)->name('users.edit');
 
-    //users
-    Route::get('/pejabat-penilai', PejabatPenilaiIndex::class)->name('pejabat-penilai.index');
-    Route::get('/pejabat-penilai/create', PejabatPenilaiCreate::class)->name('pejabat-penilai.create');
-    Route::get('/pejabat-penilai/{pejabatPenilai}', PejabatPenilaiShow::class)->name('pejabat-penilai.show');
-    Route::get('/pejabat-penilai/{pejabatPenilai}/edit', PejabatPenilaiEdit::class)->name('pejabat-penilai.edit');
+        //pejabat penilai
+        Route::get('/pejabat-penilai', PejabatPenilaiIndex::class)->name('pejabat-penilai.index');
+        Route::get('/pejabat-penilai/create', PejabatPenilaiCreate::class)->name('pejabat-penilai.create');
+        Route::get('/pejabat-penilai/{pejabatPenilai}', PejabatPenilaiShow::class)->name('pejabat-penilai.show');
+        Route::get('/pejabat-penilai/{pejabatPenilai}/edit', PejabatPenilaiEdit::class)->name('pejabat-penilai.edit');
+    });
 
     //SKP
     Route::get('/skp', SkpIndex::class)->name('skp.index');
-    Route::get('/skp/create', SkpCreate::class)->name('skp.create');
+    Route::middleware(['can:Operator'])->group(function () {
+        Route::get('/skp/create', SkpCreate::class)->name('skp.create');
+        Route::get('/skp/{skp}/edit', SkpEdit::class)->name('skp.edit');
+        Route::get('/skp/{skp}/tambah-kinerja', KinerjaIndex::class)->name('skp.tambah-kinerja');
+    });
     Route::get('/skp/{skp}', SkpShow::class)->name('skp.show');
-    Route::get('/skp/{skp}/edit', SkpEdit::class)->name('skp.edit');
-    Route::get('/skp/{skp}/tambah-kinerja', KinerjaIndex::class)->name('skp.tambah-kinerja');
 
     //PENILAIAN PERILAKU
+    Route::middleware(['can:Kepala Sekolah'])->group(function () {
+        Route::get('/penilaian-perilaku/create', PenilaianPerilakuCreate::class)->name('penilaian-perilaku.create');
+        Route::get('/penilaian-perilaku/{skp}/users/{user}/create', PenilaianPerilakuCreate::class)->name('penilaian-perilaku.guru.create');
+    });
+
     Route::get('/penilaian-perilaku', PenilaianPerilakuIndex::class)->name('penilaian-perilaku.index');
     Route::get('/penilaian-perilaku/{skp}', PenilaianPerilakuShow::class)->name('penilaian-perilaku.show');
-    Route::get('/penilaian-perilaku/create', PenilaianPerilakuCreate::class)->name('penilaian-perilaku.create');
-    Route::get('/penilaian-perilaku/{skp}/users/{user}/create', PenilaianPerilakuCreate::class)->name('penilaian-perilaku.guru.create');
     Route::get('/penilaian-perilaku/{skp}/users/{user}', PenilaianPerilakuGuruShow::class)->name('penilaian-perilaku.guru.show');
     // Route::get('/penilaian-perilaku/{skp}/users/{user}', SkpShow::class)->name('penilaian-perilaku.show');
     // Route::get('/penilaian-perilaku/{skp}/users/{user}/edit', SkpEdit::class)->name('penilaian-perilaku.edit');
@@ -80,18 +87,27 @@ Route::middleware([
     Route::get('/skp/{skp}/kinerja/get-jabatan', [KinerjaController::class, 'getJabatan'])->name("getJabatan");
     Route::get('/skp/{skp}/kinerja/get', [KinerjaController::class, 'getKinerja'])->name("getKinerja");
     Route::resource('/skp/{skp}/kinerja', KinerjaController::class);
+    Route::post('/skp/{skp}/kinerja/{kinerja}', [KinerjaController::class, 'update'])->name("updateKinerja");
     
     //DETAIL KINERJA
-    Route::get('/skp/{skp}/detail-kinerja', [DetailKinerjaController::class,'index'])->name('detail-kinerja.index');
-    Route::get('/skp/{skp}/skp-guru/{skpGuru}/detail-kinerja', [DetailKinerjaController::class,'getSkpGuruKinerja'])->name('skp-guru.detail-kinerja');
+    Route::get('/skp/{skp}/detail-kinerja', [DetailKinerjaController::class, 'index'])->name('detail-kinerja.index');
+    Route::post('/skp/{skp}/detail-kinerja/{detailKinerja}', [KinerjaController::class, 'updateDetailKinerja'])->name("updateDetailKinerja");
+    Route::get('/skp/{skp}/skp-guru/{skpGuru}/detail-kinerja', [DetailKinerjaController::class, 'getSkpGuruKinerja'])->name('skp-guru.detail-kinerja');
 
     Route::get('/skp-guru/rencana/print', [SkpGuruController::class, 'rencanaPrint'])->name('guru.skp-guru.rencana-print');
+    Route::get(
+        '/skp-guru/sampul',
+        function () {
+            return view('livewire.skp-guru.pdf.skp-guru-sampul');
+        }
+    )->name('guru.skp-guru.sampul-print');
 
+    Route::middleware(['can:Guru'])->group(function () {
+        Route::get('/skp/{skp}/guru/skp-guru', GuruSkpGuruIndex::class)->name('guru.skp-guru.index');
+        Route::post('/skp-guru/{skpGuru}/add-rencana', [SkpGuruController::class, 'addRencanaKinerjaGuru'])->name('guru.skp-guru.tambah-rencana');
+    });
     //SKP GURU
-    Route::get('/skp/{skp}/skp-guru', SkpGuruIndex::class)->name('skp-guru.index');
     Route::get('/skp/{skp}/skp-guru/{skpGuru}', SkpGuruShow::class)->name('skp-guru.show');
-    Route::get('/skp/{skp}/guru/skp-guru', GuruSkpGuruIndex::class)->name('guru.skp-guru.index');
-    Route::post('/skp-guru/{skpGuru}/add-rencana', [SkpGuruController::class, 'addRencanaKinerjaGuru'])->name('guru.skp-guru.tambah-rencana');
-    Route::post('/skp-guru/{skpGuru}/add-rencana', [SkpGuruController::class, 'addRencanaKinerjaGuru'])->name('guru.skp-guru.tambah-rencana');
-    
+    Route::get('/skp/{skp}/skp-guru', SkpGuruIndex::class)->name('skp-guru.index');
+    // Route::get('/skp/{skp}/skp-guru', GuruSkpGuruIndex::class)->name('users.edit');
 });

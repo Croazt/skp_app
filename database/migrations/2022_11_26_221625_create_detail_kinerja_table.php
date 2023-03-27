@@ -20,8 +20,8 @@ class CreateDetailKinerjaTable extends Migration
             $table->text('deskripsi');
             $table->text('butir_kegiatan');
             $table->text('output_kegiatan');
-            $table->integer('angka_kredit');
-            $table->string('pekerjaan', 50)->nullable();
+            $table->double('angka_kredit');
+            $table->string('pekerjaan', 100)->nullable();
             $table->text('indikator_kualitas')->nullable();
             $table->text('indikator_kuantitas')->nullable();
             $table->text('indikator_waktu')->nullable();

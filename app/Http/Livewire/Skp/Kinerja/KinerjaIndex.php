@@ -50,7 +50,7 @@ class KinerjaIndex extends Component
     public function delete(string $key): void
     {
         $row = $this->skp->kinerjas()->find($key);
-        // dd($row);
+        
         if ($row instanceof Kinerja) {
             $row->detailKinerjas()->delete();
             $row->delete();
@@ -64,7 +64,8 @@ class KinerjaIndex extends Component
         $this->emit('KinerjaDeleted');
         $this->dispatchBrowserEvent('deletedDetailKinerja');
         session()->flash('alertType', 'success');
-        session()->flash('alertMessage', 'The record ('.$key.') have been deleted.');
+        session()->flash('alertMessage', 'Kinerja atasan telah dihapus.');
+        redirect(request()->header('Referer'));
     }
     
     public function deleteDetailKinerja(string $key): void
@@ -82,7 +83,8 @@ class KinerjaIndex extends Component
         $this->emit('KinerjaDeleted');
         $this->dispatchBrowserEvent('KinerjaDeleted');
         session()->flash('alertType', 'success');
-        session()->flash('alertMessage', 'The record ('.$key.') have been deleted.');
+        session()->flash('alertMessage', 'Detail kinerja telah dihapus.');
+        redirect(request()->header('Referer'));
     }
 
     protected function searchableColumns(): array

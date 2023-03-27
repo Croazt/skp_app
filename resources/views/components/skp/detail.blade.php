@@ -9,7 +9,7 @@
         <div class="card-body tw-w-full">
             <x-responsive-data title="Nama" value="{{ $data->nama }}" />
             <x-responsive-data title="NIP" value="{{ $data->nip }}" />
-            <x-responsive-data title="Pangkat" value="{{ $data->getPangkatName() }}" />
+            <x-responsive-data title="Pangkat" value="{{ $data->getPangkatJabatanName() }}" />
             <x-responsive-data title="Jabatan" value="{{ $data->pekerjaan }}" />
             <x-responsive-data title="Unit Kerja" value="{{ $data->unit_kerja }}" />
         </div>

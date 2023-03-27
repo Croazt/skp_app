@@ -53,7 +53,7 @@ trait SkpGuruMap
             ->leftJoin('kinerja', 'detail_kinerja.kinerja_id', '=', 'kinerja.id')
             ->orderBy('kinerja.deskripsi', 'asc')
             ->get();
-                
+
         $this->calculateAngkaKredit();
         $this->calculateRealisasiScore();
 
@@ -97,7 +97,7 @@ trait SkpGuruMap
             'capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('capaian_iki_waktu', 'id')->toArray(),
             'kategori_capaian_iki_waktu' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_waktu', 'id')->toArray(),
             'kategori_capaian_iki_kualitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_kualitas', 'id')->toArray(),
-            'kategori_capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_waktu', 'id')->toArray(),
+            'kategori_capaian_iki_kuantitas' =>  $this->rencanaKinerjaGuru->pluck('kategori_capaian_iki_kuantitas', 'id')->toArray(),
             'kategori_crk' =>  $this->rencanaKinerjaGuru->pluck('kategori_crk', 'id')->toArray(),
             'nilai_crk' =>  $this->rencanaKinerjaGuru->pluck('nilai_crk', 'id')->toArray(),
             'nilai_tertimbang' =>  $this->rencanaKinerjaGuru->pluck('nilai_tertimbang', 'id')->toArray(),
@@ -121,9 +121,9 @@ trait SkpGuruMap
             if ($item->tipe_angka_kredit == 'persen') {
                 $jamAndAk = ($targetJamPelajaran / 24) * ($item->angka_kredit / 100);
                 if ($item->pekerjaan && $item->pekerjaan == Auth::user()->tugas_tambahan) {
-                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$targetPkgTambahan * $jamAndAk;
+                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', $this->skpGuru->pangkat_rencana ?? Auth::user()->pangkat_id)->first()->$targetPkgTambahan * $jamAndAk;
                 } else {
-                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', Auth::user()->pangkat_id)->first()->$targetPkg * $jamAndAk;
+                    $item->angka_kredit = PangkatPkgAk::where('pangkat_id', $this->skpGuru->pangkat_rencana ?? Auth::user()->pangkat_id)->first()->$targetPkg * $jamAndAk;
                 }
                 $item->angka_kredit = round($item->angka_kredit, 2);
             }
@@ -143,14 +143,6 @@ trait SkpGuruMap
         $header = sprintf('<th class="%s tw-align-middle" %s %s>%s</th>', $class, $rowspanText, $colspanText, $text);
         return $header;
     }
-    public function updateTargetCapaian(int $rencanaId, int $value, string $field)
-    {
-        $rencana = RencanaKinerjaGuru::find($rencanaId);
-        if ($rencana instanceof RencanaKinerjaGuru) {
-            $rencana->$field = $value;
-            $rencana->save();
-        }
-    }
 
     public function downloadPdf()
     {
@@ -169,8 +161,9 @@ trait SkpGuruMap
                 'data' => $this->data,
                 'skpGuru' => $this->skpGuru,
                 'skp' => $this->skpGuru->skp,
+                'viewType' => $this->viewType,
             ])->render());
-            $fileName =  $this->skpGuru->user_nip . '-rencana.pdf';
+            $fileName =  \Carbon\Carbon::parse($this->skpGuru->skp->periode_awal)->year. '-'. $this->skpGuru->user_nip  . '-rencana.pdf';
         };
         if ($this->viewType == 'keterkaitan') {
             $view = (view('livewire.skp-guru.pdf.skp-guru-keterkaitan', [
@@ -179,8 +172,9 @@ trait SkpGuruMap
                 'data' => $this->data,
                 'skpGuru' => $this->skpGuru,
                 'skp' => $this->skpGuru->skp,
+                'viewType' => $this->viewType,
             ])->render());
-            $fileName =  $this->skpGuru->user_nip . '-keterkaitan.pdf';
+            $fileName =  \Carbon\Carbon::parse($this->skpGuru->skp->periode_awal)->year. '-'. $this->skpGuru->user_nip  . '-keterkaitan.pdf';
         }
         if ($this->viewType == 'reviu') {
             $view = (view('livewire.skp-guru.pdf.skp-guru-reviu', [
@@ -189,8 +183,9 @@ trait SkpGuruMap
                 'data' => $this->data,
                 'skpGuru' => $this->skpGuru,
                 'skp' => $this->skpGuru->skp,
+                'viewType' => $this->viewType,
             ])->render());
-            $fileName =  $this->skpGuru->user_nip . '-reviu.pdf';
+            $fileName =  \Carbon\Carbon::parse($this->skpGuru->skp->periode_awal)->year. '-'. $this->skpGuru->user_nip  . '-reviu.pdf';
         }
         if ($this->viewType == 'verifikasi') {
             $view = (view('livewire.skp-guru.pdf.skp-guru-verifikasi', [
@@ -200,8 +195,9 @@ trait SkpGuruMap
                 'skpGuru' => $this->skpGuru,
                 'skp' => $this->skpGuru->skp,
                 'rencanaKinerjaGuru' => $this->rencanaKinerjaGuru,
+                'viewType' => $this->viewType,
             ])->render());
-            $fileName =  $this->skpGuru->user_nip . '-verifikasi.pdf';
+            $fileName =  \Carbon\Carbon::parse($this->skpGuru->skp->periode_awal)->year. '-'. $this->skpGuru->user_nip  . '-verifikasi.pdf';
         }
         if ($this->viewType == 'penetapan') {
             $view = (view('livewire.skp-guru.pdf.skp-guru-penetapan', [
@@ -211,8 +207,9 @@ trait SkpGuruMap
                 'skpGuru' => $this->skpGuru,
                 'skp' => $this->skpGuru->skp,
                 'rencanaKinerjaGuru' => $this->rencanaKinerjaGuru,
+                'viewType' => $this->viewType,
             ])->render());
-            $fileName =  $this->skpGuru->user_nip . '-penetapan.pdf';
+            $fileName =  \Carbon\Carbon::parse($this->skpGuru->skp->periode_awal)->year. '-'. $this->skpGuru->user_nip  . '-penetapan.pdf';
         }
         if ($this->viewType == 'penilaian') {
             $view = (view('livewire.skp-guru.pdf.skp-guru-penilaian', [
@@ -222,8 +219,9 @@ trait SkpGuruMap
                 'skpGuru' => $this->skpGuru,
                 'skp' => $this->skpGuru->skp,
                 'rencanaKinerjaGuru' => $this->rencanaKinerjaGuru,
+                'viewType' => $this->viewType,
             ])->render());
-            $fileName =  $this->skpGuru->user_nip . '-penilaian.pdf';
+            $fileName =  \Carbon\Carbon::parse($this->skpGuru->skp->periode_awal)->year. '-'. $this->skpGuru->user_nip  . '-penilaian.pdf';
             $margin = [
                 'top' => 0,
                 'bottom' => 0,

@@ -1,5 +1,6 @@
 
 <div>
+    @include('livewire.skp-guru.partials.user-detail-peta')
     <div class="tw-w-full tw-text-center">
         <button class="btn btn-primary" wire:click="downloadPdf"><span class="fas fa-download"></span>&nbsp; Dokumen Verifikasi</button>
     </div>

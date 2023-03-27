@@ -36,20 +36,18 @@ trait CalculateRealisasi
             $target1Kuantitas = $item->target1_kuantitas;
             $target2Kuantitas = $item->target2_kuantitas;
             $item->capaian_iki_kuantitas = ($realisasiKuantitas > $target2Kuantitas) ? (intdiv($realisasiKuantitas * 100, $target2Kuantitas)) : ($realisasiKuantitas >= $target1Kuantitas ? 100 : intdiv($realisasiKuantitas * 100, $target1Kuantitas));
-
-
             $item->kategori_capaian_iki_kuantitas = $this->setKategoriIki($item->capaian_iki_kuantitas);
 
             $realisasiWaktu = $item->realisasi_waktu;
             $target1Waktu = $item->target1_waktu;
             $target2Waktu = $item->target2_waktu;
-            $item->capaian_iki_waktu = ($realisasiWaktu > $target2Waktu) ? (intdiv($realisasiWaktu * 100, $target2Waktu)) : ($realisasiWaktu >= $target1Waktu ? 100 : intdiv($realisasiWaktu * 100, $target1Waktu));
+            $item->capaian_iki_waktu = 100 + (100 - (($realisasiWaktu < $target1Waktu) ? (intdiv($realisasiWaktu * 100, $target1Waktu)) : ($realisasiWaktu <= $target2Waktu ? 100 : intdiv($realisasiWaktu * 100, $target2Waktu))));
             $item->kategori_capaian_iki_waktu = $this->setKategoriIki($item->capaian_iki_waktu);
 
             $crkValue = $this->getCrkValue($item->kategori_capaian_iki_kualitas, $item->kategori_capaian_iki_kuantitas, $item->kategori_capaian_iki_waktu);
             $item->kategori_crk = $crkValue[0];
             $item->nilai_crk = $crkValue[1];
-            $item->nilai_tertimbang = 100;
+            $item->nilai_tertimbang = $item->cascading === 0 ? intdiv(($crkValue[1] * 80), 100) : $crkValue[1];
         });
     }
 

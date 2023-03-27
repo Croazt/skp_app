@@ -37,10 +37,7 @@ class RencanaKinerjaGuruCreateRequest extends FormRequest
         $rules =  [
             'detail_kinerja_id' => 'required|integer|exists:detail_kinerja,id',
         ];
-        Log::debug('Message.', [
-            'req' => request(),
-            'rules' => $rules,
-        ]);
+
         return $rules;
     }
 }

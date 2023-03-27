@@ -1,4 +1,5 @@
 <div>
+    @include('livewire.skp-guru.partials.user-detail-peta')
     <div id="accordion">
         <div class="card tw-px-0">
             <div class="card-header tw-py-0 collapsible" href="#collapseOneVerifikasi" data-toggle="collapse"

@@ -9,7 +9,7 @@
                     Periode Penilaian:
                 </p>
                 <p>
-                    {{ $skp->periode_awal . ' s.d. ' . $skp->periode_akhir }}
+                    {{ format_periode($skp->periode_awal, $skp->periode_akhir) }}
                 </p>
 
             </div>
@@ -26,6 +26,11 @@
                 </th>
             </tr>
         </thead>
+        @php
+            $temp = in_array($viewType, ['draft', 'rencana', 'keterkaitan', 'reviu', 'verifikasi', 'penetapan']) ? $skpGuru->getPangkatJabatanName('Rencana') : $skpGuru->getPangkatJabatanName('Nilai');
+            $pangkat = $temp ? $temp : $skpGuru->user->getPangkatJabatanName();
+            $pejabatPenilai = ($skpGuru->pejabatRencana ?? $skpGuru->pejabatPenilai) ?? $skp->pejabatPenilai;
+        @endphp
         <tbody>
             <tr>
                 <td style="width: 15%;">
@@ -38,7 +43,7 @@
                     NAMA
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilai->nama }}
+                    {{ $pejabatPenilai->nama }}
                 </td>
             </tr>
             <tr>
@@ -52,7 +57,7 @@
                     NIP
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilai->nip }}
+                    {{ $pejabatPenilai->nip }}
                 </td>
             </tr>
             <tr>
@@ -60,13 +65,13 @@
                     PANGKAT
                 </td>
                 <td style="width:35%;">
-                    {{ $skpGuru->user->getPangkatName() }}
+                    {{ $pangkat }}
                 </td>
                 <td style="width: 15%;">
                     PANGKAT
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilai->getPangkatName() }}
+                    {{ $pejabatPenilai->getPangkatJabatanName() }}
                 </td>
             </tr>
             <tr>
@@ -80,7 +85,7 @@
                     PEKERJAAN
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilai->pekerjaan }}
+                    {{ $pejabatPenilai->pekerjaan }}
                 </td>
             </tr>
             <tr>
@@ -94,7 +99,7 @@
                     UNIT KERJA
                 </td>
                 <td style="width: 35%;">
-                    {{ $skp->pejabatPenilai->unit_kerja }}
+                    {{ $pejabatPenilai->unit_kerja }}
                 </td>
             </tr>
         </tbody>

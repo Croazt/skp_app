@@ -141,26 +141,31 @@
         <script>
             let initDatePicker = () => {
                 date = $('.daterange-cus').val().split(' - ')
-                if ($('.daterange-cus').val() === moment().format("YYYY-MM-DD") + ' - ' + moment().format("YYYY-MM-DD") ||
+                if ($('.daterange-cus').val() === moment().format("DD-MM-YYYY") + ' - ' + moment().format("DD-MM-YYYY") ||
                     $(
                         '.daterange-cus').val() === "") {
                     $('.daterange-single').prop('disabled', true)
                 }
                 $('.daterange-single').daterangepicker({
+                    autoApply: true,
                     minDate: moment(date[0]).add(30, 'days'),
-                    maxDate: moment(date[0]).add(30, 'days') >= moment(date[1]).add(-30, 'days') ?  moment(date[0]).add(90, 'days') : moment(
-                        date[1]).add(-30, 'days'),
+                    maxDate: moment(date[0]).add(30, 'days') >= moment(date[1]).add(-30, 'days') ? moment(date[0])
+                        .add(90, 'days') : moment(
+                            date[1]).add(-30, 'days'),
                     singleDatePicker: true,
                     locale: {
-                        format: 'YYYY-MM-DD'
+                        format: 'DD-MM-YYYY'
                     },
                 });
             }
 
             $('.daterange-cus').daterangepicker({
                 locale: {
-                    format: 'YYYY-MM-DD'
+                    format: 'DD-MM-YYYY'
                 },
+                startDate: new Date(new Date().getFullYear(), 0, 1),
+                endDate: new Date(new Date().getFullYear(), 11, 31),
+                autoApply: true,
                 drops: 'down',
                 opens: 'right'
             });

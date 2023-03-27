@@ -4,12 +4,12 @@
             <div class="sm:tw-text-sm md:tw-text-base tw-font-bold">
                 SMA NEGERI 1 SIDRAP
             </div>
-            <div class="sm:tw-text-sm md:tw-text-base tw-text-end tw-uppercase">
+            <div class="sm:tw-text-sm md:tw-text-base tw-text-end tw-capitalize">
                 <p class="tw-font-bold">
                     Periode Penilaian:
                 </p>
                 <p >
-                    {{ $this->skp->periode_awal . ' s.d. ' . $this->skp->periode_akhir }}
+                    {{ format_periode($this->skp->periode_awal,$this->skp->periode_akhir) }}
                 </p>
             </div>
         </div>
@@ -23,7 +23,7 @@
                 <div class="card-body tw-w-full tw-p-2">
                     <x-responsive-data title="Nama" value="{{ $this->skpGuru->user->nama }}" />
                     <x-responsive-data title="NIP" value="{{ $this->skpGuru->user->nip }}" />
-                    <x-responsive-data title="Pangkat" value="{{ $this->skpGuru->user->getPangkatName() }}" />
+                    <x-responsive-data title="Pangkat" value="{{ $this->skpGuru->user->getPangkatJabatanName() }}" />
                     <x-responsive-data title="Jabatan" value="{{ $this->skpGuru->user->pekerjaan }}" />
                     <x-responsive-data title="Unit Kerja" value="{{ $this->skpGuru->user->unit_kerja }}" />
                 </div>
@@ -37,7 +37,7 @@
                 <div class="card-body tw-w-full  tw-p-2">
                     <x-responsive-data title="Nama" value="{{ $this->skp->pejabatPenilai->nama }}" />
                     <x-responsive-data title="NIP" value="{{ $this->skp->pejabatPenilai->nip }}" />
-                    <x-responsive-data title="Pangkat" value="{{ $this->skp->pejabatPenilai->getPangkatName() }}" />
+                    <x-responsive-data title="Pangkat" value="{{ $this->skp->pejabatPenilai->getPangkatJabatanName() }}" />
                     <x-responsive-data title="Jabatan" value="{{ $this->skp->pejabatPenilai->pekerjaan }}" />
                     <x-responsive-data title="Unit Kerja" value="{{ $this->skp->pejabatPenilai->unit_kerja }}" />
                 </div>

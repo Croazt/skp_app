@@ -75,7 +75,10 @@
         .wrapping-div tr,
         .wrapping-div td,
         .wrapping-div th {
-            page-break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                -webkit-column-break-inside: avoid;
+                break-inside: avoid;
+                -webkit-region-break-inside: avoid;
         }
 
         table {
@@ -131,26 +134,32 @@
             <tr>
                 <th class="tw-align-middle" rowspan="1" colspan="8">B. KINERJA TAMBAHAN</th>
             </tr>
-            @php
-                $i = 1;
-                $firstKey = $rencanaKinerjaTambahan->first()->id;
-                $deskripsi = $data['kinerja_desc'][$firstKey];
-            @endphp
-            @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
-                @if ($firstKey != $rencanaKinerja->id && $deskripsi != $data['kinerja_desc'][$rencanaKinerja->id])
-                    @php
-                        $deskripsi = $data['kinerja_desc'][$rencanaKinerja->id];
-                        $i++;
-                    @endphp
-                @endif
-                @include('livewire.skp-guru.pdf.tables.reviu')
-            @endforeach
+            @if ($rencanaKinerjaTambahan->first())
+                @php
+                    $i = 1;
+                    $firstKey = $rencanaKinerjaTambahan->first()->id;
+                    $deskripsi = $data['kinerja_desc'][$firstKey];
+                @endphp
+                @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
+                    @if ($firstKey != $rencanaKinerja->id && $deskripsi != $data['kinerja_desc'][$rencanaKinerja->id])
+                        @php
+                            $deskripsi = $data['kinerja_desc'][$rencanaKinerja->id];
+                            $i++;
+                        @endphp
+                    @endif
+                    @include('livewire.skp-guru.pdf.tables.reviu')
+                @endforeach
+            @else
+                <tr>
+                    <th class="tw-text-right" rowspan="1" colspan="8"></th>
+                </tr>
+            @endif
         </table>
     </div>
     <div style="float: right; display: block; break-inside: avoid;" class="tw-mr-3">
         <br>
         <div>
-            Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_reviu)->translatedFormat('d F Y') }}
+            Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_reviu)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
         </div>
         <div>
             Pengelola Kinerja,
@@ -159,10 +168,10 @@
         <br>
         <br>
         <p class="tw-uppercase tw-font-bold" style="text-decoration: underline!important;">
-            {{ $skpGuru->reviu->nama }}
+            {{ $skpGuru->reviu ?? $skpGuru->skp->pengelolaKinerja->nama }}
         </p>
         <div class="tw-uppercase">
-            NIP {{ $skpGuru->reviu->nip }}
+            NIP {{ $skpGuru->reviu ?? $skpGuru->skp->pengelolaKinerja->nip }}
         </div>
     </div>
     <script>

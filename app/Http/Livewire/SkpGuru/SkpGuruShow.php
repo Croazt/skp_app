@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\SkpGuru;
 
+use App\Http\Livewire\SkpGuru\Traits\CalculateRealisasi;
+use App\Http\Livewire\SkpGuru\Traits\DownloadPdf;
 use App\Models\RencanaKinerjaGuru;
 use App\Models\Skp;
 use App\Models\SkpGuru;
@@ -14,10 +16,12 @@ class SkpGuruShow extends Component
     public SkpGuru $skpGuru;
     public Collection $rencanaKinerjaGuru;
     public Collection $rencanaKinerjaGuruSql;
+    use CalculateRealisasi;
+    use DownloadPdf;
 
     public function mount()
     {
-        $this->skpGuru = $this->skp->skpGurus()->where('user_nip', auth()->user()->nip)->first();
+        // $this->skpGuru = $this->skp->skpGurus()->where('user_nip', auth()->user()->nip)->first();
         $this->rencanaKinerjaGuru = $this->skpGuru->rencanaKinerjaGurus()
             ->select([
                 'rencana_kinerja_guru.*',
@@ -44,6 +48,7 @@ class SkpGuruShow extends Component
             ->orderBy('kinerja.deskripsi', 'asc')
             ->get();
     }
+    
     public function render()
     {
         return view('livewire.skp-guru.skp-guru-show');

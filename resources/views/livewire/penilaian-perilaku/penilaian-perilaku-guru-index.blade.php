@@ -1,3 +1,14 @@
+<x-slot name="header_content">
+    <h1>{{ __('Daftar Penilaian Perilaku Guru') }}</h1>
+    <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="{{ route('penilaian-perilaku.index') }}">Penilaian Perilaku</a></div>
+        <div class="breadcrumb-item active"><a
+                href="{{ route('penilaian-perilaku.show', ['skp' => $skp->id]) }}">{{ $skp->id }}</a></div>
+        <div class="breadcrumb-item"><a href="{{ route('penilaian-perilaku.index') }}">Daftar</a>
+        </div>
+    </div>
+</x-slot>
+
 <div>
     <div class="tw-bg-white tw-overflow-hidden tw-shadow-xl sm:tw-rounded-lg">
         @include('components.datatable-header')
@@ -7,15 +18,15 @@
                 <tr>
                     <th style="width: 60px;">
                         <div class="custom-checkbox custom-control">
-                            <input type="checkbox" class="custom-control-input" id="checkbox-all" wire:model="selectAllRows"
-                                wire:click="toggleSelectAllRows">
+                            <input type="checkbox" class="custom-control-input" id="checkbox-all"
+                                wire:model="selectAllRows" wire:click="toggleSelectAllRows">
                             <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
                         </div>
                     </th>
                     @foreach ($this->columns() as $column)
                         {!! $column->renderHeader($sortColumn, $sortDirection) !!}
                     @endforeach
-                    <th class="text-center" style="width: 128px;">Actions</th>
+                    <th class="text-center" style="width: 128px;">Aksi</th>
 
                 </tr>
 
@@ -35,7 +46,7 @@
                             {!! $column->renderCell($item) !!}
                         @endforeach
                         <td>
-                            @if ($item->status != 'SKP belum dibuat')
+                            @if ($item->status != 'SKP belum direncanakan')
                                 <div class="tw-align-middle tw-flex tw-flex-row">
                                     @if ($item->status == 'dibuat')
                                         <button wire:click="performAction('show', '{{ $item->getKey() }}')"
@@ -59,7 +70,7 @@
                     <tr>
                         <td colspan="999">
                             <div class="mt-6 mb-6 text-center">
-                                There is no data available in this datatable.
+                                Tidak ada data yang tersedia dalam tabel ini.
                             </div>
                         </td>
                     </tr>
@@ -69,8 +80,9 @@
 
         <div class="card-footer text-center">
             <div class="mb-3">
-                Showing {{ $this->data->firstItem() }} to {{ $this->data->lastItem() }} of {{ $this->data->total() }}
-                entries
+                Menampilkan {{ $this->data->firstItem() }} hingga {{ $this->data->lastItem() }} dari
+                {{ $this->data->total() }}
+                entri
             </div>
             {!! $this->pagination !!}
         </div>

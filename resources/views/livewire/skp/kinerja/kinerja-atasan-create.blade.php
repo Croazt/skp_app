@@ -110,18 +110,18 @@
                         </div>
                         <div class="mb-3">
                             <x-jet-label for="butir_kegiatan" value="{{ __('Butir kegiatan terkait') }}" />
-                            <x-jet-input
-                                class="form-control {{ $errors->first('butir_kegiatan') != null ? 'is-invalid' : '' }}"
+                            <textarea
+                                class="form-control tw-h-20 {{ $errors->first('butir_kegiatan') != null ? 'is-invalid' : '' }}"
                                 name="butir_kegiatan" id="butir_kegiatan"
-                                placeholder="Masukkan butir kegiatan terkait" />
+                                placeholder="Masukkan butir kegiatan terkait"></textarea>
                             <div id="butir_kegiatan_error"></div>
                         </div>
                         <div class="mb-3">
                             <x-jet-label for="output_kegiatan" value="{{ __('Output kegiatan terkait') }}" />
-                            <x-jet-input
-                                class="form-control {{ $errors->first('output_kegiatan') != null ? 'is-invalid' : '' }}"
+                            <textarea
+                            class="form-control tw-h-20 {{ $errors->first('output_kegiatan') != null ? 'is-invalid' : '' }}"
                                 name="output_kegiatan" id="output_kegiatan"
-                                placeholder="Masukkan output kegiatan terkait" />
+                                placeholder="Masukkan output kegiatan terkait"></textarea>
                             <div id="output_kegiatan_error"></div>
                         </div>
                         <div class="mb-3">
@@ -143,8 +143,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br form-group">
                     <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" form="kinerjaAtasanForm" class="btn btn-primary">Save
-                        changes</button>
+                    <button type="submit" form="kinerjaAtasanForm" class="btn btn-primary">Simpan perubahan</button>
                 </div>
             </div>
         </div>
@@ -183,10 +182,6 @@
         })
         $('#kinerjaAtasanModal').on('show.bs.modal', function(event) {
 
-            //FUNCTION RESET MODAL
-
-
-            //SELECT KINERJA
             $("#deskripsi").select2({
                 ajax: {
                     url: '/skp/' + id + "/kinerja/get",
@@ -196,7 +191,8 @@
                     data: function(params) {
                         return {
                             _token: CSRF_TOKEN,
-                            search: params.term // search term
+                            search: params.term, // search term
+                            kategori: $("#kategori").select2().val(),
                         };
                     },
                     processResults: function(response) {
@@ -236,11 +232,20 @@
                         };
                     },
                     cache: true
+                },
+                formatResult: function(element) {
+                    return element.text + ' (' + element.id + ')';
+                },
+                formatSelection: function(element) {
+                    return element.text + ' (' + element.id + ')';
+                },
+                escapeMarkup: function(m) {
+                    return m;
                 }
 
             });
-            $('#kategori').on('change', function(){
-                if($(this).val() == 'tambahan'){
+            $('#kategori').on('change', function() {
+                if ($(this).val() == 'tambahan') {
                     $('#tipe_angka_kredit').val('absolut').trigger('change')
                     return
                 }
@@ -256,6 +261,40 @@
                     $('#jabatan').val('').trigger('change')
                 }
             })
+            var link = $(event.relatedTarget),
+                modal = $(this),
+                kategori = link.data("kategori"),
+                deskripsi = link.data("deskripsi"),
+                deskripsi_id = link.data("deskripsiid"),
+                detaildeskripsi = link.data("detaildeskripsi");
+
+            if (detaildeskripsi != null) {
+                console.log({
+                    id: deskripsi_id,
+                    text: deskripsi
+                })
+                var newOption = new Option(deskripsi, deskripsi_id, true, true);
+                console.log(detaildeskripsi)
+                $("#kategori").val(kategori).trigger('change');
+                $('#deskripsi').append(newOption).trigger('change');
+                $("#detail_rencana").val(detaildeskripsi.deskripsi).trigger('change')
+                $("#angka_kredit").val(detaildeskripsi.angka_kredit).trigger('change')
+                $("#iki_kuantitas").val(detaildeskripsi.indikator_kuantitas).trigger('change')
+                $("#iki_kualitas").val(detaildeskripsi.indikator_kualitas).trigger('change')
+                $("#iki_waktu").val(detaildeskripsi.indikator_waktu).trigger('change')
+                $("#target_output_kuantitas").val(detaildeskripsi.detail_output_kuantitas).trigger('change')
+                $("#target_output_kualitas").val(detaildeskripsi.detail_output_kualitas).trigger('change')
+                $("#target_output_waktu").val(detaildeskripsi.detail_output_waktu).trigger('change')
+                $("#butir_kegiatan").val(detaildeskripsi.butir_kegiatan).trigger('change')
+                $("#output_kegiatan").val(detaildeskripsi.output_kegiatan).trigger('change')
+                if (detaildeskripsi.pekerjaan != null) {
+                    $('#is_default').prop('checked', true).trigger('change')
+                    newOption = new Option(detaildeskripsi.pekerjaan, detaildeskripsi.pekerjaan, true, true);
+                    $('#jabatan').append(newOption).trigger('change');
+                    $("#jabatan").val(detaildeskripsi.pekerjaan).trigger('change')
+                }
+            }
+
             //SUBMIT FORM
             $("form").submit(function(event) {
                 event.stopImmediatePropagation();
@@ -282,28 +321,51 @@
                 $("#error_message").each(function() {
                     $(this).remove()
                 })
+                if (detaildeskripsi == null) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/skp/' + id + "/kinerja",
+                        data: formData,
+                        dataType: "json",
+                        encode: true,
+                        error: function(request, status, error) {
+                            console.log(request.responseJSON.errors);
+                            $.each(request.responseJSON.errors, function(key, item) {
+                                $("#" + key + "_error").append(
+                                    '<div class="invalid-feedback  d-block" role = "alert" id="error_message">' +
+                                    item + '</div>'
+                                )
+                            })
+                        },
+                        success: function(data) {
+                            $('#kinerjaAtasanModal').modal('toggle');
+                        },
+                    }).done(function(data) {
+                        console.log(data);
+                    })
+                    return false;
+                }
 
                 $.ajax({
-                    type: "POST",
-                    url: '/skp/' + id + "/kinerja",
-                    data: formData,
-                    dataType: "json",
-                    encode: true,
-                    error: function(request, status, error) {
-                        console.log(request.responseJSON.errors);
-                        $.each(request.responseJSON.errors, function(key, item) {
-                            $("#" + key + "_error").append(
-                                '<div class="invalid-feedback  d-block" role = "alert" id="error_message">' +
-                                item + '</div>'
-                            )
-                        })
-                    },
-                    success: function(data) {
-                        $('#kinerjaAtasanModal').modal('toggle');
-                    },
-                }).done(function(data) {
-                    console.log(data);
-                })
+                        type: "POST",
+                        url: '/skp/' + id + "/detail-kinerja/" + detaildeskripsi.id,
+                        data: formData,
+                        dataType: "json",
+                        encode: true,
+                        error: function(request, status, error) {
+                            $.each(request.responseJSON.errors, function(key, item) {
+                                $("#" + key + "_error").append(
+                                    '<div class="invalid-feedback  d-block" role = "alert" id="error_message">' +
+                                    item + '</div>'
+                                )
+                            })
+                        },
+                        success: function(data) {
+                            $('#kinerjaAtasanModal').modal('toggle');
+                        },
+                    }).done(function(data) {
+                        console.log(data);
+                    })
 
                 return false;
             });

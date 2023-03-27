@@ -33,7 +33,9 @@ class PenilaianPerilakuCreate extends Component
 
     public function mount(): void
     {
-        $this->data = collect([]);
+        $this->data = collect([
+            'nama' => $this->user->nama
+        ]);
         $this->aspekPerilaku = AspekPerilaku::all();
 
         if ($this->user->pangkat->jabatan == Pangkat::GURU_MUDA)
@@ -51,14 +53,13 @@ class PenilaianPerilakuCreate extends Component
                 $item->nama => [
                     'user_nip' => $this->user->nip,
                     'skp_id' => $this->skp->id,
-                    'definisi' => $item->de,
+                    'definisi' => $item->definisi,
                     'indikator_penilaian_perilaku' => $situasiKerja->pluck('indikator_kerja_id', 'id')->toArray(),
                     'situasiKerja' => $situasiKerja->keyBy('id')->toArray(),
                     'indikatorKerja' => $indikatorKerja->keyBy('id')->toArray(),
                 ]
             ]);
         });
-        // dd($this->data);
     }
 
     public function save()
@@ -70,7 +71,10 @@ class PenilaianPerilakuCreate extends Component
             'tanggal_konfirmasi' => now(),
             'konfirmasi_oleh' => auth()->user()->nip,
         ]);
-        foreach ($this->data as $data) {
+        foreach ($this->data as $key => $data) {
+            if($key == 'nama'){
+                continue;
+            } 
             foreach ($data['indikator_penilaian_perilaku'] as $key => $item) {
                 if (!$item) {
                     $PenilaianPerilakuGuru->delete();

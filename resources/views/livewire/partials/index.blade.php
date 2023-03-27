@@ -17,7 +17,7 @@
                         {!! $column->renderHeader($sortColumn, $sortDirection) !!}
                     @endforeach
 
-                    <th class="text-center" style="width: 128px;">Actions</th>
+                    <th class="text-center" style="width: 128px;">Aksi</th>
                 </tr>
 
 
@@ -41,7 +41,7 @@
                     <tr>
                         <td colspan="999">
                             <div class="mt-6 mb-6 text-center">
-                                There is no data available in this datatable.
+                                Tidak ada data yang tersedia dalam tabel ini.
                             </div>
                         </td>
                     </tr>
@@ -51,8 +51,8 @@
 
         <div class="card-footer text-center">
             <div class="mb-3">
-                Showing {{ $this->data->firstItem() }} to {{ $this->data->lastItem() }} of {{ $this->data->total() }}
-                entries
+                Menampilkan {{ $this->data->firstItem() }} hingga {{ $this->data->lastItem() }} dari {{ $this->data->total() }}
+                entri
             </div>
             {!! $this->pagination !!}
         </div>

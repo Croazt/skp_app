@@ -27,6 +27,7 @@
     </style>
 @endpush
 <div>
+    @include('livewire.skp-guru.partials.user-detail-peta')
     <div class="tw-flex tw-justify-evenly tw-px-8 tw-text-center">
         <div class="tw-w-3/12">
             <x-jet-label for="target_pkg" value="{{ __('Target PKG') }}" />
@@ -36,7 +37,7 @@
         <div class="tw-w-3/12">
             <x-jet-label for="jam_pelajaran" value="{{ __('Target Jam Pelajaran') }}" />
             <x-jet-input type="text" class="form-input tw-text-center" id="jam_pelajaran"
-                wire:model="data.jam_pelajaran" name="data.jam_pelajaran" />
+                wire:model="data.jam_pelajaran" name="data.jam_pelajaran" disabled/>
         </div>
         @can('tugas_tambahan')
             <div class="tw-w-3/12">
@@ -72,13 +73,13 @@
                                     {!! $this->renderHeader('OUTPUT KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('TARGET', '', 1, 2) !!}
                                     {!! $this->renderHeader('ANGKA KREDIT') !!}
-                                    @if ($this->skpGuru->status == 'draft')
-                                        {!! $this->renderHeader('ACTION') !!}
-                                    @endif
+                                    {{-- @if ($this->skpGuru->status == 'draft')
+                                        {!! $this->renderHeader('AKSI') !!}
+                                    @endif --}}
                                 </tr>
                             </thead>
                             @foreach ($this->rencanaKinerjaUtama as $rencanaKinerja)
-                                @include('livewire.skp-guru.guru.tables.peta-rencana')
+                                @include('livewire.skp-guru.tables.peta-rencana')
                             @endforeach
                         </table>
                     </div>
@@ -107,13 +108,13 @@
                                     {!! $this->renderHeader('OUTPUT KEGIATAN TERKAIT') !!}
                                     {!! $this->renderHeader('TARGET', '', 1, 2) !!}
                                     {!! $this->renderHeader('ANGKA KREDIT') !!}
-                                    @if ($this->skpGuru->status == 'draft')
-                                        {!! $this->renderHeader('ACTION') !!}
-                                    @endif
+                                    {{-- @if ($this->skpGuru->status == 'draft')
+                                        {!! $this->renderHeader('AKSI') !!}
+                                    @endif --}}
                                 </tr>
                             </thead>
                             @foreach ($this->rencanaKinerjaTambahan as $rencanaKinerja)
-                                @include('livewire.skp-guru.guru.tables.peta-rencana')
+                                @include('livewire.skp-guru.tables.peta-rencana')
                             @endforeach
                         </table>
                     </div>

@@ -23,16 +23,6 @@
         <td class="tw-align-middle">
             {{ $data['detail_output_kuantitas'][$rencanaKinerja->id] }}
         </td>
-        @if ($skpGuru->status == 'draft')
-            <td rowspan="3" class="text-center tw-align-middle">
-                <div class="tw-align-middle tw-flex tw-flex-col">
-                    <button class="btn btn-xs btn-icon mb-1 btn-danger dt-delete-kinerja-guru"
-                        data-key="{{ $rencanaKinerja->id }}">
-                        <i class="fa fa-trash icon-nm"></i>
-                    </button>
-                </div>
-            </td>
-        @endif
     </tr>
     <tr>
         <td class="tw-font-extrabold tw-align-middle">

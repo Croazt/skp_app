@@ -75,7 +75,10 @@
         .wrapping-div tr,
         .wrapping-div td,
         .wrapping-div th {
-            page-break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                -webkit-column-break-inside: avoid;
+                break-inside: avoid;
+                -webkit-region-break-inside: avoid;
         }
 
         table {
@@ -86,7 +89,8 @@
 </head>
 
 <body>
-    <div class="tw-pb-7 tw-text-base tw-font-bold tw-w-full tw-text-center">KETERKAITAN SKP DENGAN ANGKA KREDIT PEJABAT FUNGSIONAL</div>
+    <div class="tw-pb-7 tw-text-base tw-font-bold tw-w-full tw-text-center">KETERKAITAN SKP DENGAN ANGKA KREDIT PEJABAT
+        FUNGSIONAL</div>
     @include('livewire.skp-guru.pdf.partials.user-detail')
     <div style="display: block; padding-right: 1px;" class="wrapping-div">
         <table class="table-border" style="width: 100%;">
@@ -121,21 +125,28 @@
             <tr>
                 <th class="tw-align-middle" rowspan="1" colspan="5">B. KINERJA TAMBAHAN</th>
             </tr>
-            @php
-                $i = 1;
-            @endphp
-            @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
-                @include('livewire.skp-guru.pdf.tables.keterkaitan')
+            @if ($rencanaKinerjaTambahan->first())
                 @php
-                    $i++;
+                    $i = 1;
                 @endphp
-            @endforeach
+                @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
+                    @include('livewire.skp-guru.pdf.tables.keterkaitan')
+                    @php
+                        $i++;
+                    @endphp
+                @endforeach
+            @else
+                <tr>
+                    <th class="tw-text-right" rowspan="1" colspan="5"></th>
+                </tr>
+            @endif
         </table>
     </div>
     <div style="float: right; display: block; break-inside: avoid;" class="tw-mr-3">
         <br>
         <div>
-            Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_konfirmasi)->translatedFormat('d F Y') }}
+            Sidrap,
+            {{ Carbon\Carbon::parse($skpGuru->tanggal_konfirmasi)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
         </div>
         <div>
             Pegawai yang membuat rencana,

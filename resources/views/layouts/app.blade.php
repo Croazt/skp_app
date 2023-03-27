@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="shortcut icon" href="{{ asset('images/app_logobg.png') }}">
 
     <script src="{{ asset('stisla/js/modules/jquery.min.js') }}"></script>
     <script defer src="{{ asset('stisla/js/modules/jquery.nicescroll.min.js') }}"></script>

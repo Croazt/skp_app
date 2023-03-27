@@ -76,6 +76,9 @@
         .wrapping-div td,
         .wrapping-div th {
             page-break-inside: avoid !important;
+            -webkit-column-break-inside: avoid;
+            break-inside: avoid;
+            -webkit-region-break-inside: avoid;
         }
 
         table {
@@ -86,7 +89,8 @@
 </head>
 
 <body>
-    <div class="tw-pb-7 tw-text-base tw-font-bold tw-w-full tw-text-center">VERIFIKASI KETERKAITAN SKP DENGAN ANGKA KREDIT PEJABAT FUNGSIONAL</div>
+    <div class="tw-pb-7 tw-text-base tw-font-bold tw-w-full tw-text-center">VERIFIKASI KETERKAITAN SKP DENGAN ANGKA
+        KREDIT PEJABAT FUNGSIONAL</div>
     @include('livewire.skp-guru.pdf.partials.user-detail')
     <div style="display: block; padding-right: 1px;" class="wrapping-div">
         <table class="table-border" style="width: 100%;">
@@ -123,27 +127,35 @@
             <tr>
                 <th class="tw-align-middle" rowspan="1" colspan="6">B. KINERJA TAMBAHAN</th>
             </tr>
-            @php
-                $i = 1;
-            @endphp
-            @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
-                @include('livewire.skp-guru.pdf.tables.verifikasi')
+            @if ($rencanaKinerjaTambahan->first())
                 @php
-                    $i++;
+                    $i = 1;
                 @endphp
-            @endforeach
+                @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
+                    @include('livewire.skp-guru.pdf.tables.verifikasi')
+                    @php
+                        $i++;
+                    @endphp
+                @endforeach
+            @else
+                <tr>
+                    <th class="tw-text-right" rowspan="1" colspan="6"></th>
+                </tr>
+            @endif
             <tr>
-                <td class="tw-align-middle tw-text-center tw-uppercase tw-font-bold" rowspan="1" colspan="4">JUMLAH ANGKA KREDIT</td>
+                <td class="tw-align-middle tw-text-center tw-uppercase tw-font-bold" rowspan="1" colspan="4">
+                    JUMLAH ANGKA KREDIT</td>
                 @php
                     $totalAk = 0;
-                    foreach($rencanaKinerjaGuru as $item){
-                        if(!$item->terkait){
+                    foreach ($rencanaKinerjaGuru as $item) {
+                        if (!$item->terkait) {
                             continue;
                         }
                         $totalAk += $data['angka_kredit'][$item->id];
                     }
                 @endphp
-                <td class="tw-align-middle tw-text-center tw-font-bold" rowspan="1" colspan="1">{{ $totalAk }}</td>
+                <td class="tw-align-middle tw-text-center tw-font-bold" rowspan="1" colspan="1">
+                    {{ $totalAk }}</td>
                 <td class="tw-align-middle tw-text-center tw-font-bold" rowspan="1" colspan="1"></td>
             </tr>
         </table>
@@ -151,7 +163,8 @@
     <div style="float: right; display: block; break-inside: avoid;" class="tw-mr-3">
         <br>
         <div>
-            Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_verifikasi)->translatedFormat('d F Y') }}
+            Sidrap,
+            {{ Carbon\Carbon::parse($skpGuru->tanggal_verifikasi)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
         </div>
         <div>
             TIM penilai angka kredit,
@@ -160,10 +173,10 @@
         <br>
         <br>
         <p class="tw-uppercase tw-font-bold" style="text-decoration: underline!important;">
-            {{ $skpGuru->verifikasi->nama }}
+            {{ $skpGuru->verifikasi->nama ?? $skpGuru->skp->timAngkaKredit->nama }}
         </p>
         <div class="tw-uppercase">
-            NIP {{ $skpGuru->verifikasi->nip }}
+            NIP {{ $skpGuru->verifikasi->nip ?? $skpGuru->skp->timAngkaKredit->nip }}
         </div>
     </div>
 </body>

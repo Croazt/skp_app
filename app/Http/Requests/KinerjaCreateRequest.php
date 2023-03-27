@@ -58,10 +58,6 @@ class KinerjaCreateRequest extends FormRequest
         }
         $rules['deskripsi'] = 'required|string|unique:kinerja,deskripsi';
 
-        Log::debug('Message.', [
-            'req' => request(),
-            'rules' => $rules,
-        ]);
         return $rules;
     }
 }

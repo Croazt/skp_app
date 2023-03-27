@@ -116,7 +116,7 @@
         <!-- unit_kerja -->
         <div class="tw-col-span-6 sm:tw-col-span-4">
             <x-jet-label for="unit_kerja" value="{{ __('Unit Kerja') }}" />
-            <x-jet-input disabled id="unit_kerja" type="text" class="form-control tw-mt-1 tw-block tw-w-full"
+            <x-jet-input id="unit_kerja" type="text" class="form-control tw-mt-1 tw-block tw-w-full"
                 wire:model.defer="state.unit_kerja" autocomplete="unit_kerja" />
             <x-jet-input-error for="unit_kerja" class="tw-mt-2" />
         </div>
@@ -124,11 +124,11 @@
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
-            {{ __('Saved.') }}
+            {{ __('Tersimpan.') }}
         </x-jet-action-message>
 
         <x-jet-button wire:loading.attr="disabled" wire:target="photo">
-            {{ __('Save') }}
+            {{ __('Simpan') }}
         </x-jet-button>
     </x-slot>
 </x-jet-form-section>

@@ -85,9 +85,9 @@
         </td>
         <td class="tw-align-middle tw-text-center ">
             <div class="tw-w-max tw-flex tw-mx-auto">
-                <div class="tw-mx-2"> {{ $this->data['target1_waktu'][$rencanaKinerja->id] ?? 0 }}%</div>
+                <div class="tw-mx-2"> {{ $this->data['target1_waktu'][$rencanaKinerja->id] ?? 0 }}</div>
                 <div class="tw-mx-2tw-font-extrabold">-</div>
-                <div class="tw-mx-2"> {{ $this->data['target2_waktu'][$rencanaKinerja->id] ?? 0 }}%</div>
+                <div class="tw-mx-2"> {{ $this->data['target2_waktu'][$rencanaKinerja->id] ?? 0 }}</div>
             </div>
         </td>
         <td class="tw-align-middle tw-w-2/12">

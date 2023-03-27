@@ -27,7 +27,7 @@
             {{ $data['detail_output_kuantitas'][$rencanaKinerja->id] }}
         </td>
         <td style="width:4%;" class="tw-align-middle tw-text-center">
-            {{ $data['capaian_iki_kuantitas'][$rencanaKinerja->id] }}
+            {{ $data['capaian_iki_kuantitas'][$rencanaKinerja->id] }}%
         </td>
         <td style="width:4%;" class="tw-align-middle tw-text-center">
             {{ str_replace('_', ' ', $data['kategori_capaian_iki_kuantitas'][$rencanaKinerja->id]) }}
@@ -97,7 +97,7 @@
             {{ $data['detail_output_waktu'][$rencanaKinerja->id] }}
         </td>
         <td style="width:4%;" class="tw-align-middle tw-text-center">
-            {{ $data['capaian_iki_waktu'][$rencanaKinerja->id] }}
+            {{ $data['capaian_iki_waktu'][$rencanaKinerja->id] }}%
         </td>
         <td style="width:4%;" class="tw-align-middle tw-text-center">
             {{ str_replace('_', ' ', $data['kategori_capaian_iki_waktu'][$rencanaKinerja->id]) }}

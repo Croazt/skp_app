@@ -75,7 +75,10 @@
         .wrapping-div tr,
         .wrapping-div td,
         .wrapping-div th {
-            page-break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                -webkit-column-break-inside: avoid;
+                break-inside: avoid;
+                -webkit-region-break-inside: avoid;
         }
 
         table {
@@ -154,7 +157,7 @@
     <div style="float: right; display: block; break-inside: avoid;" class="tw-mr-3">
         <br>
         <div>
-            Sidrap, {{ Carbon\Carbon::parse($penilaianPerilakuGuru->tanggal_konfirmasi)->translatedFormat('d F Y') }}
+            Sidrap, {{ Carbon\Carbon::parse($penilaianPerilakuGuru->tanggal_konfirmasi)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
         </div>
         <div>
             Pejabat Penilai Kerja,

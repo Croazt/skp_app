@@ -24,7 +24,7 @@
             SKP
         </h1>
         <h1 class="h5 tw-font-bold">
-            {{ $this->skp->periode_awal . ' s.d. ' . $this->skp->periode_akhir }}
+            {{ format_periode($this->skp->periode_awal, $this->skp->periode_akhir) }}
         </h1>
         @can('Guru')
             @php
@@ -71,8 +71,10 @@
         <div class="tab-pane fade tw-w-full" id="kinerja" role="tabpanel" aria-labelledby="kinerja-tab">
             <livewire:skp.kinerja.kinerja-index :skp="$this->skp" :wire:key="$this->skp->id">
         </div>
-        <div class="tab-pane fade tw-w-full" id="skp-guru" role="tabpanel" aria-labelledby="skp-guru-tab">
-            <livewire:skp-guru.skp-guru-index :skp="$this->skp" :wire:key="$this->skp->id">
-        </div>
+        @canany(['Operator', 'Tim Angka Kredit', 'Pengelola Kinerja', 'Kepala Sekolah'])
+            <div class="tab-pane fade tw-w-full" id="skp-guru" role="tabpanel" aria-labelledby="skp-guru-tab">
+                <livewire:skp-guru.skp-guru-index :skp="$this->skp" :wire:key="$this->skp->id">
+            </div>
+        @endcanany
     </div>
 </div>

@@ -13,10 +13,10 @@
             {{ $this->data['indikator_kuantitas'][$rencanaKinerja->id] }}
         </td>
         <td rowspan="3">
-            {{ $this->data['butir_kegiatan'][$rencanaKinerja->id] }}
+            {!! nl2br($this->data['butir_kegiatan'][$rencanaKinerja->id]) !!}
         </td>
         <td rowspan="3">
-            {{ $this->data['output_kegiatan'][$rencanaKinerja->id] }}
+            {!! nl2br($this->data['output_kegiatan'][$rencanaKinerja->id]) !!}
         </td>
         <td class="tw-align-middle tw-text-center">
             <div class="tw-w-max tw-flex tw-mx-auto">
@@ -40,13 +40,13 @@
             {{ $this->data['detail_output_kuantitas'][$rencanaKinerja->id] }}
         </td>
         <td class="tw-align-middle tw-text-center">
-            {{ $this->data['capaian_iki_kuantitas'][$rencanaKinerja->id] }}
+            {{ $this->data['capaian_iki_kuantitas'][$rencanaKinerja->id] }}%
         </td>
         <td class="tw-align-middle tw-text-center">
-            {{ $this->data['kategori_capaian_iki_kuantitas'][$rencanaKinerja->id] }}
+            {{ str_replace('_', ' ', $data['kategori_capaian_iki_kuantitas'][$rencanaKinerja->id]) }}
         </td>
         <td class="tw-align-middle tw-text-center" rowspan="3">
-            {{ $this->data['kategori_crk'][$rencanaKinerja->id] }}
+            {{ str_replace('_', ' ', $this->data['kategori_crk'][$rencanaKinerja->id]) }}
         </td>
         <td class="tw-align-middle tw-text-center" rowspan="3">
             {{ $this->data['nilai_crk'][$rencanaKinerja->id] }}
@@ -55,7 +55,7 @@
             {{ $this->data['cascading'][$rencanaKinerja->id] === 0 ? 'NON DIRECT' : 'DIRECT' }}
         </td>
         <td class="tw-align-middle tw-text-center" rowspan="3">
-            $this->data['nilai_tertimbang'][$rencanaKinerja->id]
+            {{ $this->data['nilai_tertimbang'][$rencanaKinerja->id] }}
         </td>
     </tr>
     <tr>
@@ -90,7 +90,7 @@
             {{ $this->data['capaian_iki_kualitas'][$rencanaKinerja->id] }}%
         </td>
         <td class="tw-align-middle tw-text-center">
-            {{ $this->data['kategori_capaian_iki_kualitas'][$rencanaKinerja->id] }}
+            {{ str_replace('_', ' ', $data['kategori_capaian_iki_kualitas'][$rencanaKinerja->id]) }}
         </td>
     </tr>
     <tr>
@@ -122,10 +122,10 @@
             {{ $this->data['detail_output_waktu'][$rencanaKinerja->id] }}
         </td>
         <td class="tw-align-middle tw-text-center">
-            {{ $this->data['capaian_iki_waktu'][$rencanaKinerja->id] }}
+            {{ $this->data['capaian_iki_waktu'][$rencanaKinerja->id] }}%
         </td>
         <td class="tw-align-middle tw-text-center">
-            {{ $this->data['kategori_capaian_iki_waktu'][$rencanaKinerja->id] }}
+            {{ str_replace('_', ' ', $data['kategori_capaian_iki_waktu'][$rencanaKinerja->id]) }}
         </td>
     </tr>
 </tbody>

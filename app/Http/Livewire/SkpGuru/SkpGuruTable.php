@@ -30,6 +30,14 @@ class SkpGuruTable extends Component
         $this->refresh();
     }
 
+    public function updateTargetCapaian(int $rencanaId, int $value, string $field)
+    {
+        $rencana = RencanaKinerjaGuru::find($rencanaId);
+        if ($rencana instanceof RencanaKinerjaGuru) {
+            $rencana->$field = $value;
+            $rencana->save();
+        }
+    }
     public function updateCascading(int $rencanaId)
     {
         $rencana = RencanaKinerjaGuru::find($rencanaId);
@@ -95,6 +103,10 @@ class SkpGuruTable extends Component
         }
         $this->skpGuru->status = SkpGuru::REVIU;
         $this->skpGuru->tanggal_reviu = now();
+        $this->skpGuru->reviu_oleh = auth()->user()->nip;
+        
+        session()->flash('alertType', 'success');
+        session()->flash('alertMessage', 'Rencana SKP Berhasil Direviu!');
         $this->skpGuru->save();
         $this->dispatchBrowserEvent('showResponseModal', ['success' => true, 'message' => 'Rencana SKP Berhasil Direviu!']);
         return redirect(request()->header('Referer'));
@@ -113,8 +125,11 @@ class SkpGuruTable extends Component
                     'terkait' => 0,
                 ]);
             $this->skpGuru->tanggal_verifikasi = now();
+            $this->skpGuru->verifikasi_oleh = auth()->user()->nip;
             $this->skpGuru->save();
-            $this->dispatchBrowserEvent('showResponseModal', ['success' => true, 'message' => 'Rencana SKP Berhasil Direviu!']);
+            session()->flash('alertType', 'success');
+            session()->flash('alertMessage', 'Rencana SKP Berhasil Diverifikasi!');
+            $this->dispatchBrowserEvent('showResponseModal', ['success' => true, 'message' => 'Rencana SKP Berhasil Diverifikasi!']);
             DB::commit();
             return redirect(request()->header('Referer'));
         } catch (Exception $err) {
@@ -152,6 +167,8 @@ class SkpGuruTable extends Component
 
         if ($rejectedDocument) {
             $this->skpGuru->status = SkpGuru::DINILAI;
+            $this->skpGuru->pangkat_nilai = $this->skpGuru->user->pangkat_id;
+            $this->skpGuru->pejabat_nilai = $this->skpGuru->skp->pejabat_penilai;
             $this->skpGuru->tanggal_realisasi = now();
             $this->skpGuru->save();
             return redirect(request()->header('Referer'));

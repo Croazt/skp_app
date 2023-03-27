@@ -97,12 +97,17 @@ class PejabatPenilai extends Model
         return $this->hasMany('App\Models\SkpGuru', 'pejabat_rencana', 'nip');
     }
     
-    public function getPangkatname(): string
+    public function getPangkatJabatanName(): string
     {
         $pangkat = $this->pangkat;
         return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang . '/' . $pangkat->jabatan;
     }
 
+    public function getPangkatName(): string
+    {
+        $pangkat = $this->pangkat;
+        return $pangkat->pangkat . ', ' . $pangkat->golongan_ruang;
+    }
     public function scopeBaseQuery(Builder $query): Builder
     {
         return $query->select([

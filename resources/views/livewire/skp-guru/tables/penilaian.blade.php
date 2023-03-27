@@ -13,10 +13,10 @@
             {{ $this->data['indikator_kuantitas'][$rencanaKinerja->id] }}
         </td>
         <td rowspan="3">
-            {{ $this->data['butir_kegiatan'][$rencanaKinerja->id] }}
+            {!! nl2br($this->data['butir_kegiatan'][$rencanaKinerja->id]) !!}
         </td>
         <td rowspan="3">
-            {{ $this->data['output_kegiatan'][$rencanaKinerja->id] }}
+            {!! nl2br($this->data['output_kegiatan'][$rencanaKinerja->id]) !!}
         </td>
         <td class="tw-align-middle tw-text-center ">
             <div class="tw-w-max tw-flex tw-mx-auto">
@@ -39,16 +39,6 @@
         <td rowspan="3" class="text-center tw-align-middle">
             {{ $this->data['angka_kredit'][$rencanaKinerja->id] }}
         </td>
-        @if ($this->skpGuru->status == 'draft')
-            <td rowspan="3" class="text-center tw-align-middle">
-                <div class="tw-align-middle tw-flex tw-flex-col">
-                    <button class="btn btn-xs btn-icon mb-1 btn-danger dt-delete-kinerja-guru"
-                        data-key="{{ $rencanaKinerja->id }}">
-                        <i class="fa fa-trash icon-nm"></i>
-                    </button>
-                </div>
-            </td>
-        @endif
     </tr>
     <tr>
         <td class="tw-font-extrabold tw-align-middle">

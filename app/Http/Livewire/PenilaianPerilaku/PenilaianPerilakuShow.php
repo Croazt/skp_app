@@ -65,17 +65,17 @@ class PenilaianPerilakuShow extends PenilaianPerilakuForm
 
     public function checkSkpPeriode(): bool
     {
-        if ($this->skp->periode_awal >= now()) {
+        if ($this->skp->periode_awal > now()) {
             session()->flash('alertType', 'danger');
             session()->flash('alertMessage', 'Tidak dapat merencanakan SKP, pelaksanaan SKP belum dimulai!');
             return false;
         }
-        if (Carbon::parse($this->skp->periode_akhir)->endOfDay() <= now()) {
+        if (Carbon::parse($this->skp->periode_akhir)->endOfDay() < now()) {
             session()->flash('alertType', 'danger');
             session()->flash('alertMessage', 'Tidak dapat merencanakan SKP, pelaksanaan SKP telah selesai!');
             return false;
         }
-        if (Carbon::parse($this->skp->perencanaan)->endOfDay() <= now()) {
+        if (Carbon::parse($this->skp->perencanaan)->endOfDay() < now()) {
             session()->flash('alertType', 'danger');
             session()->flash('alertMessage', 'Tidak dapat merencanakan SKP, telah melewati waktu perencanaan!');
             return false;
@@ -92,10 +92,6 @@ class PenilaianPerilakuShow extends PenilaianPerilakuForm
         }
     }
 
-    public function cetak()
-    {
-        return view('livewire.penilaian-perilaku.penilaian-perilaku-show');
-    }
     public function render()
     {
         return view('livewire.penilaian-perilaku.penilaian-perilaku-show');

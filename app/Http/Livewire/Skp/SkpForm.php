@@ -8,6 +8,8 @@ use App\Models\PejabatPenilai;
 use App\Models\Role;
 use App\Models\Skp;
 use App\Models\User;
+use App\Rules\SameYear;
+use App\Rules\UniqueYear;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -131,7 +133,11 @@ class SkpForm extends Component
             '30_hari_periode_awal' => Carbon::parse($this->data['periode_awal'])->addDay(30),
             '30_hari_periode_akhir' => Carbon::parse($this->data['periode_akhir'])->subDay(30),
         ]);
+
+        // $this->validate();
+        $this->rules['data.periode_awal'] = ['required','date','before:data.periode_akhir', (new SameYear($this->data['periode_akhir'])), new UniqueYear($this->skp)];
         $this->validate();
+        
         DB::beginTransaction();
         $this->skp->fill($this->data->except(['periode'])->all());
         $this->skp->save();

@@ -76,6 +76,9 @@
         .wrapping-div td,
         .wrapping-div th {
             page-break-inside: avoid !important;
+            -webkit-column-break-inside: avoid;
+            break-inside: avoid;
+            -webkit-region-break-inside: avoid;
         }
 
         table {
@@ -86,7 +89,7 @@
 </head>
 
 <body>
-    <div class="tw-pb-7 tw-text-base tw-font-bold tw-w-full tw-text-center">RENCANA SKP PEJABAT FUNGSIONAL</div>
+    <div class="tw-pb-7 tw-text-base tw-font-bold tw-w-full tw-text-center">PENETAPAN SKP PEJABAT FUNGSIONAL</div>
     @include('livewire.skp-guru.pdf.partials.user-detail')
     <div style="display: block; padding-right: 1px;" class="wrapping-div">
         <table class="table-border" style="width: 100%;">
@@ -131,29 +134,36 @@
             <tr>
                 <th class="tw-align-middle" rowspan="1" colspan="7">B. KINERJA TAMBAHAN</th>
             </tr>
-            @php
-                $i = 1;
-                $firstKey = $rencanaKinerjaTambahan->first()->id;
-                $deskripsi = $data['kinerja_desc'][$firstKey];
-            @endphp
-            @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
-                @if ($firstKey != $rencanaKinerja->id && $deskripsi != $data['kinerja_desc'][$rencanaKinerja->id])
-                    @php
-                        $deskripsi = $data['kinerja_desc'][$rencanaKinerja->id];
-                        $i++;
-                    @endphp
-                @endif
-                @if ($data['terkait'][$rencanaKinerja->id])
-                    @include('livewire.skp-guru.pdf.tables.penetapan')
-                @endif
-            @endforeach
+            @if ($rencanaKinerjaTambahan->first())
+                @php
+                    $i = 1;
+                    $firstKey = $rencanaKinerjaTambahan->first()->id;
+                    $deskripsi = $data['kinerja_desc'][$firstKey];
+                @endphp
+                @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
+                    @if ($firstKey != $rencanaKinerja->id && $deskripsi != $data['kinerja_desc'][$rencanaKinerja->id])
+                        @php
+                            $deskripsi = $data['kinerja_desc'][$rencanaKinerja->id];
+                            $i++;
+                        @endphp
+                    @endif
+                    @if ($data['terkait'][$rencanaKinerja->id])
+                        @include('livewire.skp-guru.pdf.tables.penetapan')
+                    @endif
+                @endforeach
+            @else
+                <tr>
+                    <th class="tw-text-right" rowspan="1" colspan="7"></th>
+                </tr>
+            @endif
         </table>
     </div>
-    <div class="tw-w-full tw-flex tw-justify-between" style="break-inside: avoid;" >
+    <div class="tw-w-full tw-flex tw-justify-between" style="break-inside: avoid;">
         <div style="break-inside: avoid;" class="tw-ml-3">
             <br>
             <div>
-                Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_konfirmasi)->translatedFormat('d F Y') }}
+                Sidrap,
+                {{ Carbon\Carbon::parse($skpGuru->tanggal_konfirmasi)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
             </div>
             <div>
                 Pegawai yang dinilai,
@@ -171,7 +181,8 @@
         <div style="break-inside: avoid;" class="tw-mr-3">
             <br>
             <div>
-                Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_verifikasi)->translatedFormat('d F Y') }}
+                Sidrap,
+                {{ Carbon\Carbon::parse($skpGuru->tanggal_verifikasi)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
             </div>
             <div>
                 Pejabat Penilai Kinerja,
@@ -180,10 +191,10 @@
             <br>
             <br>
             <p class="tw-uppercase tw-font-bold" style="text-decoration: underline!important;">
-                {{ $skpGuru->pejabatRencana->nama }}
+                {{ $skpGuru->pejabatRencana->nama ?? $skp->pejabatPenilai->nama }}
             </p>
             <div class="tw-uppercase">
-                NIP {{ $skpGuru->pejabatRencana->nip }}
+                NIP {{ $skpGuru->pejabatRencana->nip ?? $skp->pejabatPenilai->nip }}
             </div>
         </div>
     </div>

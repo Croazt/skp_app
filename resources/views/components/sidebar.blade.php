@@ -50,13 +50,6 @@
                         ['href' => 'pejabat-penilai.index', 'text' => 'Daftar Pejabat Penilai'],
                     ],
                 ],
-                [
-                    'section_text' => 'Unit Kerja',
-                    'section_icon' => 'fa-building',
-                    'section_list' => [
-                        ['href' => 'pejabat-penilai.index', 'text' => 'Unit Kerja'],
-                    ],
-                ],
             ],
             'text' => 'Menu',
             'is_multi' => true,

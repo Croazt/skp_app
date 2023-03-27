@@ -1,5 +1,5 @@
 <x-slot name="header_content">
-    <h1>{{ __('Penilaian Prestasi Kerja') }}</h1>
+    <h1>{{ __('Penilaian Perilaku') }}</h1>
     <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="{{ route('skp.index') }}">SKP</a></div>
         <div class="breadcrumb-item"><a href="{{ route('skp.show', ['skp' => $this->skp]) }}">Detail</a></div>
@@ -23,7 +23,7 @@
             PENILAIAN PERILAKU GURU
         </h1>
         <h1 class="h5 tw-font-bold">
-            {{ $this->skp->periode_awal . ' s.d. ' . $this->skp->periode_akhir }}
+            {{ format_periode($this->skp->periode_awal, $this->skp->periode_akhir) }}
         </h1>
     </div>
     <livewire:penilaian-perilaku.penilaian-perilaku-guru-index :skp="$this->skp" :wire:key="$this->skp->id">

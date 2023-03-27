@@ -16,7 +16,7 @@
             @csrf
 
             <div>
-                <x-jet-label for="nip" value="{{ __('Nip') }}" />
+                <x-jet-label for="nip" value="{{ __('NIP/Email') }}" />
                 <x-jet-input id="nip" class="tw-block tw-mt-1 tw-w-full" type="text" name="nip"
                     :value="old('nip')" required autofocus />
             </div>

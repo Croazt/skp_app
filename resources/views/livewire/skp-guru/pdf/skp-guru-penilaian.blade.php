@@ -79,7 +79,10 @@
         .wrapping-div tr,
         .wrapping-div td,
         .wrapping-div th {
-            page-break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                -webkit-column-break-inside: avoid;
+                break-inside: avoid;
+                -webkit-region-break-inside: avoid;
         }
 
         table {
@@ -90,7 +93,7 @@
 </head>
 
 <body>
-    <div class="tw-text-base tw-font-bold tw-w-full tw-text-center">RENCANA SKP PEJABAT FUNGSIONAL</div>
+    <div class="tw-text-base tw-font-bold tw-w-full tw-text-center">PENILAIAN SKP PEJABAT FUNGSIONAL</div>
     @include('livewire.skp-guru.pdf.partials.user-detail')
     <div style="display: block; padding-right: 1px;" class="wrapping-div">
         <table class="table-border" style="width: 100%;">
@@ -174,38 +177,52 @@
                     <th class="tw-align-middle" rowspan="1" colspan="15">B. KINERJA TAMBAHAN</th>
                 </tr>
             </tbody>
-            @php
-                $i = 1;
-                $firstKey = $rencanaKinerjaTambahan->first()->id;
-                $deskripsi = $data['kinerja_desc'][$firstKey];
-                $nilaiTertimbangTambahan = 0;
-            @endphp
-            @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
-                @if ($firstKey != $rencanaKinerja->id && $deskripsi != $data['kinerja_desc'][$rencanaKinerja->id])
-                    @php
-                        $deskripsi = $data['kinerja_desc'][$rencanaKinerja->id];
-                        $i++;
-                    @endphp
-                @endif
-                @if ($data['terkait'][$rencanaKinerja->id])
-                    @php
-                        $nilaiTertimbangTambahan += $data['nilai_tertimbang'][$rencanaKinerja->id];
-                    @endphp
-                    @include('livewire.skp-guru.pdf.tables.penilaian')
-                @endif
-            @endforeach
+            @if ($rencanaKinerjaTambahan->first())
+                @php
+                    $i = 1;
+                    $firstKey = $rencanaKinerjaTambahan->first()->id;
+                    $deskripsi = $data['kinerja_desc'][$firstKey];
+                    $nilaiTertimbangTambahan = 0;
+                @endphp
+                @foreach ($rencanaKinerjaTambahan as $rencanaKinerja)
+                    @if ($firstKey != $rencanaKinerja->id && $deskripsi != $data['kinerja_desc'][$rencanaKinerja->id])
+                        @php
+                            $deskripsi = $data['kinerja_desc'][$rencanaKinerja->id];
+                            $i++;
+                        @endphp
+                    @endif
+                    @if ($data['terkait'][$rencanaKinerja->id])
+                        @php
+                            $nilaiTertimbangTambahan += $data['nilai_tertimbang'][$rencanaKinerja->id];
+                        @endphp
+                        @include('livewire.skp-guru.pdf.tables.penilaian')
+                    @endif
+                @endforeach
+            @else
+                <tr>
+                    <th class="tw-text-right" rowspan="1" colspan="15"></th>
+                </tr>
+            @endif
             <tbody>
                 <tr>
-                    <th class="tw-text-right" rowspan="1" colspan="14">TOTAL NILAI TERTIMBANG CAPAIAN RENCANA KINERJA TAMBAHAN</th>
+                    <th class="tw-text-right" rowspan="1" colspan="14">TOTAL NILAI TERTIMBANG CAPAIAN RENCANA
+                        KINERJA TAMBAHAN</th>
                     <th class="tw-text-center" rowspan="1" colspan="1">
-                        {{ $nilaiTertimbangUtama / $totalTertimbangUtama }}</th>
+                        {{ $nilaiTertimbangTambahan ?? 0 }}
+                        @php
+                            $nilaiTertimbangTambahan = $nilaiTertimbangTambahan ?? 0 > 10 ? 10 : $nilaiTertimbangTambahan ?? 0;
+                        @endphp
+                    </th>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
-                    <th class="tw-text-right tw-font-bold" rowspan="1" colspan="14">NILAI AKHIR SKP = RATA-RATA NILAI TERTIMBANG CAPAIAN RENCANA KINERJA UTAMA + TOTAL NILAI TERTIMBANG CAPAIAN RENCANA KINERJA TAMBAHAN</th>
+                    <th class="tw-text-right tw-font-bold" rowspan="1" colspan="14">NILAI AKHIR SKP = RATA-RATA
+                        NILAI TERTIMBANG CAPAIAN RENCANA KINERJA UTAMA + TOTAL NILAI TERTIMBANG CAPAIAN RENCANA KINERJA
+                        TAMBAHAN</th>
                     <th class="tw-text-center tw-font-bold" rowspan="1" colspan="1">
-                        {{ ($nilaiTertimbangUtama / $totalTertimbangUtama) + ($nilaiTertimbangTambahan > 10 ? 10 : $nilaiTertimbangTambahan) }}</th>
+                        {{ $nilaiTertimbangUtama / $totalTertimbangUtama + $nilaiTertimbangTambahan }}
+                    </th>
                 </tr>
             </tbody>
         </table>
@@ -227,7 +244,7 @@
         </div>
         <div style="break-inside: avoid;" class="tw-mr-20">
             <div>
-                Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_realisasi)->translatedFormat('d F Y') }}
+                Sidrap, {{ Carbon\Carbon::parse($skpGuru->tanggal_realisasi)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('d F Y') }}
             </div>
             <div>
                 Pejabat Penilai Kinerja,
@@ -236,10 +253,10 @@
             <br>
             <br>
             <p class="tw-uppercase tw-font-bold" style="text-decoration: underline!important;">
-                {{ $skpGuru->pejabatPenilai->nama }}
+                {{ $skpGuru->pejabatPenilai->nama ?? $skp->pejabatPenilai->nama }}
             </p>
             <div class="tw-uppercase">
-                NIP {{ $skpGuru->pejabatPenilai->nip }}
+                NIP {{ $skpGuru->pejabatPenilai->nip ?? $skp->pejabatPenilai->nip }}
             </div>
         </div>
     </div>
